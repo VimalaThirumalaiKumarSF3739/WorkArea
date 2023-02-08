@@ -1,0 +1,21 @@
+﻿
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Syncfusion.Maui.Charts")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.TabView")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.Sliders")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.SignaturePad")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.Scheduler")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.Calendar")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.DataGrid")]
+[assembly: InternalsVisibleTo("SampleBrowser.Maui.Core")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.ListView")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.Maps")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.Barcode")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.Gauges")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.ProgressBar")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.Rating")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.Inputs")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.DataForm")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.Backdrop")]
+[assembly: InternalsVisibleTo("Syncfusion.Maui.Popup")]

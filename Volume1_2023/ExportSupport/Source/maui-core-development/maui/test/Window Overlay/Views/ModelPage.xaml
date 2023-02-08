@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WindowOverlay.Samples.ModelPage"
+             Title="ModelPage">
+
+    <VerticalStackLayout Spacing="25"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center">
+        <Label Text="Model page added!"
+               Padding="12"
+               TextColor="SteelBlue"
+               HorizontalTextAlignment="Center">
+            <Label.Shadow>
+                <Shadow Brush="SteelBlue"
+                        Opacity="0.5"
+                        Radius="5"
+                        Offset="0,5" />
+            </Label.Shadow>
+        </Label>
+
+        <Button Text="Pop current model page"
+                Clicked="OnPopCurrentModelPageButtonClicked" />
+        
+        <Button Text="Pop current page"
+                Clicked="OnPopCurrentPageButtonClicked" />
+    </VerticalStackLayout>
+</ContentPage>
