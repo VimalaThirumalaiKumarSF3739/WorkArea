@@ -31,7 +31,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <summary>
         /// RectSegment property declarations
         /// </summary>
-        internal Rectangle RectSegment;
+        internal Rectangle? RectSegment;
 
         /// <summary>
         /// Set corresponding content control.
@@ -252,7 +252,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         internal override UIElement GetRenderedVisual()
         {
-            if (customTemplate == null)
+            if (customTemplate == null && RectSegment != null)
                 return RectSegment;
             return control;
         }
@@ -266,9 +266,8 @@ namespace Syncfusion.UI.Xaml.Charts
 
         internal override void Update(IChartTransformer transformer)
         {
-            if (transformer != null)
+            if (transformer is ChartTransform.ChartCartesianTransformer cartesianTransformer)
             {
-                ChartTransform.ChartCartesianTransformer cartesianTransformer = transformer as ChartTransform.ChartCartesianTransformer;
                 double xStart = Math.Floor(cartesianTransformer.XAxis.VisibleRange.Start);
                 double xEnd = Math.Ceiling(cartesianTransformer.XAxis.VisibleRange.End);
 
@@ -276,27 +275,30 @@ namespace Syncfusion.UI.Xaml.Charts
                     && (Left <= xEnd && Right >= xStart)
                     && (!double.IsNaN(YData)))
                 {
-                    double spacing = (Series as ISegmentSpacing).SegmentSpacing;
-                    Point tlpoint = transformer.TransformToVisible(Left, Top);
-                    Point rbpoint = transformer.TransformToVisible(Right, Bottom);
-                    rect = new Rect(tlpoint, rbpoint);
+                    if(Series is ISegmentSpacing segmentSpacing)
+                        { 
+                        double spacing = segmentSpacing.SegmentSpacing;
+                        Point tlpoint = transformer.TransformToVisible(Left, Top);
+                        Point rbpoint = transformer.TransformToVisible(Right, Bottom);
+                        rect = new Rect(tlpoint, rbpoint);
 
-                    if (spacing > 0.0 && spacing <= 1)
-                    {
-                        if (Series.IsActualTransposed == true)
+                        if (spacing > 0.0 && spacing <= 1)
                         {
-                            double leftpos = (Series as ISegmentSpacing).CalculateSegmentSpacing(spacing,
-                                rect.Bottom, rect.Top);
-                            rect.Y = leftpos;
-                            Height = rect.Height = (1 - spacing) * rect.Height;
-                        }
+                            if (Series.IsActualTransposed == true)
+                            {
+                                double leftpos = segmentSpacing.CalculateSegmentSpacing(spacing,
+                                    rect.Bottom, rect.Top);
+                                rect.Y = leftpos;
+                                Height = rect.Height = (1 - spacing) * rect.Height;
+                            }
 
-                        else
-                        {
-                            double leftpos = (Series as ISegmentSpacing).CalculateSegmentSpacing(spacing, rect.Right,
-                                rect.Left);
-                            rect.X = leftpos;
-                            Width = rect.Width = (1 - spacing) * rect.Width;
+                            else
+                            {
+                                double leftpos = segmentSpacing.CalculateSegmentSpacing(spacing, rect.Right,
+                                    rect.Left);
+                                rect.X = leftpos;
+                                Width = rect.Width = (1 - spacing) * rect.Width;
+                            }
                         }
                     }
                     if (RectSegment != null)
@@ -316,7 +318,7 @@ namespace Syncfusion.UI.Xaml.Charts
                         Height = rect.Height;
                     }
                 }
-                else if (customTemplate == null)
+                else if (customTemplate == null && RectSegment != null)
                     RectSegment.Visibility = Visibility.Collapsed;
                 else control.Visibility = Visibility.Collapsed;
             }

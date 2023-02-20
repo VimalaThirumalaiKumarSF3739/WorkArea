@@ -105,7 +105,33 @@ namespace Syncfusion.Maui.Charts
     }
 
     /// <summary>
-    /// Represents the modes for placing the edge labels in the <see cref="ChartAxis"/>.
+    ///Represents the radial bar segment cap style. The radial bar cap style can be positioned at the segment start, end, or both ends.
+    /// </summary>
+    public enum CapStyle
+    {
+        /// <summary>
+        /// Indicates that a flat shape should appear at the start and end positions.
+        /// </summary>
+        BothFlat = 0,
+
+        /// <summary>
+        /// Indicates that a curve shape should appear at the start and end positions.
+        /// </summary>
+        BothCurve = 1,
+
+        /// <summary>
+        /// Indicates that a curve shape should appear at the start position.
+        /// </summary>
+        StartCurve = 2,
+
+        /// <summary>
+        /// Indicates that a curve shape should appear at the end position.
+        /// </summary>
+        EndCurve = 3,
+    }
+
+    /// <summary>
+    /// 
     /// </summary>
     public enum EdgeLabelsDrawingMode
     {
@@ -709,6 +735,104 @@ namespace Syncfusion.Maui.Charts
         XValue,
     }
 
+
+    #endregion
+
+    #region ErrorBarSeries
+    /// <summary>
+    /// 
+    /// </summary>
+
+    public enum ErrorBarMode
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        Both,
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        Horizontal,
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        Vertical
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum ErrorBarType
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        Fixed,
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        Percentage,
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        StandardDeviation,
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        StandardError,
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        Custom
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum ErrorBarDirection
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        Both,
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        Minus,
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        Plus
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum ErrorBarStrokeCap
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        Flat,
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        Round,
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        Square
+    }
 
     #endregion
 #endif

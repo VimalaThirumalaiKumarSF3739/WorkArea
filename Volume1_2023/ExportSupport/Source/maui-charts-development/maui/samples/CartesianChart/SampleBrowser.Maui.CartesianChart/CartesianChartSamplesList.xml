@@ -51,6 +51,21 @@
 					  <Sample Title="Dynamic update animation" SampleName="Scatter_DynamicUpdate" SearchTags="scatter, dynamic" CodeViewerPath="CartesianChart/Scatter/"/>
 				  </CardLayout>
 			  </SubCategory>
+			<SubCategory Title="Bubble" StatusTag="New">
+				<CardLayout>
+					<Sample Title="Default bubble chart" SampleName="DefaultBubbleChart" SearchTags="bubble"
+							CodeViewerPath="CartesianChart/BubbleChart/"/>
+
+					<Sample Title="Bubble filled with gradient" SampleName="MultipleColorBubbleSeries"
+							SearchTags="bubble, multiple series"
+							CodeViewerPath="CartesianChart/BubbleChart/"/>
+
+					<Sample Title=" Dynamic update animation" SampleName="BubbleChartAnimation"
+							SearchTags="bubble, animation"
+							CodeViewerPath="CartesianChart/BubbleChart/"/>
+				</CardLayout>
+			</SubCategory>
+			
 		  </Category>
 		  <Category Title="Real-time Charts">
 				  <CardLayout>
@@ -65,10 +80,10 @@
 			  <Sample Title="Date Time" SampleName="DateTimeAxisChart" SearchTags="date, axis" CodeViewerPath="CartesianChart/Axis/"/>
 			  <Sample Title="Axis crossing" SampleName="AxisCrossing" SearchTags="axis, crossing" CodeViewerPath="CartesianChart/Axis/"/>
 		  </Category>
-		  <Category Title="Legend" StatusTag="New">
+		  <Category Title="Legend">
 			  <Sample Title="Legend customization" SampleName="CartesianLegend" SearchTags="legend" CodeViewerPath="CartesianChart/Legend/"/>
 		  </Category>
-		  <Category Title="Interaction" StatusTag="Updated">
+		  <Category Title="Interaction">
 			  <SubCategory Title="Selection">
 				  <CardLayout>
 					  <Sample Title="Data point selection" SampleName="Selection" 
@@ -80,7 +95,7 @@
 			      </CardLayout>
 			  </SubCategory>
 			  <Sample Title="Tooltip" SampleName="CartesianTooltip" Description="This sample showcases the tooltip feature. On mobile, tap the data points, and on desktop, mouse over to the data points to raise the tooltip." SearchTags="tooltip" CodeViewerPath="CartesianChart/Tooltip/"/>
-			  <Sample Title="Trackball" StatusTag="New" SampleName="CartesianTrackball" Description="This sample showcases the trackball feature. On mobile, long press on the chart to show the trackball, and drag the chart to change the position of the trackball continuously. On the desktop, you can move the cursor over the chart area to display the trackball." 
+			  <Sample Title="Trackball" SampleName="CartesianTrackball" Description="This sample showcases the trackball feature. On mobile, long press on the chart to show the trackball, and drag the chart to change the position of the trackball continuously. On the desktop, you can move the cursor over the chart area to display the trackball." 
                 SearchTags="trackball, crosshair" CodeViewerPath="CartesianChart/Trackball/"/>
 			  <Sample Title="Zooming and Panning" SampleName="ChartZooming" Description="This sample showcases the zooming and panning features." SearchTags="zooming, panning" CodeViewerPath="CartesianChart/Zoom/"/>
 		  </Category>

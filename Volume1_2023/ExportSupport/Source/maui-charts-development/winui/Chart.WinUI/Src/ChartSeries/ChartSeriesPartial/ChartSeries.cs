@@ -217,7 +217,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         internal List<int> bitmapPixels = new List<int>();
 
-        internal ChartDataPointInfo dataPoint;
+        internal ChartDataPointInfo? dataPoint;
 
         internal ChartDataLabelSettings adornmentInfo;
 
@@ -3733,7 +3733,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        internal virtual ChartDataPointInfo GetDataPoint(int index)
+        internal virtual ChartDataPointInfo? GetDataPoint(int index)
         {
             return dataPoint;
         }

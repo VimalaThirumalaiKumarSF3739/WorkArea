@@ -10,6 +10,7 @@ using Syncfusion.Maui.Core;
 using System.Linq;
 using System.Reflection;
 using Syncfusion.Maui.Charts.Chart.Layouts;
+using PointerEventArgs = Syncfusion.Maui.Core.Internals.PointerEventArgs;
 
 namespace Syncfusion.Maui.Charts
 {

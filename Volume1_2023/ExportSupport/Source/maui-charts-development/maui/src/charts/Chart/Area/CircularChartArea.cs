@@ -64,22 +64,10 @@ namespace Syncfusion.Maui.Charts
             if (circularPlotArea.Chart is IChart chart)
             {
                 chart.ResetTooltip();
-                chart.ActualSeriesClipRect = ChartUtils.GetSeriesClipRect(Bounds, circularPlotArea.Chart.TitleHeight);
+                chart.ActualSeriesClipRect = ChartUtils.GetSeriesClipRect(AreaBounds, circularPlotArea.Chart.TitleHeight);
             }
 
             circularPlotArea.UpdateVisibleSeries();
-        }
-
-        protected override Size ArrangeOverride(Rect bounds)
-        {
-            var newbounds = base.ArrangeOverride(bounds);
-
-            if (circularPlotArea.Chart is IChart chart)
-            {
-                chart.ActualSeriesClipRect = ChartUtils.GetSeriesClipRect(bounds, circularPlotArea.Chart.TitleHeight);
-            }
-
-            return newbounds;
         }
         
         #endregion

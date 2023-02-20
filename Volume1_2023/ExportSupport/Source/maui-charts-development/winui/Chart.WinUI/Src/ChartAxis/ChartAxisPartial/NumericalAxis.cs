@@ -413,8 +413,9 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			(d as NumericalAxis).OnPropertyChanged();
-		}
+            if(d is NumericalAxis axis)
+                axis.OnPropertyChanged();
+        }
 
 		private static void OnMinimumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{

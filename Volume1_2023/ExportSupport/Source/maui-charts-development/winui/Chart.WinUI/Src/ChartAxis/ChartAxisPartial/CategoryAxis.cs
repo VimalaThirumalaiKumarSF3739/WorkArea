@@ -205,8 +205,8 @@ namespace Syncfusion.UI.Xaml.Charts
 			foreach (var series in visibleSeries)
 			{
 				if (series is PolarRadarSeriesBase) return;
-				if (series.ActualXValues is List<string>)
-					groupingValues.AddRange(series.ActualXValues as List<string>);
+				if (series.ActualXValues is List<string> xValues)
+					groupingValues.AddRange(xValues);
 				else
 					groupingValues.AddRange(from val in (series.ActualXValues as List<double>)
 											select val.ToString());
@@ -290,7 +290,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
 				foreach (ChartSeries chartSeries in this.RegisteredSeries)
 				{
-					IEnumerable pointValues = chartSeries.ActualXValues;
+					IEnumerable? pointValues = chartSeries.ActualXValues;
 					ChartValueType valueType = chartSeries.XValueType;
 					label = string.Empty;
 					var labelFormat = this.LabelStyle != null ? this.LabelStyle.LabelFormat : String.Empty;

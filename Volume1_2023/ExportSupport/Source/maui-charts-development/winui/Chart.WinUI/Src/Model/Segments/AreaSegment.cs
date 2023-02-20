@@ -22,11 +22,11 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private IList<double> XValues, YValues;
 
-        private Canvas segmentCanvas;
+        private Canvas? segmentCanvas;
 
         bool isEmpty;
 
-        Path segPath;
+        Path? segPath;
 
         bool segmentUpdated;
 
@@ -219,7 +219,7 @@ namespace Syncfusion.UI.Xaml.Charts
                     figure.StartPoint = transformer.TransformToVisible(XValues[0], YValues[0]);
                 }
 
-                if ((Series is AreaSeries) && !(Series as AreaSeries).IsClosed && !double.IsNaN(YValues[0]))
+                if ((Series is AreaSeries areaSeries) && !areaSeries.IsClosed && !double.IsNaN(YValues[0]))
                 {
                     this.AddStroke(transformer.TransformToVisible(XValues[0], YValues[0]));
                 }
@@ -240,7 +240,7 @@ namespace Syncfusion.UI.Xaml.Charts
                         {
                             figure.StartPoint = transformer.TransformToVisible(xValue, origin);
                             //To avoid stroke blur when IsClosed & Empty point stroke is false.
-                            if ((Series is AreaSeries) && !(Series as AreaSeries).IsClosed && !double.IsNaN(YValues[0]))
+                            if ((Series is AreaSeries areaSeries1) && !areaSeries1.IsClosed && !double.IsNaN(YValues[0]))
                             {
                                 ResetStrokeShapes();
                                 this.AddStroke(transformer.TransformToVisible(xValue, YValues[index]));
@@ -264,7 +264,7 @@ namespace Syncfusion.UI.Xaml.Charts
                         lineSegment.Point = point;
                         figure.Segments.Add(lineSegment);
 
-                        if (isEmpty || (Series is AreaSeries && !(Series as AreaSeries).IsClosed))
+                        if (isEmpty || (Series is AreaSeries series && !series.IsClosed))
                         {
                             if (index > 0 && double.IsNaN(YValues[index - 1]))
                             {
@@ -321,7 +321,7 @@ namespace Syncfusion.UI.Xaml.Charts
                     lineSegment.Point = transformer.TransformToVisible(XValues[lastIndex], origin);
                     figure.Segments.Add(lineSegment);
 
-                    if ((Series is AreaSeries && (Series as AreaSeries).IsClosed) && isEmpty && !double.IsNaN(YValues[lastIndex]))
+                    if ((Series is AreaSeries series && series.IsClosed) && isEmpty && !double.IsNaN(YValues[lastIndex]))
                         strokePolyLine.Points.Add(lineSegment.Point);
                 }
 
@@ -378,7 +378,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="startPoint"></param>
         private void AddStroke(Point startPoint)
         {
-            if (segmentCanvas.Children.Count > 1)
+            if (segmentCanvas?.Children.Count > 1)
                 segmentCanvas.Children.RemoveAt(1); //remove the existing stroke path 
             segPath.StrokeThickness = 0;
 
@@ -399,7 +399,7 @@ namespace Syncfusion.UI.Xaml.Charts
             binding.Source = this;
             binding.Path = new PropertyPath("StrokeThickness");
             strokePath.SetBinding(Path.StrokeThicknessProperty, binding);
-            segmentCanvas.Children.Add(strokePath);
+            segmentCanvas?.Children.Add(strokePath);
         }
 
         internal override void Dispose()

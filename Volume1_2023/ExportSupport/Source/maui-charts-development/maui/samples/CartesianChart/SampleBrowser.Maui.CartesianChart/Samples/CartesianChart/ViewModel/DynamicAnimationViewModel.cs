@@ -6,6 +6,7 @@ namespace SampleBrowser.Maui.CartesianChart.SfCartesianChart
     internal class DynamicAnimationViewModel : BaseViewModel
     {
         private ObservableCollection<ChartDataModel> motionAnimation = new ObservableCollection<ChartDataModel>();
+        private ObservableCollection<ChartDataModel> dynamicBubbleMotionAnimation = new ObservableCollection<ChartDataModel>();
         public ObservableCollection<ChartDataModel> MotionAnimation
         {
             get { return motionAnimation; }
@@ -16,15 +17,31 @@ namespace SampleBrowser.Maui.CartesianChart.SfCartesianChart
             }
         }
 
+        public ObservableCollection<ChartDataModel> DynamicBubbleMotionAnimation
+        {
+            get { return dynamicBubbleMotionAnimation; }
+            set
+            {
+                dynamicBubbleMotionAnimation = value;
+                OnPropertyChanged("DynamicBubbleMotionAnimation");
+            }
+        }
+
         private bool canStopTimer;
 
         public DynamicAnimationViewModel()
         {
             var r = new Random();
             MotionAnimation = new ObservableCollection<ChartDataModel>();
+            DynamicBubbleMotionAnimation = new ObservableCollection<ChartDataModel>();
             for (int i = 0; i < 7; i++)
             {
                 MotionAnimation.Add(new ChartDataModel(i, r.Next(5, 90)));
+            }
+
+            for (int i = 0; i <= 7; i++)
+            {
+                DynamicBubbleMotionAnimation.Add(new ChartDataModel(i + 1, r.Next(15, 90), r.Next(0, 20)));
             }
         }
 
@@ -48,12 +65,20 @@ namespace SampleBrowser.Maui.CartesianChart.SfCartesianChart
 
             var r = new Random();
             var data = new ObservableCollection<ChartDataModel>();
+            var dataBubble = new ObservableCollection<ChartDataModel>();
             for (int i = 0; i < 7; i++)
             {
                 data.Add(new ChartDataModel(i, r.Next(5, 90)));
             }
 
+            for (int i = 0; i <= 7; i++)
+            {
+                dataBubble.Add(new ChartDataModel(i + 1, r.Next(5, 90), r.Next(0, 20)));
+            }
+
+
             MotionAnimation = data;
+            DynamicBubbleMotionAnimation = dataBubble;
 
             return true;
         }

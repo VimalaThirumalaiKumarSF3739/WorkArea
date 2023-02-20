@@ -559,8 +559,7 @@ namespace Syncfusion.UI.Xaml.Charts
             switch (content)
             {
                 case LabelContext.XValue:
-                    List<string> xValues = this.Series.ActualXValues as List<string>;
-                    if (xValues != null)
+                    if (this.Series.ActualXValues is List<string> xValues)
                     {
                         return xValues[(int)this.XData].Tostring();
                     }
@@ -592,18 +591,19 @@ namespace Syncfusion.UI.Xaml.Charts
                     return this.YData.ToString(labelFormat, CultureInfo.CurrentCulture) + " of " + grandTotal.ToString(labelFormat, CultureInfo.CurrentCulture);
 #endif
                 case LabelContext.DateTime:
-                    object datetimeContent = null;
+                    object? datetimeContent = null;
                     if (this.Series.IsIndexed)
                     {
-                        List<double> dateValues = this.Series.ActualXValues as List<double>;
-                        if (dateValues != null)
+                        if (this.Series.ActualXValues is List<double> dateValues)
                             datetimeContent = dateValues[(int)this.XData].FromOADate().ToString(this.Series.adornmentInfo.Format, CultureInfo.CurrentCulture);
                         else
                         {
-                            List<string> stringValues = this.Series.ActualXValues as List<string>;
-                            DateTime date = DateTime.MinValue;
-                            DateTime.TryParse(stringValues[(int)this.XData], out date);
-                            datetimeContent = date.ToString(this.Series.adornmentInfo.Format, CultureInfo.CurrentCulture);
+                            if (this.Series.ActualXValues is List<string> stringValues)
+                            {
+                                DateTime date = DateTime.MinValue;
+                                DateTime.TryParse(stringValues[(int)this.XData], out date);
+                                datetimeContent = date.ToString(this.Series.adornmentInfo.Format, CultureInfo.CurrentCulture);
+                            }
                         }
 
                     }
@@ -629,7 +629,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         internal void BindColorProperties()
         {
-            var isGrouping = (Series.ActualXAxis is CategoryAxis) ? (Series.ActualXAxis as CategoryAxis).IsIndexed : true;
+            var isGrouping = (Series.ActualXAxis is CategoryAxis categoryAxis) ? categoryAxis.IsIndexed : true;
 
             Binding binding = new Binding();
             binding.Source = Series;
@@ -640,7 +640,7 @@ namespace Syncfusion.UI.Xaml.Charts
             else if (!isGrouping && Series.IsSideBySide)
                 binding.ConverterParameter = Series.GroupedActualData.IndexOf(Item);
             else
-                binding.ConverterParameter = Series.ActualData.IndexOf(Item);
+                binding.ConverterParameter = Series.ActualData?.IndexOf(Item);
             BindingOperations.SetBinding(this, ChartSegment.FillProperty, binding);
 
 
@@ -767,9 +767,8 @@ namespace Syncfusion.UI.Xaml.Charts
         {
             double radius = Radius;
             double actualRadius = Math.Min(transformer.Viewport.Width, transformer.Viewport.Height) / 2;
-            if (Series is PieSeries)
+            if (Series is PieSeries hostSeries)
             {
-                var hostSeries = Series as PieSeries;
                 double pieSeriesCount = hostSeries.GetPieSeriesCount();
                 double equalParts = actualRadius / pieSeriesCount;
                 double innerRadius = equalParts * pieIndex;
@@ -796,45 +795,44 @@ namespace Syncfusion.UI.Xaml.Charts
                 this.X = center.X + radius * Math.Cos(Angle);
                 this.Y = center.Y + radius * Math.Sin(Angle);
             }
-            else if (Series is DoughnutSeries)
+            else if (Series is DoughnutSeries doughnutHostSeries)
             {
-                var hostSeries = Series as DoughnutSeries;
 
-                actualRadius *= hostSeries.InternalDoughnutCoefficient;
+                actualRadius *= doughnutHostSeries.InternalDoughnutCoefficient;
 
                 Point center;
                 double remainingWidth = 0d, equalParts = 0d, innerRadius = 0d;
                 var adornmentAngle = Angle;
 
-                if (hostSeries.IsStackedDoughnut)
+                if (doughnutHostSeries.IsStackedDoughnut)
                 {
                     var adornmentIndex = Series.Adornments.IndexOf(this);
-                    var doughnutSegment = hostSeries.Segments[adornmentIndex] as DoughnutSegment;
-                    int doughnutSegmentsCount = hostSeries.Segments.Count;
-                    center = hostSeries.Center;
+                    var doughnutSegment = doughnutHostSeries.Segments[adornmentIndex] as DoughnutSegment;
+                    int doughnutSegmentsCount = doughnutHostSeries.Segments.Count;
+                    center = doughnutHostSeries.Center;
                     remainingWidth = actualRadius - (actualRadius * Series.ActualArea.InternalDoughnutHoleSize);
-                    equalParts = (remainingWidth / doughnutSegmentsCount) * hostSeries.InternalDoughnutCoefficient;
+                    equalParts = (remainingWidth / doughnutSegmentsCount) * doughnutHostSeries.InternalDoughnutCoefficient;
                     radius = actualRadius - (equalParts * (doughnutSegmentsCount - (doughnutSegment.DoughnutSegmentIndex + 1)));
                     InnerDoughnutRadius = innerRadius = radius - equalParts;
-                    radius = radius - equalParts * hostSeries.SegmentSpacing;
+                    radius = radius - equalParts * doughnutHostSeries.SegmentSpacing;
                     Radius = radius;
                     innerRadius = ChartMath.MaxZero(innerRadius);
                     
                     double difference = (radius - innerRadius) / 2;
                     radius = radius - difference;
 
-                    adornmentAngle = (hostSeries.DataLabelSettings as CircularDataLabelSettings).Position == CircularSeriesLabelPosition.Outside ? doughnutSegment.StartAngle : (hostSeries.DataLabelSettings as CircularDataLabelSettings).Position == CircularSeriesLabelPosition.OutsideExtended ? doughnutSegment.EndAngle : Angle;
+                    adornmentAngle = (doughnutHostSeries.DataLabelSettings as CircularDataLabelSettings).Position == CircularSeriesLabelPosition.Outside ? doughnutSegment.StartAngle : (doughnutHostSeries.DataLabelSettings as CircularDataLabelSettings).Position == CircularSeriesLabelPosition.OutsideExtended ? doughnutSegment.EndAngle : Angle;
                 }
                 else
                 {
-                    int doughnutSeriesCount = hostSeries.GetDoughnutSeriesCount();
-                    center = doughnutSeriesCount == 1 ? hostSeries.Center : ChartLayoutUtils.GetCenter(transformer.Viewport);
+                    int doughnutSeriesCount = doughnutHostSeries.GetDoughnutSeriesCount();
+                    center = doughnutSeriesCount == 1 ? doughnutHostSeries.Center : ChartLayoutUtils.GetCenter(transformer.Viewport);
                     remainingWidth = actualRadius - (actualRadius * Series.ActualArea.InternalDoughnutHoleSize);
                     equalParts = remainingWidth / doughnutSeriesCount;
-                    InnerDoughnutRadius = innerRadius = radius - (equalParts * hostSeries.InternalDoughnutCoefficient);
+                    InnerDoughnutRadius = innerRadius = radius - (equalParts * doughnutHostSeries.InternalDoughnutCoefficient);
                     innerRadius = ChartMath.MaxZero(innerRadius);
 
-                    if (hostSeries != null && (hostSeries.DataLabelSettings as CircularDataLabelSettings).Position == CircularSeriesLabelPosition.Inside)
+                    if (doughnutHostSeries != null && (doughnutHostSeries.DataLabelSettings as CircularDataLabelSettings).Position == CircularSeriesLabelPosition.Inside)
                     {
                         double difference = (radius - innerRadius) / 2;
                         radius = radius - difference;

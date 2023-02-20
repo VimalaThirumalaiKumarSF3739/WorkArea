@@ -1,78 +1,59 @@
-The Syncfusion.Maui.Charts package contains the Syncfusion Chart component for .NET MAUI application. 
+### Syncfusion.Maui.Charts Components
 
-## Prerequisites
+This package contains [.NET MAUI Cartesian Charts](https://www.syncfusion.com/maui-controls/maui-cartesian-charts), [.NET MAUI Circular Charts](https://www.syncfusion.com/maui-controls/maui-circular-charts), [.NET MAUI Funnel Charts](https://www.syncfusion.com/maui-controls/maui-funnel-charts), [.NET MAUI Pyramid Charts](https://www.syncfusion.com/maui-controls/maui-pyramid-charts) components for .NET MAUI application.
 
-### Integrated Development Environment
+### System Requirements
 
-By using the following IDEs, you can develop .NET MAUI applications
+* [System Requirements](https://help.syncfusion.com/maui/system-requirements)
 
-* Visual Studio 2022 Preview
 
-### Framework & SDK
+### Cartesian Charts
 
-The below tool is required to run the .NET MAUI application.
+The Syncfusion [.NET Cartesian Chart](https://www.syncfusion.com/maui-controls/maui-cartesian-charts) is a two-dimensional Cartesian coordinate system data visualization tool. It enables users to build and customize the charts, such as line charts, area charts, column charts, scatter charts, and more.
 
-  * [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0)
-  * Android 5.0 (API 21) or higher.
-  * iOS 10 or higher.
-  * macOS 10.13 or higher.
-  * Windows desktop and the Universal Windows Platform (UWP), using Windows UI Library (WinUI) 3.
+[Features Overview](https://www.syncfusion.com/maui-controls/maui-cartesian-charts) | [Docs](https://help.syncfusion.com/maui/cartesian-charts/overview) | [Online Demo](https://github.com/syncfusion/maui-demos) | [Support](https://support.syncfusion.com/support/tickets/create) | [Forums](https://www.syncfusion.com/forums/maui) | [Feedback](https://www.syncfusion.com/feedback/maui)
+
+#### Getting Started
+
+* [Getting Started with .NET MAUI Cartesian Chart](https://help.syncfusion.com/maui/cartesian-charts/getting-started)
+
+![.NET MAUI Cartesian Chart](https://cdn.syncfusion.com/nuget-readme/maui/net_maui_SfCartesianChart.png)
   
-## Key Features
+### Circular Charts
 
-* **Chart types** - Cartesian, Circular, Funnel and Pyramid charts that represent data in a unique style with greater UI visualization, and is user friendly.
-* **Interaction** - The .NET MAUI Charts are interactive with features such as tooltip, selection, zooming, and panning.
-* **Data binding** - Map data from a specified path by using the data binding concept.
-* **Multiple series** - Render multiple series at the same time with options to compare and visualize two different series simultaneously.
-* **Customization** - User friendly and provides various options to customize chart features like title, axis, legends, and data labels.
+The Syncfusion [.NET MAUI Circular Chart](https://www.syncfusion.com/maui-controls/maui-circular-charts) displays data on a circular coordinate system, with sectors, slices,  segments, or arcs representing the data. It enables users to build and customize different kinds of circular charts, such as pie charts, doughnut charts, and radial bar charts.
 
-## Getting Started
+[Features Overview](https://www.syncfusion.com/maui-controls/maui-circular-charts) | [Docs](https://help.syncfusion.com/maui/circular-charts/overview) | [Online Demo](https://github.com/syncfusion/maui-demos) | [Support](https://support.syncfusion.com/support/tickets/create) | [Forums](https://www.syncfusion.com/forums/maui) | [Feedback](https://www.syncfusion.com/feedback/maui)
 
-To initialize the Chart control add the below code to your xaml file.
+#### Getting Started
 
-```xaml
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
-        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-        x:Class="ChartExample.MainPage"
-        xmlns:local="using:ChartExample"
-        xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts">
-	<ContentPage.Content>
-        <chart:SfCartesianChart HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-            <!--Setting BindingContext-->
-            <chart:SfCartesianChart.BindingContext>
-                <local:ViewModel/>
-            </chart:SfCartesianChart.BindingContext>
+* [Getting Started with .NET MAUI Circular Chart](https://help.syncfusion.com/maui/circular-charts/getting-started)
 
-             <!--Initialize the horizontal axis for the .NET MAUI Chart-->
-            <chart:SfCartesianChart.XAxes>
-                <chart:CategoryAxis />
-            </chart:SfCartesianChart.XAxes>
+![.NET MAUI Circular Chart](https://cdn.syncfusion.com/nuget-readme/maui/net_maui_SfCircularChart.png)
 
-            <!--Initialize the vertical axis for the .NET MAUI Chart-->
-            <chart:SfCartesianChart.YAxes>
-                <chart:NumericalAxis />
-            </chart:SfCartesianChart.YAxes>
+### Funnel Charts
 
-            <!--Adding Column Series to the .NET MAUI Chart-->
-            <chart:SfCartesianChart.Series>
-                <chart:ColumnSeries 
-                    ItemsSource="{Binding Data}" 
-                    XBindingPath="Month"
-                    YBindingPath="Target">
-                </chart:ColumnSeries>
-            </chart:SfCartesianChart.Series>    
-        </chart:SfCartesianChart>
-    </ContentPage.Content>
-</ContentPage>
-```
+The Syncfusion [.NET MAUI Funnel Chart](https://www.syncfusion.com/maui-controls/maui-funnel-charts) displays data in the shape of a funnel. The width of the funnel's first (or largest) segment indicates the total number or quantity of data at the start of the process, while the width of the funnel's last (or narrowest) segment indicates number or amount of data that has finished the process.
 
-## Resources
-* **Learn more about .NET MAUI controls:** [Syncfusion .NET MAUI](https://www.syncfusion.com/maui-controls?utm_source=nuget&utm_medium=listing&utm_campaign=maui-chart-nuget)
-* **Documentation:** [Syncfusion .NET MAUI controls](https://help.syncfusion.com/maui/cartesian-charts/getting-started/?utm_source=nuget&utm_medium=listing&utm_campaign=maui-chart-nuget)
+[Features Overview](https://www.syncfusion.com/maui-controls/maui-funnel-charts) | [Docs](https://help.syncfusion.com/maui/funnel-charts/overview) | [Online Demo](https://github.com/syncfusion/maui-demos) | [Support](https://support.syncfusion.com/support/tickets/create) | [Forums](https://www.syncfusion.com/forums/maui) | [Feedback](https://www.syncfusion.com/feedback/maui)
 
-## Support and feedback
-* For any other queries, reach our [Syncfusion support team](https://support.syncfusion.com/support/tickets/create?utm_source=nuget&utm_medium=listing&utm_campaign=maui-core-nuget) or post the queries through the [community forums](https://www.syncfusion.com/forums/maui?utm_source=nuget&utm_medium=listing&utm_campaign=maui-chart-nuget).
-* Provide feature request through the [syncfusion feedback portal](https://www.syncfusion.com/feedback/maui?utm_source=nuget&utm_medium=listing&utm_campaign=maui-chart-nuget)
+#### Getting Started
+
+* [Getting Started with .NET MAUI Funnel Chart](https://help.syncfusion.com/maui/funnel-charts/getting-started)
+
+![.NET MAUI Funnel Chart](https://cdn.syncfusion.com/nuget-readme/maui/net_maui_SfFunnelChart.png)
+
+### Pyramid Charts
+
+The Syncfusion [.NET MAUI Pyramid Chart](https://www.syncfusion.com/maui-controls/maui-pyramid-charts) displays data in the shape of a pyramid and is widely used to show hierarchical structures or data progression through time. Each segment represents a category or group, and the size of the segment shows the proportion or quantity of data for that category or group.
+
+[Features Overview](https://www.syncfusion.com/maui-controls/maui-pyramid-charts) | [Docs](https://help.syncfusion.com/maui/pyramid-charts/overview) | [Online Demo](https://github.com/syncfusion/maui-demos) | [Support](https://support.syncfusion.com/support/tickets/create) | [Forums](https://www.syncfusion.com/forums/maui) | [Feedback](https://www.syncfusion.com/feedback/maui)
+
+#### Getting Started
+
+* [Getting Started with .NET MAUI Funnel Chart](https://help.syncfusion.com/maui/pyramid-charts/getting-started)
+
+![.NET MAUI Pyramid Chart](https://cdn.syncfusion.com/nuget-readme/maui/net_maui_SfPyramidChart.png)
 
 ## License
 This is a commercial product and requires a paid license for possession or use. Syncfusion’s licensed software, including this component, is subject to the terms and conditions of [Syncfusion's EULA](https://www.syncfusion.com/eula/es/?utm_source=nuget&utm_medium=listing&utm_campaign=maui-chart-nuget). You can purchase a license [here]( https://www.syncfusion.com/sales/products?utm_source=nuget&utm_medium=listing&utm_campaign=maui-chart-nuget) or start a free 30-day trial [here](https://www.syncfusion.com/account/manage-trials/start-trials?utm_source=nuget&utm_medium=listing&utm_campaign=maui-chart-nuget).

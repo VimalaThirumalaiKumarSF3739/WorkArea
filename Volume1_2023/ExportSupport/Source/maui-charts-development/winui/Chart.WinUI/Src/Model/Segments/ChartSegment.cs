@@ -69,7 +69,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private object item;
 
-        private PointCollection polygonPoints;
+        private PointCollection? polygonPoints;
 
         #endregion
 
@@ -429,7 +429,7 @@ namespace Syncfusion.UI.Xaml.Charts
         internal bool IsSegmentSelected()
         {
             int index = -1;
-            var isGrouping = (Series.ActualXAxis is CategoryAxis) ? (Series.ActualXAxis as CategoryAxis).IsIndexed : true;
+            var isGrouping = (Series.ActualXAxis is CategoryAxis categoryAxis) ? categoryAxis.IsIndexed : true;
 
             if (Series is CircularSeries && !double.IsNaN(((CircularSeries)Series).GroupTo))
                 index = Series.Segments.IndexOf(this);
@@ -448,8 +448,8 @@ namespace Syncfusion.UI.Xaml.Charts
         {            
             return brush is SolidColorBrush
                             ? ((SolidColorBrush)brush).Color
-                            : brush is LinearGradientBrush && (brush as LinearGradientBrush).GradientStops.Count > 0
-                                ? (brush as LinearGradientBrush).GradientStops[0].Color
+                            : brush is LinearGradientBrush linearGradientBrush && linearGradientBrush.GradientStops.Count > 0
+                                ? linearGradientBrush.GradientStops[0].Color
                                 : new SolidColorBrush(Colors.Transparent).Color;
         }
 
@@ -509,7 +509,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private static void OnInteriorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as ChartSegment).OnPropertyChanged("Fill");
+            (d as ChartSegment)?.OnPropertyChanged("Fill");
         }
 
         private static void OnStrokeDashArrayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -537,13 +537,13 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private static void OnStrokeValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as ChartSegment).OnPropertyChanged("Stroke");
+            (d as ChartSegment)?.OnPropertyChanged("Stroke");
         }
 
         private static void OnStrokeThicknessChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var segment = (d as ChartSegment);
-            segment.OnPropertyChanged("StrokeThickness");
+            segment?.OnPropertyChanged("StrokeThickness");
 
         }
 

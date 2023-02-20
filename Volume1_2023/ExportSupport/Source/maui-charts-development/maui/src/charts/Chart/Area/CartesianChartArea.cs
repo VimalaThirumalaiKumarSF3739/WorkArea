@@ -185,22 +185,12 @@ namespace Syncfusion.Maui.Charts
             cartesianPlotArea.Padding = PlotAreaMargin;
 
             if (cartesianPlotArea.Chart != null)
-                cartesianPlotArea.Chart.ActualSeriesClipRect = ChartUtils.GetSeriesClipRect(Bounds.SubtractThickness(PlotAreaMargin), cartesianPlotArea.Chart.TitleHeight);
+                cartesianPlotArea.Chart.ActualSeriesClipRect = ChartUtils.GetSeriesClipRect(AreaBounds.SubtractThickness(PlotAreaMargin), cartesianPlotArea.Chart.TitleHeight);
             
             UpdateVisibleSeries(); //internal createsegment
 
             AxisLayout.InvalidateRender();
             cartesianPlotArea.InvalidateRender();
-        }
-
-        protected override Size ArrangeOverride(Rect bounds)
-        {
-            var newbounds = base.ArrangeOverride(bounds);
-
-            if (cartesianPlotArea.Chart != null)
-                cartesianPlotArea.Chart.ActualSeriesClipRect = ChartUtils.GetSeriesClipRect(bounds.SubtractThickness(PlotAreaMargin), cartesianPlotArea.Chart.TitleHeight);
-
-            return newbounds;
         }
 
         public void UpdateVisibleSeries()

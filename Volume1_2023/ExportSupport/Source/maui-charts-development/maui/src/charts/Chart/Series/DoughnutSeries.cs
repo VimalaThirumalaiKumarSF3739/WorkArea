@@ -276,7 +276,7 @@ namespace Syncfusion.Maui.Charts
             {
                 doughnutStartAngle = (float)StartAngle;
                 angleDifference = GetAngleDifference();
-                total = CalculateTotalYValues(Segments);
+                total = CalculateTotalYValues();
                 var oldSegments = OldSegments != null && OldSegments.Count > 0 && PointsCount == OldSegments.Count ? OldSegments : null;
 
                 for (int i = 0; i < PointsCount; i++)
@@ -316,6 +316,7 @@ namespace Syncfusion.Maui.Charts
         internal override void OnSeriesLayout()
         {
             CenterHoleSize = GetCenterHoleSize();
+            UpdateCenterViewBouds(CenterView);
             base.OnSeriesLayout();
         }
 
@@ -364,9 +365,13 @@ namespace Syncfusion.Maui.Charts
                     series.RemoveCenterView(oldView);
                 }
 
-                if (newValue is View centerView)
+                if (newValue is View newView)
                 {
                     series.AddCenterView();
+                    if (series.Chart != null)
+                    {
+                        series.UpdateCenterViewBouds(newView);
+                    }
                 }
             }
         }
@@ -383,8 +388,6 @@ namespace Syncfusion.Maui.Charts
             if (plotArea != null && CenterView != null)
             {
                 CenterView.BindingContext = this;
-                AbsoluteLayout.SetLayoutBounds(CenterView, new Rect(0.5, 0.5, -1, -1));
-                AbsoluteLayout.SetLayoutFlags(CenterView, Microsoft.Maui.Layouts.AbsoluteLayoutFlags.PositionProportional);
                 plotArea.Add(CenterView);
             }
         }

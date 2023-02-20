@@ -601,7 +601,7 @@ namespace Syncfusion.Maui.Charts
             if (series != null)
             {
                 series.UpdateStrokeColor();
-                series.InvalidateSeries();
+                series.InvalidateSeries(); 
             }
         }
 

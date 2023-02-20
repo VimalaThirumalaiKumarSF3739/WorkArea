@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using PointerEventArgs = Syncfusion.Maui.Core.Internals.PointerEventArgs;
 
 namespace Syncfusion.Maui.Charts
 {

@@ -410,7 +410,7 @@ namespace Syncfusion.Maui.Charts
             else if (LabelPlacement == DataLabelPlacement.Auto)
             {
                 y = y - radius - (labelSize.Height / 2) - padding - borderWidth;
-
+                
                 PointF point = GetAutoLabelPosition(xyDataSeries, x, y, labelSize, padding, borderWidth);
                 x = point.X;
                 y = point.Y;

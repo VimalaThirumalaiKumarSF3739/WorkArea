@@ -43,11 +43,11 @@ namespace Syncfusion.UI.Xaml.Charts
 
         #region Internal Properties
 
-        internal Ellipse DraggingPointIndicator { get; set; }
+        internal Ellipse? DraggingPointIndicator { get; set; }
 
-        internal UIElement PreviewSeries { get; set; }
+        internal UIElement? PreviewSeries { get; set; }
 
-        internal ChartSegment DraggingSegment { get; set; }
+        internal ChartSegment? DraggingSegment { get; set; }
 
         #endregion
 
@@ -76,22 +76,25 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="updatedDatas">updated datas</param>
         internal void UpdateUnderLayingModel(string path, IList<double> updatedDatas)
         {
-            var enumerator = (ItemsSource as IEnumerable).GetEnumerator();
-            PropertyInfo yPropertyInfo;
-
-            if (enumerator.MoveNext())
+            if(ItemsSource is IEnumerable itemsSource)
             {
-                yPropertyInfo = ChartDataUtils.GetPropertyInfo(enumerator.Current, path);
-                IPropertyAccessor yPropertyAccessor = null;
-                if (yPropertyInfo != null)
-                    yPropertyAccessor = FastReflectionCaches.PropertyAccessorCache.Get(yPropertyInfo);
-                int i = 0;
-                do
+                var enumerator = itemsSource.GetEnumerator();
+                PropertyInfo? yPropertyInfo;
+
+                if (enumerator.MoveNext())
                 {
-                    yPropertyAccessor.SetValue(enumerator.Current, updatedDatas[i]);
-                    i++;
+                    yPropertyInfo = ChartDataUtils.GetPropertyInfo(enumerator.Current, path);
+                    IPropertyAccessor? yPropertyAccessor = null;
+                    if (yPropertyInfo != null)
+                        yPropertyAccessor = FastReflectionCaches.PropertyAccessorCache.Get(yPropertyInfo);
+                    int i = 0;
+                    do
+                    {
+                        yPropertyAccessor?.SetValue(enumerator.Current, updatedDatas[i]);
+                        i++;
+                    }
+                    while (enumerator.MoveNext());
                 }
-                while (enumerator.MoveNext());
             }
         }
 

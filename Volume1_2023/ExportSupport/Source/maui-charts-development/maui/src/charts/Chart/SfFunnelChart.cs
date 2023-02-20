@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using Point = Microsoft.Maui.Graphics.Point;
+using PointerEventArgs = Syncfusion.Maui.Core.Internals.PointerEventArgs;
 
 namespace Syncfusion.Maui.Charts
 {

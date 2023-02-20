@@ -259,8 +259,8 @@ namespace Syncfusion.UI.Xaml.Charts
 
         internal override void SelectedSegmentsIndexes_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            ChartSegment selectedSegment = null, oldSegment = null;
-            var selectionBehavior = (this as ISegmentSelectable).SelectionBehavior;
+            ChartSegment? selectedSegment = null, oldSegment = null;
+            var selectionBehavior = (this as ISegmentSelectable)?.SelectionBehavior;
             if (selectionBehavior == null) return;
 
             switch (e.Action)
@@ -271,7 +271,7 @@ namespace Syncfusion.UI.Xaml.Charts
                         int oldIndex = PreviousSelectedIndex;
                         int newIndex = (int)e.NewItems[0];
 
-                        if (oldIndex != -1 && oldIndex < ActualData.Count)
+                        if (oldIndex != -1 && oldIndex < ActualData?.Count)
                         {
                             oldSegment = Segments.Where(segment => segment.Item == ActualData[oldIndex]).FirstOrDefault();
                         }
@@ -284,14 +284,14 @@ namespace Syncfusion.UI.Xaml.Charts
                                 return;
                             }
 
-                            if (newIndex < Segments.Count || newIndex < ActualData.Count)
+                            if (newIndex < Segments.Count || newIndex < ActualData?.Count)
                             {
                                 // For adornment selection implementation
                                 if (adornmentInfo is ChartDataLabelSettings && adornmentInfo.HighlightOnSelection)
                                     UpdateAdornmentSelection(newIndex);
 
                                 // Set the SegmentSelectionBrush to newIndex segment Interior
-                                if (this is ISegmentSelectable)
+                                if (this is ISegmentSelectable && ActualData != null)
                                 {
                                     selectedSegment = Segments.Where(segment => segment.Item == ActualData[newIndex]).FirstOrDefault();
                                     if (selectedSegment != null)
@@ -303,7 +303,7 @@ namespace Syncfusion.UI.Xaml.Charts
                                 }
                             }
 
-                            if (newIndex < Segments.Count || newIndex < ActualData.Count)
+                            if (newIndex < Segments.Count || newIndex < ActualData?.Count)
                             {
                                 OnSelectionChanged(newIndex, oldIndex);
                                 PreviousSelectedIndex = newIndex;
@@ -319,7 +319,7 @@ namespace Syncfusion.UI.Xaml.Charts
                     {
                         int newIndex = (int)e.OldItems[0];
 
-                        if (PreviousSelectedIndex != -1 && PreviousSelectedIndex < ActualData.Count)
+                        if (PreviousSelectedIndex != -1 && PreviousSelectedIndex < ActualData?.Count)
                         {
                             oldSegment = Segments.Where(segment => segment.Item == ActualData[PreviousSelectedIndex]).FirstOrDefault();
                         }
@@ -335,7 +335,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         internal override void OnResetSegment(int index)
         {
-            if (index >= 0)
+            if (index >= 0 && ActualData !=null)
             {
                 var resetSegment = Segments.Where(segment => segment.Item == ActualData[index]).FirstOrDefault();
                 if (resetSegment != null)
@@ -354,9 +354,9 @@ namespace Syncfusion.UI.Xaml.Charts
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        internal override ChartDataPointInfo GetDataPoint(int index)
+        internal override ChartDataPointInfo? GetDataPoint(int index)
         {
-            IList<double> xValues = (ActualXValues is IList<double>) ? ActualXValues as IList<double> : GetXValues();
+            IList<double> xValues = ActualXValues as IList<double> ?? GetXValues();
             dataPoint = null;
             if (index < xValues.Count)
             {
@@ -371,7 +371,7 @@ namespace Syncfusion.UI.Xaml.Charts
                 dataPoint.Index = index;
                 dataPoint.Series = this;
 
-                if (ActualData.Count > index)
+                if (ActualData?.Count > index)
                     dataPoint.Item = ActualData[index];
             }
 
@@ -388,9 +388,9 @@ namespace Syncfusion.UI.Xaml.Charts
 
             foreach (var segment in Segments)
             {
-                Path path = segment.GetRenderedVisual() as Path;
+                Path? path = segment.GetRenderedVisual() as Path;
                 bool isHit = false;
-                var pathData = path.Data as PathGeometry;
+                var pathData = path?.Data as PathGeometry;
                 if (pathData != null)
                     isHit = pathData.Bounds.Contains(point);
                 if (isHit)
@@ -412,14 +412,12 @@ namespace Syncfusion.UI.Xaml.Charts
 
             newPosition.X = actualwidth / 2;
 
-            if (tooltip.DataContext is FunnelSegment)
+            if (tooltip.DataContext is FunnelSegment funnelSegment)
             {
-                var funnelSegment = tooltip.DataContext as FunnelSegment;
                 newPosition.Y = (funnelSegment.top * actualHeight) + funnelSegment.height;
             }
-            else if (tooltip.DataContext is PyramidSegment)
+            else if (tooltip.DataContext is PyramidSegment pyramidSegment)
             {
-                var pyramidSegment = tooltip.DataContext as PyramidSegment;
                 newPosition.Y = (pyramidSegment.y * actualHeight) + pyramidSegment.height;
             }
 
@@ -433,10 +431,10 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="oldIndex">old index</param>
         internal override void SelectedIndexChanged(int newIndex, int oldIndex)
         {
-            var selectionBehavior = (this as ISegmentSelectable).SelectionBehavior;
+            var selectionBehavior = (this as ISegmentSelectable)?.SelectionBehavior;
             if (ActualArea != null && selectionBehavior != null)
             {
-                ChartSegment selectedSegment = null, oldSegment = null;
+                ChartSegment? selectedSegment = null, oldSegment = null;
 
                 // Reset the oldIndex segment Interior
                 if (!selectionBehavior.EnableMultiSelection)
@@ -452,7 +450,7 @@ namespace Syncfusion.UI.Xaml.Charts
                     return;
                 }
 
-                if (oldIndex != -1 && oldIndex < ActualData.Count)
+                if (oldIndex != -1 && oldIndex < ActualData?.Count)
                 {
                     oldSegment = Segments.Where(segment => segment.Item == ActualData[oldIndex]).FirstOrDefault();
                 }
@@ -467,14 +465,14 @@ namespace Syncfusion.UI.Xaml.Charts
                         return;
                     }
 
-                    if (newIndex < Segments.Count || newIndex < ActualData.Count)
+                    if (newIndex < Segments.Count || newIndex < ActualData?.Count)
                     {
                         // For adornment selection implementation
                         if (adornmentInfo is ChartDataLabelSettings && adornmentInfo.HighlightOnSelection)
                             UpdateAdornmentSelection(newIndex);
 
                         // Set the SegmentSelectionBrush to newIndex segment Interior
-                        if (this is ISegmentSelectable)
+                        if (this is ISegmentSelectable && ActualData != null)
                         {
                             selectedSegment = Segments.Where(segment => segment.Item == ActualData[newIndex]).FirstOrDefault();
                             if (selectedSegment != null)
@@ -486,7 +484,7 @@ namespace Syncfusion.UI.Xaml.Charts
                         }
                     }
 
-                    if (newIndex < Segments.Count || newIndex < ActualData.Count)
+                    if (newIndex < Segments.Count || newIndex < ActualData?.Count)
                     {
                         OnSelectionChanged(newIndex, oldIndex);
                         PreviousSelectedIndex = newIndex;
@@ -520,7 +518,7 @@ namespace Syncfusion.UI.Xaml.Charts
             int index = -1;
             if (ExplodeOnTap && allowExplode && mouseUnderSegment == segment)
             {
-                if (segment != null && segment.Series is TriangularSeriesBase)
+                if (segment != null && segment.Series is TriangularSeriesBase && ActualData != null)
                     index = ActualData.IndexOf(segment.Item);
                 else if (Adornments.Count > 0)
                     index = ChartExtensionUtils.GetAdornmentIndex(source);
@@ -544,8 +542,8 @@ namespace Syncfusion.UI.Xaml.Charts
             if (GetAnimationIsActive()) return;
 
             allowExplode = true;
-            var element = source as FrameworkElement;
-            mouseUnderSegment = element.Tag as ChartSegment;
+            if (source is FrameworkElement element && element.Tag is ChartSegment chartSegment)
+                mouseUnderSegment = chartSegment;
         }
 
         #endregion
@@ -554,7 +552,8 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private static void OnYPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as TriangularSeriesBase).OnBindingPathChanged();
+            if(d is TriangularSeriesBase series)
+                series.OnBindingPathChanged();
         }
 
         private static void OnExplodeIndexChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

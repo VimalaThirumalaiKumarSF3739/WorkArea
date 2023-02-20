@@ -19,17 +19,32 @@
       <group targetFramework="net6.0">
         <dependency id="Syncfusion.Maui.Core" version="*" exclude="Build,Analyzers" />
       </group>
-      <group targetFramework="net6.0-android30.0">
+      <group targetFramework="net6.0-android">
         <dependency id="Syncfusion.Maui.Core" version="*" exclude="Build,Analyzers" />
       </group>
-      <group targetFramework="net6.0-ios13.6">
+      <group targetFramework="net6.0-ios">
         <dependency id="Syncfusion.Maui.Core" version="*" exclude="Build,Analyzers" />
       </group>
-      <group targetFramework="net6.0-maccatalyst13.5">
+      <group targetFramework="net6.0-maccatalyst">
         <dependency id="Syncfusion.Maui.Core" version="*" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="net6.0-windows10.0.19041">
         <dependency id="Syncfusion.Maui.Core" version="*" exclude="Build,Analyzers" />
+            </group>
+	  <group targetFramework="net7.0">
+        <dependency id="Syncfusion.Maui.Core" version="*" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net7.0-android">
+        <dependency id="Syncfusion.Maui.Core" version="*" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net7.0-ios">
+        <dependency id="Syncfusion.Maui.Core" version="*" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net7.0-maccatalyst">
+        <dependency id="Syncfusion.Maui.Core" version="*" exclude="Build,Analyzers" />
+      </group>
+	  <group targetFramework="net7.0-windows10.0.19041">
+		<dependency id="Syncfusion.Maui.Core" version="*" exclude="Build,Analyzers"/>
       </group>
     </dependencies>
   </metadata>

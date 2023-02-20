@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <!-- iOS, Android, MacCatalyst, Windows -->
-    <TargetFrameworks>net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst;net7.0;net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0;net7.0-windows10.0.19041.0</TargetFrameworks>
     <UseMaui>true</UseMaui>
     <Nullable>enable</Nullable>
     <AssemblyName>Syncfusion.Maui.Charts</AssemblyName>
@@ -35,17 +35,18 @@
 	<PackageIcon>syncfusion_logo.png</PackageIcon>
 	<PackageTags>syncfusion;maui;ios;android;maccatalyst;dotnet-maui;maui-chart;circular-chart;cartesian-chart</PackageTags>
 	<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-	<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-ios'">14.2</SupportedOSPlatformVersion>
-	<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-maccatalyst'">14.0</SupportedOSPlatformVersion>
-	<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-android'">21.0</SupportedOSPlatformVersion>
-	<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.18362.0</SupportedOSPlatformVersion>
-	<TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.18362.0</TargetPlatformMinVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-Xml|AnyCPU' ">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningLevel>5</WarningLevel>
-  </PropertyGroup>
-	<PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0-android' ">
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
+	<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+	<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+	<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.18362.0</SupportedOSPlatformVersion>
+	<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.18362.0</TargetPlatformMinVersion>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-Xml|AnyCPU' ">
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<WarningLevel>5</WarningLevel>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0-android' OR '$(TargetFramework)' == 'net7.0-android' ">
 		<AndroidGenerateResourceDesigner>false</AndroidGenerateResourceDesigner>
 		<AndroidUseIntermediateDesignerFile>false</AndroidUseIntermediateDesignerFile>
 	</PropertyGroup>
@@ -60,6 +61,6 @@
 	<None Include="syncfusion_logo.png" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\maui-core-development\maui\src\core\Syncfusion.Maui.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\maui-core\maui\src\core\Syncfusion.Maui.Core.csproj" />
   </ItemGroup>
 </Project>

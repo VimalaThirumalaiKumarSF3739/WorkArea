@@ -335,22 +335,20 @@ namespace Syncfusion.UI.Xaml.Charts
         internal override void InitializeMinorGridLinesPanel()
         {
             MinorGridLinesPanel = new CompositorLinesPanel(MinorGridLineStyle);
-            Area.GridLinesPanel.Children.Add(MinorGridLinesPanel);
+            Area?.GridLinesPanel.Children.Add(MinorGridLinesPanel);
         }
 
         #region Private Static Methods
 
         private static void OnEdgeLabelsVisibilityModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			ChartAxis axis = d as ChartAxis;
-			if (axis != null && axis.Area != null)
+			if (d is ChartAxis axis && axis != null && axis.Area != null)
 				axis.Area.ScheduleUpdate();
 		}
 
 		private static void OnMinorTicksPerIntervalPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			ChartAxis axis = d as ChartAxis;
-			if (axis != null)
+			if (d is ChartAxis axis && axis != null)
 			{
 				axis.UpdateSmallTickRequired((int)e.NewValue);
 				if (axis.Area != null)
@@ -360,40 +358,37 @@ namespace Syncfusion.UI.Xaml.Charts
 
 		private static void OnSmallTicksPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			ChartAxis axis = d as ChartAxis;
-			if (axis != null && axis.Area != null)
+			if (d is ChartAxis axis && axis != null && axis.Area != null)
 				axis.Area.ScheduleUpdate();
 		}
 
 		private static void OnMinorGridLineStylePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			ChartAxis axis = d as ChartAxis;
-
-            if (axis.axisElementsPanel is ChartCartesianAxisElementsPanel &&
-				axis.MinorGridLinesPanel != null)
+            if (d is ChartAxis axis)
             {
-                axis.MinorGridLinesPanel.ApplyLineStyle(e.NewValue as Style);
+                if (axis.axisElementsPanel is ChartCartesianAxisElementsPanel &&
+                 axis.MinorGridLinesPanel != null && e.NewValue is Style style)
+                {
+                    axis.MinorGridLinesPanel.ApplyLineStyle(style);
+                }
+                else if (axis != null && axis.Area != null)
+                    axis.Area.ScheduleUpdate();
             }
-            else if (axis != null && axis.Area != null)
-				axis.Area.ScheduleUpdate();
 		}
 
         private static void OnMinorTickStylePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ChartAxis axis = d as ChartAxis;
-
-            if (axis.axisElementsPanel is ChartCartesianAxisElementsPanel panel &&
-				panel.MinorTicksPanel != null)
-            {
-                panel.MinorTicksPanel.ApplyLineStyle(e.NewValue as Style);
+            if (d is ChartAxis axis && axis.axisElementsPanel is ChartCartesianAxisElementsPanel panel &&
+                panel.MinorTicksPanel != null && e.NewValue is Style style)
+                {
+                panel.MinorTicksPanel.ApplyLineStyle(style);
             }
         }
 
         private static void OnShowMinorGridLinesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-			RangeAxisBase rangeAxisBase = d as RangeAxisBase;
-
-			rangeAxisBase.OnShowMinorGridLines((bool)e.NewValue);
+            if (d is RangeAxisBase rangeAxisBase)
+			    rangeAxisBase?.OnShowMinorGridLines((bool)e.NewValue);
         }
 
         private void OnShowMinorGridLines(bool value)
@@ -404,7 +399,7 @@ namespace Syncfusion.UI.Xaml.Charts
                 {
                     MinorGridLinesPanel.Clear();
                 }
-                else if (value && VisibleLabels.Count > 0)
+                else if (value && VisibleLabels?.Count > 0)
                 {
                     if (!double.IsInfinity(Area.AvailableSize.Height) && !double.IsInfinity(Area.AvailableSize.Width))
                     {

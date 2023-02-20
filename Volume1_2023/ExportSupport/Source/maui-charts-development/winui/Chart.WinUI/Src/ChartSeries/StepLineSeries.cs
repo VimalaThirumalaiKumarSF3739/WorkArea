@@ -204,8 +204,8 @@ namespace Syncfusion.UI.Xaml.Charts
         /// </summary>      
         internal override void GenerateSegments()
         {
-            List<double> xValues = null;
-            bool isGrouping = this.ActualXAxis is CategoryAxis && !(this.ActualXAxis as CategoryAxis).IsIndexed;
+            List<double>? xValues = null;
+            bool isGrouping = this.ActualXAxis is CategoryAxis categoryAxis && !categoryAxis.IsIndexed;
             if (isGrouping)
                 xValues = GroupedXValuesIndexes;
             else
@@ -222,7 +222,7 @@ namespace Syncfusion.UI.Xaml.Charts
                     int index = i + 1;
                     ChartPoint point1, point2, stepPoint;
 
-                    if (AdornmentsInfo != null && ShowDataLabels)
+                    if (ActualData != null && AdornmentsInfo != null && ShowDataLabels)
                     {
                         Adornments.Add(this.CreateAdornment(this, xValues[i], GroupedSeriesYValues[0][i], xValues[i], GroupedSeriesYValues[0][i]));
                         Adornments[i].Item = ActualData[i];
@@ -241,12 +241,12 @@ namespace Syncfusion.UI.Xaml.Charts
                         stepPoint = new ChartPoint(xValues[i], GroupedSeriesYValues[0][i]);
                     }
 
-                    StepLineSegment segment = CreateSegment() as StepLineSegment;
-                    if (segment != null)
+                    StepLineSegment? segment = CreateSegment() as StepLineSegment;
+                    if (segment != null && ActualData != null)
                     {
                         segment.Item = ActualData[i];
                         segment.Series = this;
-                        List<ChartPoint> listPoints = new List<ChartPoint>();
+                        List<ChartPoint>? listPoints = new List<ChartPoint>();
                         listPoints.Add(point1);
                         listPoints.Add(stepPoint);
                         listPoints.Add(point2);
@@ -265,7 +265,7 @@ namespace Syncfusion.UI.Xaml.Charts
                     int index = i + 1;
                     ChartPoint point1, point2, stepPoint;
 
-                    if (AdornmentsInfo != null && ShowDataLabels)
+                    if (ActualData != null && AdornmentsInfo != null && ShowDataLabels)
                     {
                         if (i < Adornments.Count)
                         {
@@ -794,7 +794,7 @@ namespace Syncfusion.UI.Xaml.Charts
         {
             var series = d as StepLineSeries;
 
-            if (series.Chart == null) return;
+            if (series?.Chart == null) return;
 
             series.Segments.Clear();
             series.Chart.ScheduleUpdate();

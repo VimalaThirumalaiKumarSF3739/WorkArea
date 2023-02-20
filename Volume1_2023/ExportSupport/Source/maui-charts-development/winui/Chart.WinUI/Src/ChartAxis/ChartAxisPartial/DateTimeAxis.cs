@@ -506,8 +506,8 @@ namespace Syncfusion.UI.Xaml.Charts
 
 		private static void OnRangePaddingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			if (e.NewValue != null)
-				(d as DateTimeAxis).OnPropertyChanged();
+            if (e.NewValue != null && d is DateTimeAxis axis)
+                axis.OnPropertyChanged();
 		}
 
 		private static void OnIntervalTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -547,11 +547,14 @@ namespace Syncfusion.UI.Xaml.Charts
 
 		private static void OnIntervalChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			var axis = d as DateTimeAxis;
-			axis.UpdateAxisInterval((double)e.NewValue);
-			if (axis.Area != null)
-				axis.Area.ScheduleUpdate();
-		}
+            if (d is DateTimeAxis axis)
+            {
+                axis.UpdateAxisInterval((double)e.NewValue);
+
+                if (axis.Area != null)
+                    axis.Area.ScheduleUpdate();
+            }
+        }
 
 		#endregion
 

@@ -5,6 +5,7 @@ using Microsoft.Maui.Layouts;
 using Syncfusion.Maui.Core;
 using Syncfusion.Maui.Core.Internals;
 using System;
+using PointerEventArgs = Syncfusion.Maui.Core.Internals.PointerEventArgs;
 
 namespace Syncfusion.Maui.Charts
 {

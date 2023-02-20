@@ -325,5 +325,24 @@ namespace Syncfusion.Maui.Charts
                 currentRect.Top < (rect.Top + rect.Height) &&
                 (currentRect.Height + currentRect.Top) > rect.Top;
         }
+
+        internal static float CalculateAngleDeviation(float calcRadius, float radius, float angleDifferent)
+        {
+            var circumference = 2 * (float)Math.PI * calcRadius;
+            var deviation = (radius / circumference) * 100;
+
+            return (float)((deviation * angleDifferent) / 100);
+        }
+
+        /// <summary>
+        /// To convert angle to vector.
+        /// </summary>
+        /// <param name="angle">The angle</param>
+        /// <returns>Vector of given angle</returns>
+        internal static Point AngleToVector(double angle)
+        {
+            double angleRadian = ChartMath.DegreeToRadian((float)angle);
+            return new Point(Math.Cos(angleRadian), Math.Sin(angleRadian));
+        }
     }
 }

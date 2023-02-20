@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SyncfusionControls>
   <ControlCategory Name="Data Visualization">
-	  <Control Title="Pyramid Chart" StatusTag="New" ControlName="SfPyramidChart" IsPreview="True" Image="pyramidchart.png" Description="Visualize the organized data using pyramid chart.">
+	  <Control Title="Pyramid Chart" ControlName="SfPyramidChart" IsPreview="True" Image="pyramidchart.png" Description="Visualize the organized data using pyramid chart.">
 		  <Sample SearchTags="Pyramid" Name="PyramidChart" SampleName="DefaultPyramid" Title="Default pyramid chart" CodeViewerPath="PyramidChart/PyramidChartDemo/"/>
 		  <Sample SearchTags="legend" Name="Legend" SampleName="Legend" Title="Legend customization" CodeViewerPath="PyramidChart/PyramidChartDemo/"/>
 		  <Category Title="Tooltip">

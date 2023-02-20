@@ -16,7 +16,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private double radius, size;
 
-        private Ellipse ellipseSegment;
+        private Ellipse? ellipseSegment;
 
         private double xPos, yPos;
 
@@ -188,7 +188,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         internal override UIElement GetRenderedVisual()
         {
-            if (customTemplate == null)
+            if (customTemplate == null && ellipseSegment != null)
                 return ellipseSegment;
             return control;
         }
@@ -202,9 +202,8 @@ namespace Syncfusion.UI.Xaml.Charts
 
         internal override void Update(IChartTransformer transformer)
         {
-            if (transformer != null)
+            if (transformer is ChartTransform.ChartCartesianTransformer cartesianTransformer)
             {
-                ChartTransform.ChartCartesianTransformer cartesianTransformer = transformer as ChartTransform.ChartCartesianTransformer;
                 double xStart = cartesianTransformer.XAxis.VisibleRange.Start;
                 double xEnd = cartesianTransformer.XAxis.VisibleRange.End;
 
@@ -227,7 +226,7 @@ namespace Syncfusion.UI.Xaml.Charts
                         Size = Radius = 2 * this.radius;
                     }
                 }
-                else if (customTemplate == null)
+                else if (customTemplate == null && ellipseSegment != null)
                     ellipseSegment.Visibility = Visibility.Collapsed;
                 else control.Visibility = Visibility.Collapsed;
             }

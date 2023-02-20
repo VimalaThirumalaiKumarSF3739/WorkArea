@@ -112,7 +112,7 @@ namespace Syncfusion.Maui.Charts
             if (chart is IChart chartView)
             {
                 chartView.ResetTooltip();
-                var bounds = ChartUtils.GetSeriesClipRect(Bounds, chartView.TitleHeight);
+                var bounds = ChartUtils.GetSeriesClipRect(AreaBounds, chartView.TitleHeight);
                 chartView.ActualSeriesClipRect = bounds;
                 
                 //Rendering funnel and pyramid only 80% of its actual size.
@@ -135,18 +135,6 @@ namespace Syncfusion.Maui.Charts
             chart.GenerateSegments();
             chart.LayoutSegments();
             InvalidateChart();
-        }
-
-        protected override Size ArrangeOverride(Rect bounds)
-        {
-            var newbounds = base.ArrangeOverride(bounds);
-
-            if (chart is IChart chartView)
-            {
-                chartView.ActualSeriesClipRect = ChartUtils.GetSeriesClipRect(bounds, chartView.TitleHeight);
-            }
-
-            return newbounds;
         }
 
         public void UpdateLegendItems()

@@ -112,7 +112,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// </summary>
         internal void GenerateColumnPixels()
         {
-            if (!double.IsNaN(dataPoint.YData))
+            if (dataPoint != null && !double.IsNaN(dataPoint.YData))
             {
                 WriteableBitmap bmp = Chart.fastRenderSurface;
 
@@ -170,11 +170,11 @@ namespace Syncfusion.UI.Xaml.Charts
         {
             WriteableBitmap bmp = Chart.fastRenderSurface;
 
-            ChartTransform.ChartCartesianTransformer cartesianTransformer = CreateTransformer(
-                new Size(
-                    Chart.SeriesClipRect.Width,
-                    Chart.SeriesClipRect.Height),
-                true) as ChartTransform.ChartCartesianTransformer;
+            ChartTransform.ChartCartesianTransformer? cartesianTransformer = CreateTransformer(
+               new Size(
+                   Chart.SeriesClipRect.Width,
+                   Chart.SeriesClipRect.Height),
+               true) as ChartTransform.ChartCartesianTransformer;
 
             DoubleRange sbsInfo = this.GetSideBySideInfo(this);
 
@@ -275,9 +275,9 @@ namespace Syncfusion.UI.Xaml.Charts
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        internal override ChartDataPointInfo GetDataPoint(int index)
+        internal override ChartDataPointInfo? GetDataPoint(int index)
         {
-            if (this.ActualXAxis is CategoryAxis && !(this.ActualXAxis as CategoryAxis).IsIndexed)
+            if (this.ActualXAxis is CategoryAxis axis && !axis.IsIndexed)
             {
                 IList<double> xValues = GroupedXValuesIndexes;
                 dataPoint = null;
@@ -303,7 +303,7 @@ namespace Syncfusion.UI.Xaml.Charts
                     {
                         if (YValues.Count > index)
                             dataPoint.YData = YValues[index];
-                        if (ActualData.Count > index)
+                        if (ActualData?.Count > index)
                             dataPoint.Item = ActualData[index];
                     }
                 }
@@ -327,7 +327,7 @@ namespace Syncfusion.UI.Xaml.Charts
                     dataPoint.Index = index;
                     dataPoint.Series = this;
 
-                    if (ActualData.Count > index)
+                    if (ActualData?.Count > index)
                         dataPoint.Item = ActualData[index];
                 }
 
@@ -395,7 +395,8 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private static void OnYBindingPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as XyDataSeries).OnBindingPathChanged();
+            if (d is XyDataSeries series)
+                series.OnBindingPathChanged();
         }
 
         #endregion

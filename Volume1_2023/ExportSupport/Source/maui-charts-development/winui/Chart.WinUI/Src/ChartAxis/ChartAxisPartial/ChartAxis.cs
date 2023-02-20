@@ -307,27 +307,27 @@ namespace Syncfusion.UI.Xaml.Charts
 
 		internal bool axisElementsUpdateRequired = false;
 
-		internal ILayoutCalculator AxisLayoutPanel;
+		internal ILayoutCalculator? AxisLayoutPanel;
 
-		internal ILayoutCalculator axisLabelsPanel;
+		internal ILayoutCalculator? axisLabelsPanel;
 
-		internal ILayoutCalculator axisElementsPanel;
+		internal ILayoutCalculator? axisElementsPanel;
 
-		internal CompositorLinesPanel MajorGridLinesPanel;
+		internal CompositorLinesPanel? MajorGridLinesPanel;
 
-		internal CompositorLinesPanel MinorGridLinesPanel;
+		internal CompositorLinesPanel? MinorGridLinesPanel;
 
-		internal ContentControl headerContent;
+		internal ContentControl? headerContent;
 
-		internal ChartCartesianAxisPanel axisPanel;
+		internal ChartCartesianAxisPanel? axisPanel;
 
 		#endregion
 
 		#region Private Fields
 
-		private Panel labelsPanel;
+		private Panel? labelsPanel;
 
-		private Panel elementsPanel;
+		private Panel? elementsPanel;
 
 		private int maximumLabels = 3;
 
@@ -416,7 +416,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
 		#region Internal Events
 
-		internal event EventHandler<VisibleRangeChangedEventArgs> VisibleRangeChanged;
+		internal event EventHandler<VisibleRangeChangedEventArgs>? VisibleRangeChanged;
 
         #endregion
 
@@ -1465,7 +1465,7 @@ namespace Syncfusion.UI.Xaml.Charts
 		/// <summary>
 		/// 
 		/// </summary>
-		internal double AutoScrollingDelta
+		internal double? AutoScrollingDelta
 		{
 			get { return (double)GetValue(AutoScrollingDeltaProperty); }
 			set { SetValue(AutoScrollingDeltaProperty, value); }
@@ -1528,7 +1528,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
 			value = ValueBasedOnAngle(value);
 
-			if (VisibleLabels.Count > 0)
+			if (VisibleLabels?.Count > 0)
 				value /= 1 - 1 / (double)VisibleLabels.Count; // WPF-49606 Tooltip position Fix based on - WRT-2476-Polar and radar series segments are plotted before the Actual position.
 			else
 				value /= 1 - 1 / (VisibleRange.Delta + 1);
@@ -1552,7 +1552,7 @@ namespace Syncfusion.UI.Xaml.Charts
 			var delta = VisibleRange.Delta;
 
 			result = (value - start) / delta;
-			if (VisibleLabels.Count > 0)
+			if (VisibleLabels?.Count > 0)
 				result *= 1 - 1 / (double)VisibleLabels.Count;//WRT-2476-Polar and radar series segments are plotted before the Actual position
 			else
 				result *= 1 - 1 / (delta + 1);
@@ -1594,7 +1594,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
 			AvailableSize = size;
 			CalculateRangeAndInterval(size);
-			if (Visibility != Visibility.Collapsed || Area.AreaType == ChartAreaType.PolarAxes)
+			if (Visibility != Visibility.Collapsed || Area?.AreaType == ChartAreaType.PolarAxes)
 			{
 				ApplyTemplate();
 				if (axisPanel != null)
@@ -1819,92 +1819,89 @@ namespace Syncfusion.UI.Xaml.Charts
 		}
 
 		private static void OnOpposedPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			(d as ChartAxis).OnPropertyChanged();
-		}
+		{		
+			if(d is ChartAxis chartAxis)
+                chartAxis.OnPropertyChanged();
+        }
 
 		private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			(d as ChartAxis).OnPropertyChanged();
-		}
+            if (d is ChartAxis chartAxis)
+                chartAxis.OnPropertyChanged();
+        }
 
 		private static void OnMajorTickStyleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			ChartAxis axis = d as ChartAxis;
-
-			if (axis.axisElementsPanel is ChartCartesianAxisElementsPanel panel &&
-				panel.MajorTicksPanel != null)
+			if (d is ChartAxis chartAxis)
 			{
-				panel.MajorTicksPanel.ApplyLineStyle(e.NewValue as Style);
-			}
-			else
-			{
-				axis.OnPropertyChanged();
+				if (chartAxis.axisElementsPanel is ChartCartesianAxisElementsPanel panel &&
+                panel.MajorTicksPanel != null && e.NewValue is Style style)
+                {
+					panel.MajorTicksPanel.ApplyLineStyle(style);
+				}
+				else
+				{
+					chartAxis.OnPropertyChanged();
+				}
 			}
 		}
 
 		private static void OnMajorGridLineStyleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			ChartAxis axis = d as ChartAxis;
-
-			if (axis.axisElementsPanel is ChartCartesianAxisElementsPanel && 
-				axis.MajorGridLinesPanel != null)
-			{
-				axis.MajorGridLinesPanel.ApplyLineStyle(e.NewValue as Style);
+			if (d is ChartAxis axis && axis.axisElementsPanel is ChartCartesianAxisElementsPanel &&
+                axis.MajorGridLinesPanel != null && e.NewValue is Style style)
+                {
+				axis.MajorGridLinesPanel.ApplyLineStyle(style);
 			}
 		}
 
         private static void OnIsInversedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			(d as ChartAxis).OnIsInversedChanged(e);
-		}
+            if (d is ChartAxis chartAxis)
+                chartAxis.OnIsInversedChanged(e);
+        }
 
 		private static void OnShowMajorGridLinesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			(d as ChartAxis).OnShowMajorGridLines((bool)e.NewValue);
-		}
+            if (d is ChartAxis chartAxis)
+                chartAxis.OnShowMajorGridLines((bool)e.NewValue);
+        }
 
 		private static void OnHeaderStyleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			(d as ChartAxis).UpdateHeaderStyle();
-		}
+            if (d is ChartAxis chartAxis)
+                chartAxis.UpdateHeaderStyle();
+        }
 
 		private static void OnLabelTemplateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			ChartAxis axis = d as ChartAxis;
-			if (axis.Area != null)
-			{
+			if (d is ChartAxis axis && axis.Area != null)
 				axis.Area.ScheduleUpdate();
-			}
 		}
 
-		private static void OnLabelRotationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnLabelRotationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			ChartAxis axis = d as ChartAxis;
-			if (axis.Area != null)
-				axis.Area.ScheduleUpdate();
-		}
+            if (d is ChartAxis axis && axis.Area != null)
+                axis.Area.ScheduleUpdate();
+        }
 
 		private static void OnAutoScrollingPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			var axis = d as ChartAxis;
-			if (axis != null)
-			{
+			if (d is ChartAxis axis)
 				axis.OnPropertyChanged();
-			}
 		}
 
 		private static void OnZoomFactorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			ChartAxis axis = d as ChartAxis;
-			axis.OnZoomDataChanged(e);
-		}
+            if (d is ChartAxis axis)
+                axis.OnZoomDataChanged(e);
+        }
 
 		private static void OnZoomPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			ChartAxis axis = (d as ChartAxis);
-			axis.OnZoomDataChanged(e);
-		}
+            if (d is ChartAxis axis)
+                axis.OnZoomDataChanged(e);
+        }
 
 		#endregion
 
@@ -2005,7 +2002,7 @@ namespace Syncfusion.UI.Xaml.Charts
 			var cartesianElementsPanel = axisElementsPanel as ChartCartesianAxisElementsPanel;
 			if (cartesianElementsPanel != null)
 			{
-				if (axisElementsPanel.Children != null)
+				if (axisElementsPanel?.Children != null)
 				{
 					axisElementsPanel.Children.Clear();
 				}
@@ -2102,11 +2099,15 @@ namespace Syncfusion.UI.Xaml.Charts
 					}
 
 					axisPanel.LayoutCalc.Clear();
-					axisLabelsPanel = new ChartCircularAxisPanel(labelsPanel)
+
+					if (labelsPanel != null)
 					{
-						Axis = this
-					};
-					axisPanel.LayoutCalc.Add(axisLabelsPanel as ILayoutCalculator);
+						axisLabelsPanel = new ChartCircularAxisPanel(labelsPanel)
+						{
+							Axis = this
+						};
+						axisPanel.LayoutCalc.Add(axisLabelsPanel as ILayoutCalculator);
+					}
 				}
 				else if (!(AxisLayoutPanel is ChartPolarAxisLayoutPanel)
 					&& !(axisLabelsPanel is ChartCartesianAxisLabelsPanel))
@@ -2181,7 +2182,7 @@ namespace Syncfusion.UI.Xaml.Charts
 					{
 						MajorGridLinesPanel.Clear();
 					}
-					else if (value && VisibleLabels.Count > 0)
+					else if (value && VisibleLabels?.Count > 0)
 					{
 						if (!double.IsInfinity(Area.AvailableSize.Height) && !double.IsInfinity(Area.AvailableSize.Width))
 						{

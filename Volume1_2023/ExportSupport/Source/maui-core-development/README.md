@@ -1,1 +1,0 @@
-This project holds the files and codes related to Core files for the Maui platform.

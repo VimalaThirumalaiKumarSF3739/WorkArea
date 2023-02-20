@@ -224,7 +224,7 @@ namespace Syncfusion.Maui.Charts
         }
 
         /// <summary>
-        /// Gets or sets a value to customize the stroke appearance of the area series.
+        /// Gets or sets a value to customize the stroke appearance of the scatter series.
         /// </summary>
         /// <value>It accepts <see cref="Brush"/> values and its default value is null.</value>
         /// <example>

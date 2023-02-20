@@ -242,7 +242,7 @@ namespace Syncfusion.Maui.Charts
             {
                 pieStartAngle = (float)StartAngle;
                 angleDifference = GetAngleDifference();
-                total = CalculateTotalYValues(Segments);
+                total = CalculateTotalYValues();
                 var oldSegments = OldSegments != null && OldSegments.Count > 0 && PointsCount == OldSegments.Count ? OldSegments : null;
 
                 for (int i = 0; i < YValues.Count; i++)

@@ -532,6 +532,19 @@ namespace Syncfusion.Maui.Charts
 
         #region Internal Methods
 
+        internal void UpdateCenterViewBouds(View centerView)
+        {
+            var center = GetCenter();
+
+            if (center != PointF.Zero && centerView != null)
+            {
+                var xPosition = center.X / AreaBounds.Width;
+                var yPosition = center.Y / AreaBounds.Height;
+                AbsoluteLayout.SetLayoutBounds(centerView, new Rect(xPosition, yPosition, -1, -1));
+                AbsoluteLayout.SetLayoutFlags(centerView, Microsoft.Maui.Layouts.AbsoluteLayoutFlags.PositionProportional);
+            }
+        }
+
         /// <summary>
         /// Called when the itemssource was changed.
         /// </summary>
@@ -656,13 +669,13 @@ namespace Syncfusion.Maui.Charts
             return angleDifference;
         }
 
-        internal double CalculateTotalYValues(ObservableCollection<ChartSegment> segments)
+        internal double CalculateTotalYValues()
         {
             double total = 0;
 
             for (int i = 0; i < YValues.Count; i++)
             {
-                if (!double.IsNaN(YValues[i]) && (segments.Count == 0 || ((segments.Count <= i) || (segments.Count > i && segments[i].IsVisible))))
+                if (!double.IsNaN(YValues[i]) && (Segments.Count == 0 || ((Segments.Count <= i) || (Segments.Count > i && Segments[i].IsVisible))))
                 {
                     total += Math.Abs(YValues[i]);
                 }
