@@ -12,7 +12,7 @@ public partial class MainPage : ContentPage
     private void Button_Clicked(object sender, EventArgs e)
     {
         //chart control
-        //Default jpg format
+        //Default png format
         chart.SaveAsImage("Test");
 
         //To save image in jpg format
