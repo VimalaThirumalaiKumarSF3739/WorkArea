@@ -1,4 +1,4 @@
-﻿using Syncfusion.Maui.Core;
+﻿using Syncfusion.Maui.Core.Internals;
 
 namespace SaveAsImageSample;
 
@@ -12,7 +12,7 @@ public partial class MainPage : ContentPage
     private void Button_Clicked(object sender, EventArgs e)
     {
         //chart control
-        //Default png format
+        //Default png file format
         chart.SaveAsImage("Test");
 
         //To save image in jpg format

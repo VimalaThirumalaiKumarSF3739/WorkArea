@@ -32,6 +32,9 @@ namespace Syncfusion.Maui.Charts
         private double previousLabelCoefficientValue = -1;
         private CartesianChartArea? cartesianArea;
 
+        internal double ActualAutoScrollDelta { get; set; } = double.NaN;
+        internal bool CanAutoScroll { get; set; } = false;
+
         #region labelFormats
         private const string dayFormat = "MMM - dd";
         private const string monthFormat = "MMM-yyyy";
@@ -273,7 +276,7 @@ namespace Syncfusion.Maui.Charts
         protected virtual DoubleRange ApplyRangePadding(DoubleRange range, double interval)
         {
 #if WinUI
-            if (RegisteredSeries.Count > 0 && RegisteredSeries[0] is PolarRadarSeriesBase)
+            if (RegisteredSeries.Count > 0 && RegisteredSeries[0] is PolarSeries)
             {
                 double minimum = Math.Floor(range.Start / interval) * interval;
                 double maximum = Math.Ceiling(range.End / interval) * interval;
@@ -478,8 +481,13 @@ namespace Syncfusion.Maui.Charts
                 RaiseActualRangeChangedEvent(visibleRange, plotSize);
             }
 
-            ZoomPosition = (VisibleRange.Start - ActualRange.Start) / ActualRange.Delta;
-            ZoomFactor = (VisibleRange.End - VisibleRange.Start) / ActualRange.Delta;
+            if (!double.IsNaN(ActualAutoScrollDelta) && ActualAutoScrollDelta > 0 && CanAutoScroll)
+            {
+                UpdateAutoScrollingDelta(ActualRange, ActualAutoScrollDelta);
+                CanAutoScroll = false;
+            }
+
+            UpdateAxisScale();
         }
 
         internal void UpdateSmallTickRequired(int value)
@@ -497,6 +505,13 @@ namespace Syncfusion.Maui.Charts
             this.ActualPlotOffsetEnd = double.IsNaN(offset) ? 0 : offset;
         }
 
+        //Made this calculation in a virtual method for implementing separate logic for logarithmic axis
+        internal virtual void UpdateAxisScale()
+        {
+            ZoomPosition = (VisibleRange.Start - ActualRange.Start) / ActualRange.Delta;
+            ZoomFactor = (VisibleRange.End - VisibleRange.Start) / ActualRange.Delta;
+        }
+
         /// <summary>
         ///  Update Auto Scrolling Delta value  based on auto scrolling delta mode option.
         /// </summary>
@@ -504,6 +519,8 @@ namespace Syncfusion.Maui.Charts
         /// <param name="scrollingDelta"></param>
         internal virtual void UpdateAutoScrollingDelta(DoubleRange actualRange, double scrollingDelta)
         {
+            if (double.IsNaN(scrollingDelta)) return;
+
             switch (AutoScrollingMode)
             {
                 case ChartAutoScrollingMode.Start:

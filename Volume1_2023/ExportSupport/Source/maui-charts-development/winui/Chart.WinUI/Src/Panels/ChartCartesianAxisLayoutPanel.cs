@@ -208,7 +208,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
             Area.SeriesClipRect = rect;
 
-            foreach (ChartSeries series in Area.VisibleSeries.OfType<ISupportAxes>())
+            foreach (ChartSeries series in Area.VisibleSeries.OfType<ChartSeries>())
             {
                 if (series.ActualXAxis != null && series.ActualYAxis != null)
                 {

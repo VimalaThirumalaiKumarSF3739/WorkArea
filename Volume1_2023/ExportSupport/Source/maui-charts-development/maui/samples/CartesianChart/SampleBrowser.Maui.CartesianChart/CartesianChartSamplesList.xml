@@ -43,7 +43,7 @@
 				  </CardLayout>
 			  </SubCategory>
 			  <SubCategory Title="Spline Area">
-					  <Sample Title="Spline Area" SampleName="SplineAreaChart" SearchTags="spline, area" CodeViewerPath="CartesianChart/SplineAreaChart/"/>
+					  <Sample Title="Spline area" SampleName="SplineAreaChart" SearchTags="spline, area" CodeViewerPath="CartesianChart/SplineAreaChart/"/>
 			  </SubCategory>
 			  <SubCategory Title="Scatter">
 				  <CardLayout>
@@ -65,7 +65,30 @@
 							CodeViewerPath="CartesianChart/BubbleChart/"/>
 				</CardLayout>
 			</SubCategory>
-			
+          	<SubCategory Title="Range Column" StatusTag="New">
+				<CardLayout>
+					<Sample Title="Default range column" SampleName="DefaultRangeColumn" SearchTags="range column" CodeViewerPath="CartesianChart/RangeColumn/"/>
+					<Sample Title="Dynamic update animation" SampleName="RangeColumnAnimation" SearchTags="rangeColumn, animation" CodeViewerPath="CartesianChart/RangeColumn/"/>
+				</CardLayout>
+			</SubCategory>
+			<SubCategory Title="Range Bar" StatusTag="New">
+				<CardLayout>
+					<Sample Title="Default range bar" SampleName="DefaultRangeBar" SearchTags="range bar" CodeViewerPath="CartesianChart/RangeBar/"/>
+					<Sample Title="Dynamic update animation" SampleName="RangeBarAnimation" SearchTags="rangebar, animation" CodeViewerPath="CartesianChart/RangeBar/"/>
+				</CardLayout>
+			</SubCategory>
+			<SubCategory Title="Error Bar " StatusTag="New">
+				<CardLayout>
+					<Sample Title="Default Error Bar Chart" SampleName="ErrorBarDefault" SearchTags="errorBarDefault, errorBarSeriesDefault" CodeViewerPath="CartesianChart/ErrorBar/"/>
+					<Sample Title="Customized Error Bar Chart" SampleName="ErrorBarChart" SearchTags="errorBar, errorBarSeries" CodeViewerPath="CartesianChart/ErrorBar/"/>
+				</CardLayout>
+			</SubCategory>
+			<SubCategory Title="Waterfall" StatusTag="New">
+				<CardLayout>
+					<Sample Title="Default waterfall chart" SampleName="WaterFallChart" SearchTags="waterfall" CodeViewerPath="CartesianChart/Waterfall/"/>
+					<Sample Title="Vertical waterfall chart" SampleName="WaterFallChartIsTransposed" SearchTags="waterfall" CodeViewerPath="CartesianChart/Waterfall/"/>
+				</CardLayout>
+			</SubCategory>
 		  </Category>
 		  <Category Title="Real-time Charts">
 				  <CardLayout>

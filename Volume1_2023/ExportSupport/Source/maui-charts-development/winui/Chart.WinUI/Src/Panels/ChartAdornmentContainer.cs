@@ -54,7 +54,7 @@ namespace Syncfusion.UI.Xaml.Charts
                 "MarkerType",
                 typeof(Object),
                 typeof(ChartDataMarkerContainer),
-                new PropertyMetadata(ChartSymbol.Custom, new PropertyChangedCallback(OnAdornmentsInfoChanged)));
+                new PropertyMetadata(ShapeType.Custom, new PropertyChangedCallback(OnAdornmentsInfoChanged)));
 
         #endregion
 
@@ -96,9 +96,9 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <summary>
         /// Gets or sets the chart symbol
         /// </summary>      
-        public ChartSymbol MarkerType
+        public ShapeType MarkerType
         {
-            get { return (ChartSymbol)GetValue(MarkerTypeProperty); }
+            get { return (ShapeType)GetValue(MarkerTypeProperty); }
             set { SetValue(MarkerTypeProperty, value); }
         }
 
@@ -286,7 +286,7 @@ namespace Syncfusion.UI.Xaml.Charts
             Size lblSz = Size.Empty;
             Size sblSz;
 
-            if (Adornment.Series.adornmentInfo.MarkerType == ChartSymbol.Custom)
+            if (Adornment.Series.adornmentInfo.MarkerType == ShapeType.Custom)
             {
                 sblSz = m_symbolPresenter.DesiredSize;
             }

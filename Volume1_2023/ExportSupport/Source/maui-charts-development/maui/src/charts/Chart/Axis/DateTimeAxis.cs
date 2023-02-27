@@ -397,8 +397,8 @@ namespace Syncfusion.Maui.Charts
         internal override void UpdateAutoScrollingDelta(DoubleRange actualRange, double autoScrollingDelta)
         {
             var dateTime = DateTime.FromOADate(actualRange.End);
-            if (AutoScrollingDelta == null) return;
-
+            if (double.IsNaN(autoScrollingDelta)) return;
+            
             var ActualScrollingDelta = (double)AutoScrollingDelta;
 
             switch (GetActualAutoScrollingDeltaType())

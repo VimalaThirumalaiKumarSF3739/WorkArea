@@ -73,13 +73,24 @@ namespace Syncfusion.UI.Xaml.Charts
 				typeof(CategoryAxis),
 				new PropertyMetadata(LabelPlacement.OnTicks, OnPropertyChanged));
 
-		/// <summary>
-		/// The DependencyProperty for <see cref="IsIndexed"/> property.
-		/// </summary>
-		internal static readonly DependencyProperty IsIndexedProperty =
+        /// <summary>
+        /// The DependencyProperty for <see cref="ArrangeByIndex"/> property.
+        /// </summary>
+        public static readonly DependencyProperty ArrangeByIndexProperty =
+			DependencyProperty.Register(
+		   nameof(ArrangeByIndex),
+		   typeof(bool),
+		   typeof(CategoryAxis),
+		   new PropertyMetadata(true, OnArrangeByIndexPropertyChanged));
+
+        /// <summary>
+        /// The DependencyProperty for <see cref="IsIndexed"/> property.
+        /// </summary>
+        internal static readonly DependencyProperty IsIndexedProperty =
 			DependencyProperty.Register(nameof(IsIndexed), typeof(bool), typeof(CategoryAxis), new PropertyMetadata(true, OnPropertyChanged));
 
-		#endregion
+        
+        #endregion
 
 		#region Properties
 
@@ -162,7 +173,16 @@ namespace Syncfusion.UI.Xaml.Charts
 		/// <summary>
 		/// 
 		/// </summary>
-		internal bool IsIndexed
+        public bool ArrangeByIndex
+        {
+            get { return (bool)GetValue(ArrangeByIndexProperty); }
+            set { SetValue(ArrangeByIndexProperty, value); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal bool IsIndexed
 		{
 			get { return (bool)GetValue(IsIndexedProperty); }
 			set { SetValue(IsIndexedProperty, value); }
@@ -204,7 +224,7 @@ namespace Syncfusion.UI.Xaml.Charts
 			// Get the x values from the series.
 			foreach (var series in visibleSeries)
 			{
-				if (series is PolarRadarSeriesBase) return;
+				if (series is PolarSeries) return;
 				if (series.ActualXValues is List<string> xValues)
 					groupingValues.AddRange(xValues);
 				else
@@ -280,7 +300,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
 		internal object GetLabelContent(int pos, ChartSeries actualSeries)
 		{
-			var isIndexed = (actualSeries is PolarRadarSeriesBase) ?
+			var isIndexed = (actualSeries is PolarSeries) ?
 				true : this.IsIndexed;
 			if (actualSeries != null)
 			{
@@ -319,7 +339,7 @@ namespace Syncfusion.UI.Xaml.Charts
 					else
 					{
 						List<string> StrValues = new List<string>();
-						StrValues = !(chartSeries is PolarRadarSeriesBase)
+						StrValues = !(chartSeries is PolarSeries)
 							? !isIndexed
 							? actualSeries.GroupedXValues
 							: pointValues as List<string>
@@ -342,7 +362,7 @@ namespace Syncfusion.UI.Xaml.Charts
 						return labelContent;
 					}
 
-					if (chartSeries is PolarRadarSeriesBase)
+					if (chartSeries is PolarSeries)
 					{
 						return labelContent;
 					}
@@ -377,8 +397,20 @@ namespace Syncfusion.UI.Xaml.Charts
 			}
 		}
 
-		#endregion
+        private static void OnArrangeByIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var categoryAxis =  d as ChartAxis;
 
-		#endregion
-	}
+            if (categoryAxis != null)
+            {
+                foreach (var series in categoryAxis.CartesianArea.VisibleSeries)
+                {
+                    series.ScheduleUpdateChart();
+                }
+            }
+        }
+        #endregion
+
+        #endregion
+    }
 }

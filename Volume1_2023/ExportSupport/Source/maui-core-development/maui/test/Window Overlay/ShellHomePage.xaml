@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:WindowOverlay.Samples"
+       x:Class="WindowOverlay.Samples.ShellHomePage"
+       Shell.FlyoutBehavior="Flyout"
+       Title="Home">
+    
+    <ShellContent Title="Top"
+                  ContentTemplate="{DataTemplate local:TopOverlayPage}" />
+
+    <ShellContent Title="Fill"
+                  ContentTemplate="{DataTemplate local:FillOverlayPage}" />
+
+    <ShellContent Title="Overlay"
+                  ContentTemplate="{DataTemplate local:OverlayPage}" />
+
+    <ShellContent Title="RelativePosition"
+                  ContentTemplate="{DataTemplate local:RelativePositioningPage}" />
+
+    <ShellContent Title="Absolute"
+                  ContentTemplate="{DataTemplate local:AbsoluteOverlayPage}" />
+
+    <ShellContent Title="Framework"
+                  ContentTemplate="{DataTemplate local:FrameworkWindowOverlaySample}" />
+
+</Shell>

@@ -417,6 +417,17 @@ namespace Syncfusion.Maui.Charts
             get { return this.ActualXAxis is CategoryAxis; }
         }
 
+        internal bool IsGrouped
+        {
+            get 
+            {
+                if (this.ActualXValues is CategoryAxis category)
+                    return category.ArrangeByIndex;
+
+                return false;
+            }
+        }
+
         internal DoubleRange SbsInfo { get; set; } = DoubleRange.Empty;
 
         internal int SideBySideIndex { get; set; }
@@ -605,7 +616,14 @@ namespace Syncfusion.Maui.Charts
 
             if (IsIndexed || xValues == null)
             {
-                xValues = xValues != null ? (from val in xValues select (xIndexValues++)).ToList() : (from val in (ActualXValues as List<string>) select (xIndexValues++)).ToList();
+                if (ActualXAxis is CategoryAxis categoryAxis && !categoryAxis.ArrangeByIndex || ActualXAxis == null)
+                {
+                    xValues = GroupedXValuesIndexes.Count > 0 ? GroupedXValuesIndexes : (from val in (ActualXValues as List<string>) select (xIndexValues++)).ToList();
+                }
+                else
+                {
+                    xValues = xValues != null ? (from val in xValues select (xIndexValues++)).ToList() : (from val in (ActualXValues as List<string>) select (xIndexValues++)).ToList();
+                }
             }
 
             return xValues;
@@ -895,11 +913,22 @@ namespace Syncfusion.Maui.Charts
                 if (IsIndexed)
                 {
                     xValue = Math.Round(xValue);
-                    //Todo: Grouping
-                    int dataCount = PointsCount;
+                    var isGrouped = this.ActualXAxis is CategoryAxis category && !category.ArrangeByIndex;
+                    int dataCount = isGrouped ? GroupedXValues.Count : PointsCount;
+
                     if (xValue <= xEnd && xValue >= xStart && xValue < dataCount && xValue >= 0)
                     {
-                        var dataPoint = ActualData != null ? ActualData[(int)xValue] : null;
+                        var dataPoint = new object();
+
+                        if (isGrouped)
+                        {
+                            dataPoint = GroupedActualData != null ? GroupedActualData[(int)xValue] : null;
+                        }
+                        else
+                        {
+                            dataPoint = ActualData != null ? ActualData[(int)xValue] : null;
+                        }
+
                         if (dataPoint != null)
                         {
                             dataPointsList.Add(dataPoint);
@@ -950,9 +979,9 @@ namespace Syncfusion.Maui.Charts
                         }
                     }
                 }
-            }            
-            
-            return dataPointsList;          
+            }
+
+            return dataPointsList;
         }
 
         internal virtual void GenerateTrackballPointInfo(List<object> nearestDataPoints, List<TrackballPointInfo> pointInfos, ref bool isSidebySide)

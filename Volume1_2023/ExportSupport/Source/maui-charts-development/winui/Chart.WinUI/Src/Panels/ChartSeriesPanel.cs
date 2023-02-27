@@ -91,9 +91,8 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="finalSize"></param>
         internal void Update(Size finalSize)
         {
-            bool canUpdate = !(Series is ISupportAxes);
-            if (Series is ISupportAxes &&
-                Series.ActualXAxis != null && Series.ActualYAxis != null)
+            bool canUpdate = (Series is CircularSeries || Series is TriangularSeriesBase);
+            if (Series.ActualXAxis != null && Series.ActualYAxis != null)
             {
                 canUpdate = true;
                 if (Series.Chart != null)

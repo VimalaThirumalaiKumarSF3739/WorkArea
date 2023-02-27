@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:WindowOverlay.Samples"
+             x:Class="WindowOverlay.Samples.TopOverlayPage"
+             Title="Top">
+
+    <Grid RowDefinitions="*,*"
+          ColumnDefinitions="*,*"
+          RowSpacing="25"
+          Background="AliceBlue"
+          HorizontalOptions="Center"
+          VerticalOptions="Center">
+
+        <Button x:Name="TopButton"
+                Grid.Row="0"
+                Text="Top Left"
+                WidthRequest="250"
+                Clicked="OnTopButtonClicked">
+        </Button>
+
+        <Button x:Name="BottomButton"
+                Grid.Row="1"
+                Text="Bottom Right"
+                WidthRequest="250"
+                Clicked="OnBottomButtonClicked">
+        </Button>
+
+        <Button Grid.Column="1"
+                Grid.RowSpan="2"
+                Text="-"
+                FontSize="20"
+                FontFamily="Bold"
+                CornerRadius="50"
+                HeightRequest="50"
+                WidthRequest="50"
+                HorizontalOptions="End"
+                VerticalOptions="Center"
+                Clicked="OnRemoveOverlayButtonClicked" />
+    </Grid>
+</ContentPage>

@@ -298,16 +298,16 @@ namespace Syncfusion.Maui.Charts
             OnLabelsIntersectActionChanged);
 
         /// <summary>
-        /// Gets or sets the enum <see cref="ChartAutoScrollingMode"/> to determine whether the axis should be auto scrolled at start or end position. 
+        /// Gets or sets the value that determines whether the axis should auto-scroll to start or end position. 
         /// </summary>
-        internal static readonly BindableProperty AutoScrollingModeProperty = BindableProperty.Create(
+        public static readonly BindableProperty AutoScrollingModeProperty = BindableProperty.Create(
             nameof(AutoScrollingMode),
             typeof(ChartAutoScrollingMode),
             typeof(ChartAxis),
             ChartAutoScrollingMode.End,
             BindingMode.Default,
             null,
-            OnAutoScrollingMode);
+            OnAutoScrollingModeChanged);
 
         /// <summary>
 		/// Gets or sets the value that determines the distance between the axis label and axis title. 
@@ -334,13 +334,13 @@ namespace Syncfusion.Maui.Charts
             OnRangeStylesPropertyChanged);
 
         /// <summary>
-		/// Gets or sets the value that determines the range of value to be visible during auto scrolling. 
+		/// Gets or sets the value that determines the range of values to be visible during auto-scrolling. 
         /// </summary>
-        internal static readonly BindableProperty AutoScrollingDeltaProperty = BindableProperty.Create(
+        public static readonly BindableProperty AutoScrollingDeltaProperty = BindableProperty.Create(
             nameof(AutoScrollingDelta),
-            typeof(double?),
+            typeof(double),
             typeof(ChartAxis),
-            null,
+            double.NaN,
             BindingMode.Default,
             null,
             OnAutoScrollingDeltaPropertyChanged);
@@ -1349,8 +1349,38 @@ namespace Syncfusion.Maui.Charts
         /// <summary>
         /// Gets or sets the enum <see cref="ChartAutoScrollingMode"/> to determine whether the axis should be auto scrolled at start or end position. 
         /// </summary>
+        /// <example>
+        /// # [MainPage.xaml](#tab/tabid-7)
+        /// <code><![CDATA[
+        /// <chart:SfCartesianChart>
+        ///    <chart:SfCartesianChart.XAxes>
+        ///        <chart:CategoryAxis AutoScrollingMode="Start"/>
+        ///    </chart:SfCartesianChart.XAxes>
+        ///    <chart:SfCartesianChart.YAxes>
+        ///        <chart:LogarithmicAxis AutoScrollingMode="End"/>
+        ///    </chart:SfCartesianChart.YAxes>
+        /// </chart:SfCartesianChart>
+        /// ]]>
+        /// </code>
+        /// # [MainPage.xaml.cs](#tab/tabid-8)
+        /// <code><![CDATA[
+        /// SfCartesianChart chart = new SfCartesianChart();
+        /// 
+        /// CategoryAxis xAxis = new CategoryAxis();
+        /// xAxis.AutoScrollingMode = ChartAutoScrollingMode.Start;
+        /// 
+        /// LogarithmicAxis yAxis = new LogarithmicAxis();
+        /// yaxis.AutoScrollingMode = ChartAutoScrollingMode.End;
+        /// 
+        /// chart.XAxes.Add(xAxis);	
+        /// chart.YAxes.Add(yAxis);	
+        /// ]]>
+        /// </code>
+        /// ***
+        /// </example>
         /// <value>This property takes the <see cref="ChartAutoScrollingMode"/> as its value.</value>
-        internal ChartAutoScrollingMode AutoScrollingMode
+        ///<value>Default value is <see cref="ChartAutoScrollingMode.End"/></value>
+        public ChartAutoScrollingMode AutoScrollingMode
         {
             get { return (ChartAutoScrollingMode)GetValue(AutoScrollingModeProperty); }
             set { SetValue(AutoScrollingModeProperty, value); }
@@ -1388,12 +1418,42 @@ namespace Syncfusion.Maui.Charts
         }
 
         /// <summary>
-		/// Gets or sets the value that determines the range of value to be visible during auto scrolling. 
+        /// Gets or sets the value that determines the range of values to be visible during auto scrolling. 
         /// </summary>
-        /// <value>This property takes the double value.</value>
-        internal double? AutoScrollingDelta
+        /// <example>
+        /// # [MainPage.xaml](#tab/tabid-7)
+        /// <code><![CDATA[
+        /// <chart:SfCartesianChart>
+        ///    <chart:SfCartesianChart.XAxes>
+        ///        <chart:CategoryAxis AutoScrollingDelta="3"/>
+        ///    </chart:SfCartesianChart.XAxes>
+        ///    <chart:SfCartesianChart.YAxes>
+        ///        <chart:LogarithmicAxis AutoScrollingDelta="2"/>
+        ///    </chart:SfCartesianChart.YAxes>
+        /// </chart:SfCartesianChart>
+        /// ]]>
+        /// </code>
+        /// # [MainPage.xaml.cs](#tab/tabid-8)
+        /// <code><![CDATA[
+        /// SfCartesianChart chart = new SfCartesianChart();
+        /// 
+        /// CategoryAxis xAxis = new CategoryAxis();
+        /// xAxis.AutoScrollingDelta = 3;
+        /// 
+        /// LogarithmicAxis yAxis = new LogarithmicAxis();
+        /// yaxis.AutoScrollingDelta = 2;
+        /// 
+        /// chart.XAxes.Add(xAxis);	
+        /// chart.YAxes.Add(yAxis);	
+        /// ]]>
+        /// </code>
+        /// ***
+        /// </example>
+        ///<value>This property takes the <see cref="double"/> as its value.</value>
+        ///<value>Default value is double.NaN</value>
+        public double AutoScrollingDelta
         {
-            get { return (double?)GetValue(AutoScrollingDeltaProperty); }
+            get { return (double)GetValue(AutoScrollingDeltaProperty); }
             set { SetValue(AutoScrollingDeltaProperty, value); }
         }
 
@@ -2038,11 +2098,12 @@ namespace Syncfusion.Maui.Charts
             }
         }
 
-        private static void OnAutoScrollingMode(BindableObject bindable, object oldValue, object newValue)
+        private static void OnAutoScrollingModeChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var axis = bindable as ChartAxis;
             if (axis != null)
             {
+                axis.CanAutoScroll = true;
                 axis.UpdateLayout();
             }
         }
@@ -2114,6 +2175,17 @@ namespace Syncfusion.Maui.Charts
 
         private static void OnAutoScrollingDeltaPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
+            if (bindable is ChartAxis axis && newValue != null)
+            {
+                var delta = Convert.ToDouble(newValue ?? double.NaN);
+                bool needAutoScroll = !double.IsNaN(delta) && delta > 0;
+                if (needAutoScroll)
+                {
+                    axis.ActualAutoScrollDelta = delta;
+                    axis.CanAutoScroll = true;
+                    axis.UpdateLayout();
+                }
+            }
         }
 
         private static void OnNameChanged(BindableObject bindable, object oldValue, object newValue)

@@ -5,10 +5,6 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExportSample", "ExportSample\ExportSample.csproj", "{D53B96F2-3877-4447-A236-6AAFBC3B5C0C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Syncfusion.Maui.Charts", "..\Source\maui-charts-development\maui\src\charts\Syncfusion.Maui.Charts.csproj", "{F3B3275E-BC91-4375-B2B6-377BA01822EC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Syncfusion.Maui.Core", "..\Source\maui-core-development\maui\src\core\Syncfusion.Maui.Core.csproj", "{496634B5-B851-409B-995D-671039DBA6DD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,18 +21,6 @@ Global
 		{D53B96F2-3877-4447-A236-6AAFBC3B5C0C}.Release-Xml|Any CPU.ActiveCfg = Release|Any CPU
 		{D53B96F2-3877-4447-A236-6AAFBC3B5C0C}.Release-Xml|Any CPU.Build.0 = Release|Any CPU
 		{D53B96F2-3877-4447-A236-6AAFBC3B5C0C}.Release-Xml|Any CPU.Deploy.0 = Release|Any CPU
-		{F3B3275E-BC91-4375-B2B6-377BA01822EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3B3275E-BC91-4375-B2B6-377BA01822EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3B3275E-BC91-4375-B2B6-377BA01822EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3B3275E-BC91-4375-B2B6-377BA01822EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F3B3275E-BC91-4375-B2B6-377BA01822EC}.Release-Xml|Any CPU.ActiveCfg = Release-Xml|Any CPU
-		{F3B3275E-BC91-4375-B2B6-377BA01822EC}.Release-Xml|Any CPU.Build.0 = Release-Xml|Any CPU
-		{496634B5-B851-409B-995D-671039DBA6DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{496634B5-B851-409B-995D-671039DBA6DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{496634B5-B851-409B-995D-671039DBA6DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{496634B5-B851-409B-995D-671039DBA6DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{496634B5-B851-409B-995D-671039DBA6DD}.Release-Xml|Any CPU.ActiveCfg = Release-Xml|Any CPU
-		{496634B5-B851-409B-995D-671039DBA6DD}.Release-Xml|Any CPU.Build.0 = Release-Xml|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

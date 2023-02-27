@@ -79,7 +79,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="xVals"></param>
         /// <param name="yVals"></param>
         /// <param name="series"></param>
-        public FastLineBitmapSegment(IList<double> xVals, IList<double> yVals, DataMarkerSeries series)
+        public FastLineBitmapSegment(IList<double> xVals, IList<double> yVals, ChartSeries series)
             : this(series)
         {
             base.Series = series;
@@ -111,7 +111,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <inheritdoc/>    
         internal override UIElement CreateVisual(Size size)
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             bitmap = fastSeries.Chart.GetFastRenderSurface();
             fastBuffer = fastSeries.Chart.GetFastBuffer();
 
@@ -121,7 +121,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <inheritdoc/>
         internal override void OnSizeChanged(Size size)
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             bitmap = fastSeries.Chart.GetFastRenderSurface();
             fastBuffer = fastSeries.Chart.GetFastBuffer();
         }
@@ -135,7 +135,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <inheritdoc/>
         internal override void Update(IChartTransformer transformer)
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             bitmap = fastSeries.Chart.GetFastRenderSurface();
             //if (transformer != null && chartPoints != null && chartPoints.Count > 1)
             if (transformer != null && fastSeries.PointsCount > 1)
@@ -193,7 +193,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         internal void SetRange()
         {
-            isGrouping = (Series.ActualXAxis is CategoryAxis) ? (Series.ActualXAxis as CategoryAxis).IsIndexed : true;
+            isGrouping = (Series.ActualXAxis is CategoryAxis) ? (Series.ActualXAxis as CategoryAxis).ArrangeByIndex : true;
             if (Series.PointsCount > 0)
             {
                 double _Min = yChartVals.Min();
@@ -231,7 +231,7 @@ namespace Syncfusion.UI.Xaml.Charts
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1801: Review unused parameters")]
         internal void UpdateVisual(bool updatePolyline)
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             ChartBase chart = fastSeries.Chart;
             isSeriesSelected = false;
             bool isMultiColor = fastSeries.PaletteBrushes != null;
@@ -405,7 +405,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private void TransformToScreenCoHorizontal()
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             int i = 0;
             double prevXValue = 0;
             double prevYValue = 0;
@@ -654,7 +654,7 @@ namespace Syncfusion.UI.Xaml.Charts
         private void DrawLine(List<double> xVals, List<double> yVals, int width, int height, Windows.UI.Color color,
                                     double leftThickness, double rightThickness, bool isMultiColor)
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             xStart = xVals[0];
             yStart = yVals[0];
             xEnd = 0;
@@ -835,7 +835,7 @@ namespace Syncfusion.UI.Xaml.Charts
         private void DrawLineAa(List<double> xVals, List<double> yVals, int width, int height, Windows.UI.Color color, double leftThickness,
                                 double rightThickness, bool isMultiColor)
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             xStart = xVals[0];
             yStart = yVals[0];
             xEnd = 0;
@@ -907,7 +907,7 @@ namespace Syncfusion.UI.Xaml.Charts
                                      double leftThickness,
                                      double rightThickness)
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             var bitmapSeries = (FastLineBitmapSeries)fastSeries;
             double multiplier = bitmapSeries.StrokeThickness;
             double xEnd;
@@ -1159,7 +1159,7 @@ namespace Syncfusion.UI.Xaml.Charts
                                     double leftThickness,
                                     double rightThickness)
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             var bitmapSeries = (FastLineBitmapSeries)fastSeries;
             double multiplier = bitmapSeries.StrokeThickness;
             double xEnd;
@@ -1401,7 +1401,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private void DrawLine(Windows.UI.Color color, int width, int height)
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
 
             if (fastSeries.Chart.IsMultipleArea && fastSeries.Clip != null)
             {
@@ -1424,7 +1424,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private void DrawLineAa(Windows.UI.Color color, int width, int height)
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
 
             if (fastSeries.Chart.IsMultipleArea && fastSeries.Clip != null)
             {

@@ -942,7 +942,7 @@ namespace Syncfusion.UI.Xaml.Charts
         public void ResumeSeriesNotification()
         {
             if (ActualSeries != null)
-                foreach (ChartSeries series in this.ActualSeries)
+                foreach (ChartSeries series in ActualSeries)
                 {
                     series.ResumeNotification();
                 }
@@ -1492,7 +1492,7 @@ namespace Syncfusion.UI.Xaml.Charts
             if (oldIndex < seriesCollection.Count && oldIndex >= 0
                 && !GetSeriesSelectionBehavior().EnableMultiSelection)
             {
-                ChartSeries series = seriesCollection[oldIndex] as ChartSeries;
+                ChartSeries series = seriesCollection[oldIndex];
                 if (SelectedSeriesCollection.Contains(series))
                     SelectedSeriesCollection.Remove(series);
 
@@ -1501,7 +1501,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
             if (newIndex >= 0 && GetEnableSeriesSelection() && newIndex < VisibleSeries.Count)
             {
-                ChartSeries series = seriesCollection[newIndex] as ChartSeries;
+                ChartSeries series = seriesCollection[newIndex];
 
                 if (!SelectedSeriesCollection.Contains(series))
                     SelectedSeriesCollection.Add(series);
@@ -2056,7 +2056,7 @@ namespace Syncfusion.UI.Xaml.Charts
 #endif
         }
 
-        internal double GetPercentage(IList<ISupportAxes> seriesColl, double item, int index, bool reCalculation)
+        internal double GetPercentage(IList<ChartSeries> seriesColl, double item, int index, bool reCalculation)
         {
             double totalValues = 0;
             if (reCalculation)
@@ -2601,33 +2601,32 @@ namespace Syncfusion.UI.Xaml.Charts
                         series.UpdateLegendIconTemplate(false);
                         series.Chart = this;
 
-                        var supportAxisSeries = series as ISupportAxes;
                         if (series.ActualXAxis != null)
                         {
                             series.ActualXAxis.Area = this;
-                            if (supportAxisSeries != null && !series.ActualXAxis.RegisteredSeries.Contains(supportAxisSeries))
-                                series.ActualXAxis.RegisteredSeries.Add(supportAxisSeries);
-                            if (!this.InternalAxes.Contains(series.ActualXAxis))
+                            if (!series.ActualXAxis.RegisteredSeries.Contains(series))
+                                series.ActualXAxis.RegisteredSeries.Add(series);
+                            if (!InternalAxes.Contains(series.ActualXAxis))
                             {
-                                this.InternalAxes.Add(series.ActualXAxis);
-                                this.DependentSeriesAxes.Add(series.ActualXAxis);
+                                InternalAxes.Add(series.ActualXAxis);
+                                DependentSeriesAxes.Add(series.ActualXAxis);
                             }
                         }
                         if (series.ActualYAxis != null)
                         {
                             series.ActualYAxis.Area = this;
-                            if (supportAxisSeries != null && !series.ActualYAxis.RegisteredSeries.Contains(supportAxisSeries))
-                                series.ActualYAxis.RegisteredSeries.Add(supportAxisSeries);
-                            if (!this.InternalAxes.Contains(series.ActualYAxis))
+                            if (!series.ActualYAxis.RegisteredSeries.Contains(series))
+                                series.ActualYAxis.RegisteredSeries.Add(series);
+                            if (!InternalAxes.Contains(series.ActualYAxis))
                             {
-                                this.InternalAxes.Add(series.ActualYAxis);
-                                this.DependentSeriesAxes.Add(series.ActualYAxis);
+                                InternalAxes.Add(series.ActualYAxis);
+                                DependentSeriesAxes.Add(series.ActualYAxis);
                             }
                         }
                         
-                        if (this.seriesPresenter != null && !this.seriesPresenter.Children.Contains(series))
+                        if (seriesPresenter != null && !this.seriesPresenter.Children.Contains(series))
                         {
-                            this.seriesPresenter.Children.Add(series);
+                            seriesPresenter.Children.Add(series);
                         }
                         if (series.IsSeriesVisible)
                         {
@@ -2648,9 +2647,8 @@ namespace Syncfusion.UI.Xaml.Charts
             {
                 for (int i = seriesPresenter.Children.Count - 1; i >= 0; i--)
                 {
-                    if (seriesPresenter.Children[i] is DataMarkerSeries)
+                    if (seriesPresenter.Children[i] is ChartSeries series)
                     {
-                        var series = seriesPresenter.Children[i] as ISupportAxes;
                         if (series != null)
                         {
                             var cartesianSeries = series as CartesianSeries;
@@ -2687,7 +2685,7 @@ namespace Syncfusion.UI.Xaml.Charts
         {
             for (int i = VisibleSeries.Count - 1; i >= 0; i--)
             {
-                ChartSeries series = VisibleSeries[i] as ChartSeries;
+                ChartSeries series = VisibleSeries[i];
 
                 if (!isTap)
                 {
@@ -2709,14 +2707,9 @@ namespace Syncfusion.UI.Xaml.Charts
                 {
                     for (int i = seriesPresenter.Children.Count - 1; i >= 0; i--)
                     {
-                        if (seriesPresenter.Children[i] is DataMarkerSeries)
+                        if (seriesPresenter.Children[i] is ChartSeries series)
                         {
-                            if (seriesPresenter.Children[i] is ISupportAxes)
-                            {
-                                var series = seriesPresenter.Children[i] as ISupportAxes;
-                                UnRegisterSeries(series);
-                            }
-
+                            UnRegisterSeries(series);
                             var currentSeries = seriesPresenter.Children[i];
                             var doughnutSeries = currentSeries as DoughnutSeries;
                             if (doughnutSeries != null)
@@ -2724,11 +2717,10 @@ namespace Syncfusion.UI.Xaml.Charts
                                 doughnutSeries.RemoveCenterView(doughnutSeries.CenterView);
                             }
 
-                            if (this.DataLabelPresenter != null)
+                            if (DataLabelPresenter != null)
                             {
-                                var series = currentSeries as ChartSeries;
                                 if (series != null && series.AdornmentPresenter != null && this.DataLabelPresenter.Children.Contains(series.AdornmentPresenter))
-                                    this.DataLabelPresenter.Children.Remove(series.AdornmentPresenter);
+                                    DataLabelPresenter.Children.Remove(series.AdornmentPresenter);
                             }
 
                             seriesPresenter.Children.Remove(currentSeries);
@@ -2758,14 +2750,14 @@ namespace Syncfusion.UI.Xaml.Charts
                 if (SelectedSeriesCollection.Contains(series))
                     SelectedSeriesCollection.Remove(series);
 
-                UnRegisterSeries(series as ISupportAxes);
+                UnRegisterSeries(series);
                 
-                if (this.seriesPresenter != null)
-                    this.seriesPresenter.Children.Remove(series);
-                if (this.DataLabelPresenter != null)
+                if (seriesPresenter != null)
+                    seriesPresenter.Children.Remove(series);
+                if (DataLabelPresenter != null)
                 {
-                    if (series.AdornmentPresenter != null && this.DataLabelPresenter.Children.Contains(series.AdornmentPresenter))
-                        this.DataLabelPresenter.Children.Remove(series.AdornmentPresenter);
+                    if (series.AdornmentPresenter != null && DataLabelPresenter.Children.Contains(series.AdornmentPresenter))
+                        DataLabelPresenter.Children.Remove(series.AdornmentPresenter);
                 }
                 series.RemoveTooltip();
 
@@ -2845,8 +2837,8 @@ namespace Syncfusion.UI.Xaml.Charts
             var canvas = this.GetAdorningCanvas();
             if (canvas != null)
             {
-                if (canvas.Children.Contains((this.Tooltip as ChartTooltip)))
-                    canvas.Children.Remove(this.Tooltip as ChartTooltip);
+                if (canvas.Children.Contains(Tooltip))
+                    canvas.Children.Remove(Tooltip);
             }
             if (PlotArea != null)
                 PlotArea.ShouldPopulateLegendItems = true;
@@ -2857,7 +2849,7 @@ namespace Syncfusion.UI.Xaml.Charts
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        private void UnRegisterSeries(ISupportAxes series)
+        private void UnRegisterSeries(ChartSeries series)
         {
             if (series != null)
             {
@@ -2877,9 +2869,10 @@ namespace Syncfusion.UI.Xaml.Charts
                     }
                 }
             }
+
             if (InternalPrimaryAxis != null && InternalSecondaryAxis != null
                 && InternalPrimaryAxis.RegisteredSeries.Count == 0 && InternalSecondaryAxis.RegisteredSeries.Count == 0
-                && (series != null && (series as ChartSeries).IsActualTransposed))
+                && series != null && series.IsActualTransposed)
             {
                 InternalPrimaryAxis.IsVertical = false;
                 InternalSecondaryAxis.IsVertical = true;
@@ -2918,15 +2911,13 @@ namespace Syncfusion.UI.Xaml.Charts
                 }
 
                 series.Chart     = this;
-
-                var supportAxisSeries = series as ISupportAxes;
                 if (series.ActualXAxis != null)
                 {
                     series.ActualXAxis.Area = this;
 
-                    if (supportAxisSeries != null && !series.ActualXAxis.RegisteredSeries.Contains(supportAxisSeries))
-                        series.ActualXAxis.RegisteredSeries.Add(supportAxisSeries);
-                    if (!this.InternalAxes.Contains(series.ActualXAxis))
+                    if (!series.ActualXAxis.RegisteredSeries.Contains(series))
+                        series.ActualXAxis.RegisteredSeries.Add(series);
+                    if (!InternalAxes.Contains(series.ActualXAxis))
                     {
                         InternalAxes.Add(series.ActualXAxis);
                         DependentSeriesAxes.Add(series.ActualXAxis);
@@ -2936,9 +2927,9 @@ namespace Syncfusion.UI.Xaml.Charts
                 {
                     series.ActualYAxis.Area = this;
 
-                    if (supportAxisSeries != null && !series.ActualYAxis.RegisteredSeries.Contains(supportAxisSeries))
-                        series.ActualYAxis.RegisteredSeries.Add(supportAxisSeries);
-                    if (!this.InternalAxes.Contains(series.ActualYAxis))
+                    if (!series.ActualYAxis.RegisteredSeries.Contains(series))
+                        series.ActualYAxis.RegisteredSeries.Add(series);
+                    if (!InternalAxes.Contains(series.ActualYAxis))
                     {
                         InternalAxes.Add(series.ActualYAxis);
                         DependentSeriesAxes.Add(series.ActualYAxis);
@@ -2971,7 +2962,7 @@ namespace Syncfusion.UI.Xaml.Charts
         {
             for (int i = VisibleSeries.Count - 1; i >= 0; i--)
             {
-                ChartSeries series = VisibleSeries[i] as ChartSeries;
+                ChartSeries series = VisibleSeries[i];
 
                 if (series.EnableTooltip && series.IsHitTestSeries())
                 {

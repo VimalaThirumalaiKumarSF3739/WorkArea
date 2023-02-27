@@ -691,7 +691,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="radius"></param>
         /// <param name="series"></param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1801: Review unused parameters")]
-        public ChartPieDataLabel(double xVal, double yVal, double angle, double radius, DataMarkerSeries series)
+        public ChartPieDataLabel(double xVal, double yVal, double angle, double radius, ChartSeries series)
         {
 
         }
@@ -767,37 +767,9 @@ namespace Syncfusion.UI.Xaml.Charts
         {
             double radius = Radius;
             double actualRadius = Math.Min(transformer.Viewport.Width, transformer.Viewport.Height) / 2;
-            if (Series is PieSeries hostSeries)
+            
+            if (Series is DoughnutSeries doughnutHostSeries)
             {
-                double pieSeriesCount = hostSeries.GetPieSeriesCount();
-                double equalParts = actualRadius / pieSeriesCount;
-                double innerRadius = equalParts * pieIndex;
-
-                Point center;
-                if (pieSeriesCount == 1)
-                    center = hostSeries.Center;
-                else
-                    center = ChartLayoutUtils.GetCenter(transformer.Viewport);
-
-                if (hostSeries != null && (hostSeries.DataLabelSettings as CircularDataLabelSettings).Position == CircularSeriesLabelPosition.Inside)
-                {
-                    if (pieIndex > 0)
-                    {
-                        double difference = (radius - innerRadius) / 2;
-                        radius = radius - difference;
-                    }
-                    else
-                    {
-                        radius = radius / 2;
-                    }
-                }
-
-                this.X = center.X + radius * Math.Cos(Angle);
-                this.Y = center.Y + radius * Math.Sin(Angle);
-            }
-            else if (Series is DoughnutSeries doughnutHostSeries)
-            {
-
                 actualRadius *= doughnutHostSeries.InternalDoughnutCoefficient;
 
                 Point center;
@@ -842,13 +814,41 @@ namespace Syncfusion.UI.Xaml.Charts
                 this.X = center.X + radius * Math.Cos(adornmentAngle);
                 this.Y = center.Y + radius * Math.Sin(adornmentAngle);
             }
+            else if (Series is PieSeries hostSeries)
+            {
+                double pieSeriesCount = hostSeries.GetPieSeriesCount();
+                double equalParts = actualRadius / pieSeriesCount;
+                double innerRadius = equalParts * pieIndex;
+
+                Point center;
+                if (pieSeriesCount == 1)
+                    center = hostSeries.Center;
+                else
+                    center = ChartLayoutUtils.GetCenter(transformer.Viewport);
+
+                if (hostSeries != null && (hostSeries.DataLabelSettings as CircularDataLabelSettings).Position == CircularSeriesLabelPosition.Inside)
+                {
+                    if (pieIndex > 0)
+                    {
+                        double difference = (radius - innerRadius) / 2;
+                        radius = radius - difference;
+                    }
+                    else
+                    {
+                        radius = radius / 2;
+                    }
+                }
+
+                this.X = center.X + radius * Math.Cos(Angle);
+                this.Y = center.Y + radius * Math.Sin(Angle);
+            }
         }
 
 #endregion
 
 #region Internal Methods
 
-        internal void SetValues(double xVal, double yVal, double angle, double radius, DataMarkerSeries series)
+        internal void SetValues(double xVal, double yVal, double angle, double radius, ChartSeries series)
         {
             XPos = XData = xVal;
             YPos = YData = yVal;
@@ -889,7 +889,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="height"></param>
         /// <param name="series"></param>
 
-        public TriangularAdornment(double xVal, double yVal, double currY, double height, DataMarkerSeries series)
+        public TriangularAdornment(double xVal, double yVal, double currY, double height, ChartSeries series)
         {
             XPos = XData = xVal;
             YPos = YData = yVal;

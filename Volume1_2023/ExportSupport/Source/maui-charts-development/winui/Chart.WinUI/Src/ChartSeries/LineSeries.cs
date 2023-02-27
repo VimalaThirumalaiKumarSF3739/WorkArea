@@ -83,7 +83,7 @@ namespace Syncfusion.UI.Xaml.Charts
     /// ***
     /// </example>
     /// <seealso cref="LineSegment"/>
-    public class LineSeries : XySeriesDraggingBase, ISegmentSelectable
+    public class LineSeries : XyDataSeries, ISegmentSelectable
     {
         #region Dependency Property Registration
 
@@ -269,7 +269,7 @@ namespace Syncfusion.UI.Xaml.Charts
         {
             int index = -1;
             List<double> xValues = null;
-            bool isGrouping = this.ActualXAxis is CategoryAxis && !(this.ActualXAxis as CategoryAxis).IsIndexed;
+            bool isGrouping = this.ActualXAxis is CategoryAxis && !(this.ActualXAxis as CategoryAxis).ArrangeByIndex;
             if (isGrouping)
                 xValues = GroupedXValuesIndexes;
             else

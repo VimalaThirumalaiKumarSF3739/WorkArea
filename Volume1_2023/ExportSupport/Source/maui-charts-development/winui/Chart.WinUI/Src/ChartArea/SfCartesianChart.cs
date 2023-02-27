@@ -630,7 +630,7 @@ namespace Syncfusion.UI.Xaml.Charts
     /// 
     /// <para>To enable the track ball in the chart, create an instance of <see cref="ChartTrackballBehavior"/> and set it to the <see cref="TrackballBehavior"/> property of SfCartesianChart.</para>
     ///
-    /// <para>To view the trackball label in the particular axis, you have to enable the <see cref="ChartAxis.ShowTrackballInfo"/> property in that axis.</para>
+    /// <para>To view the trackball label in the particular axis, you have to enable the <see cref="ChartAxis.ShowTrackballLabel"/> property in that axis.</para>
     /// 
     /// # [MainPage.xaml](#tab/tabid-20)
     /// <code><![CDATA[
@@ -645,7 +645,7 @@ namespace Syncfusion.UI.Xaml.Charts
     ///        </chart:SfCartesianChart.TrackballBehavior>
     ///
     ///        <chart:SfCartesianChart.XAxes>
-    ///            <chart:NumericalAxis ShowTrackballInfo="true"/>
+    ///            <chart:NumericalAxis ShowTrackballLabel="true"/>
     ///        </chart:SfCartesianChart.XAxes>
     ///
     ///        <chart:SfCartesianChart.YAxes>
@@ -674,7 +674,7 @@ namespace Syncfusion.UI.Xaml.Charts
     /// chart.TrackballBehavior = new ChartTrackballBehavior();
     /// 
     /// NumericalAxis xaxis = new NumericalAxis();
-    /// xaxis.ShowTrackballInfo = true;
+    /// xaxis.ShowTrackballLabel = true;
     /// chart.XAxes.Add(xaxis);	
     /// 
     /// NumericalAxis yaxis = new NumericalAxis();
@@ -1001,7 +1001,7 @@ namespace Syncfusion.UI.Xaml.Charts
         ///           </chart:SfCartesianChart.DataContext>
         /// 
         ///           <chart:SfCartesianChart.TrackballBehavior>
-        ///               <chart:ChartTrackballBehavior ShowLine="True" LabelDisplayMode="GroupAllPoints"/>
+        ///               <chart:ChartTrackballBehavior ShowLine="True" DisplayMode="GroupAllPoints"/>
         ///           </chart:SfCartesianChart.TrackballBehavior>
         /// 
         ///           <chart:SfCartesianChart.XAxes>
@@ -1026,7 +1026,7 @@ namespace Syncfusion.UI.Xaml.Charts
         ///     ViewModel viewModel = new ViewModel();
         ///     chart.DataContext = viewModel;
         /// 
-        ///     chart.TrackballBehavior = new ChartTrackballBehavior() { LabelDisplayMode = TrackballLabelDisplayMode.GroupAllPoints, ShowLine = true };
+        ///     chart.TrackballBehavior = new ChartTrackballBehavior() { DisplayMode = TrackballLabelDisplayMode.GroupAllPoints, ShowLine = true };
         /// 
         ///     NumericalAxis xaxis = new NumericalAxis();
         ///     chart.XAxes.Add(xaxis);

@@ -5,6 +5,7 @@ using Microsoft.Maui.Graphics;
 #endif
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -40,6 +41,65 @@ namespace Syncfusion.Maui.Charts
         #endregion
 
         #region Internal Methods
+        internal void GroupData()
+        {
+            List<string> groupingValues = new List<string>();
+            List<object> groupedDatas = new List<object>();
+
+            foreach (CartesianSeries series in RegisteredSeries)
+            {
+                if (series.ActualXValues is List<string> xValues)
+                {
+                    if (groupedDatas.Count != 0)
+                    {
+                       for (int i = 0; i <= groupingValues.Count - 1; i++)
+                        {
+                            for (int j = 0; j <= xValues.Count - 1; j++)
+                            {
+                                if (!groupingValues.Contains(xValues[j]))
+                                {
+                                    groupingValues.Add(xValues[i]);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        groupingValues.AddRange(xValues);
+                   }
+                }
+                else if (series.ActualXValues != null)
+                {
+                    groupingValues.AddRange(from val in (series.ActualXValues as List<double>) select val.ToString());
+                }
+
+                if (groupingValues.Count != groupedDatas.Count)
+                {
+                    groupedDatas.AddRange(series.ActualData ?? groupedDatas);
+                }
+            }
+            
+            var distinctXValues = groupingValues.Distinct().ToList();
+
+            foreach (CartesianSeries series in RegisteredSeries)
+            {
+                if (series.ActualXValues is List<string> list)
+                {
+                    series.GroupedXValuesIndexes = (from val in list select (double)distinctXValues.IndexOf(val)).ToList();
+                }
+                else if (series.ActualXValues != null)
+                {
+                    series.GroupedXValuesIndexes = (from val in series.ActualXValues as List<double> select (double)distinctXValues.IndexOf(val.ToString())).ToList();
+                }
+
+                series.GroupedXValues = distinctXValues;
+
+                //TODO: Remove group values for dynamic update. 
+                
+                series.GroupedActualData = groupedDatas;
+            }
+        }
+
         internal override void GenerateVisibleLabels()
         {
             if (VisibleRange.IsEmpty)
@@ -54,45 +114,30 @@ namespace Syncfusion.Maui.Charts
             double position = visibleRange.Start - (visibleRange.Start % actualInterval);
             var actualSeries = GetActualSeries();
 
-            int maxDataCount = actualSeries != null ? actualSeries.PointsCount : 0;
             var roundInterval = Math.Ceiling(interval);
 
-            for (; position <= visibleRange.End; position += roundInterval)
+            var values = ArrangeByIndex ? actualSeries?.XValues as IList : actualSeries?.GroupedXValues as IList;
+
+            for (; position <= values?.Count - 1; position += roundInterval)
             {
                 int pos = (int)position;
-                if (visibleRange.Inside(pos) && pos < maxDataCount && pos > -1)
+                if (visibleRange.Inside(pos) && pos < values?.Count && pos > -1)
                 {
                     var format = LabelStyle != null ? LabelStyle.LabelFormat : string.Empty;
                     var content = GetLabelContent(actualSeries, pos, format);
-
                     var axisLabel = new ChartAxisLabel(pos, content != null ? content : string.Empty);
                     actualLabels?.Add(axisLabel);
-
                     if (LabelPlacement != LabelPlacement.BetweenTicks)
                     {
                         TickPositions.Add((double)pos);
                     }
-                }
-            }
 
-            if (LabelPlacement == LabelPlacement.BetweenTicks)
-            {
-                double pos = 0;
-                position = visibleRange.Start - (visibleRange.Start % actualInterval);
-
-                for (; position <= visibleRange.End; position += 1)
-                {
-                    pos = ((int)Math.Round(position)) - 0.5;
-                    if (visibleRange.Inside(pos) && pos < maxDataCount && pos > -1)
+                    if (LabelPlacement == LabelPlacement.BetweenTicks)
                     {
-                        TickPositions.Add(pos);
+                        double pos1 = 0;
+                        pos1 = ((int)Math.Round(position)) - 0.5;
+                        TickPositions.Add(pos1);
                     }
-                }
-
-                pos += 1;
-                if (visibleRange.Inside(pos) && pos < maxDataCount && pos > -1)
-                {
-                    TickPositions.Add(pos);
                 }
             }
         }
@@ -100,40 +145,52 @@ namespace Syncfusion.Maui.Charts
         internal string GetLabelContent(ChartSeries? chartSeries, int pos, string labelFormat)
         {
             var labelContent = string.Empty;
+            int count = 0;
 
-            if (chartSeries != null)
+            foreach (var series in RegisteredSeries)
             {
-                var values = chartSeries.XValues as IList;
                 string label = string.Empty;
+
+                var cartesianSeries = series;
+                var values = ArrangeByIndex ? cartesianSeries.XValues as IList : cartesianSeries.GroupedXValues as IList;
 
                 if (values != null && values.Count > pos && pos >= 0)
                 {
                     var xValue = values[pos];
                     if (xValue != null)
                     {
-                        if (chartSeries.XValueType == ChartValueType.String)
+                        if (cartesianSeries.XValueType == ChartValueType.String)
                         {
                             label = (string)xValue;
                         }
-                        else if (chartSeries.XValueType == ChartValueType.DateTime)
+                        else if (cartesianSeries.XValueType == ChartValueType.DateTime)
                         {
                             if (string.IsNullOrEmpty(labelFormat))
                             {
                                 labelFormat = "dd/MM/yyyy";
                             }
-
                             xValue = Convert.ToDouble(xValue);
                             label = GetFormattedAxisLabel(labelFormat, xValue);
                         }
-                        else if (chartSeries.XValueType == ChartValueType.Double)
+                        else if (cartesianSeries?.XValueType == ChartValueType.Double)
                         {
                             xValue = Convert.ToDouble(xValue);
                             label = GetActualLabelContent(xValue, labelFormat);
                         }
+
+                        if (!string.IsNullOrEmpty(label.ToString()) && !labelContent.Equals(label) && ArrangeByIndex)
+                        {
+                            labelContent = count > 0 && !string.IsNullOrEmpty(labelContent) ? labelContent + ", " + label : label.ToString();
+                        }
+
+                        if (!ArrangeByIndex)
+                        {
+                            return label;
+                        }
+
+                        count++;
                     }
                 }
-
-                return label;
             }
 
             return labelContent;

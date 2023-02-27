@@ -22,7 +22,7 @@ namespace Syncfusion.UI.Xaml.Charts
     /// </summary>
     /// <remarks>
     /// <para>To enable the track ball in the chart, create an instance of <see cref="ChartTrackballBehavior"/> and set it to the <see cref="TrackballBehavior"/> property of SfCartesianChart.</para>
-    /// <para>To view the trackball label in the particular axis, you have to enable the <see cref="ChartAxis.ShowTrackballInfo"/> property in that axis.</para>
+    /// <para>To view the trackball label in the particular axis, you have to enable the <see cref="ChartAxis.ShowTrackballLabel"/> property in that axis.</para>
     /// <para>It provides options to customize the trackball line, symbol, and label.</para>
     ///
     /// <b>LineStyle</b>
@@ -186,20 +186,20 @@ namespace Syncfusion.UI.Xaml.Charts
     /// </code>
     /// ***
     ///
-    /// <b>ShowTrackballInfo</b>
+    /// <b>ShowTrackballLabel</b>
     ///
-    /// <para>The axis label will be viewed when the ShowTrackballInfo property is set to true. The default value of ShowTrackballInfo is false</para>
+    /// <para>The axis label will be viewed when the ShowTrackballLabel property is set to true. The default value of ShowTrackballLabel is false</para>
     ///
     /// # [Xaml](#tab/tabid-8)
     /// <code><![CDATA[
     ///     <chart:SfCartesianChart>
     ///
     ///           <chart:SfCartesianChart.XAxes>
-    ///               <chart:NumericalAxis ShowTrackballInfo="True"/>
+    ///               <chart:NumericalAxis ShowTrackballLabel="True"/>
     ///           </chart:SfCartesianChart.XAxes>
     ///
     ///           <chart:SfCartesianChart.YAxes>
-    ///               <chart:NumericalAxis ShowTrackballInfo="True"/>
+    ///               <chart:NumericalAxis  ShowTrackballLabel="True"/>
     ///           </chart:SfCartesianChart.YAxes>
     ///           
     ///           <chart:SfCartesianChart.TrackballBehavior>
@@ -209,7 +209,7 @@ namespace Syncfusion.UI.Xaml.Charts
     ///           <chart:LineSeries ItemsSource="{Binding Data}"
     ///                             XBindingPath="XValue"
     ///                             YBindingPath="YValue"
-    ///                             ShowTrackballInfo="True"/>
+    ///                             ShowTrackballLabel="True"/>
     ///
     ///     </chart:SfCartesianChart>
     /// ]]>
@@ -220,11 +220,11 @@ namespace Syncfusion.UI.Xaml.Charts
     ///     ViewModel viewModel = new ViewModel();
     ///
     ///     NumericalAxis xAxis = new NumericalAxis();
-    ///     xAxis.ShowTrackballInfo= true;
+    ///     xAxis.ShowTrackballLabel= true;
     ///     chart.XAxes.Add(xAxis);
     ///     
     ///     NumericalAxis yAxis = new NumericalAxis();
-    ///     yAxis.ShowTrackballInfo= true;
+    ///     yAxis.ShowTrackballLabel= true;
     ///     chart.YAxes.Add(yAxis);
     ///
     ///     chart.TrackballBehavior = new ChartTrackballBehavior();
@@ -233,7 +233,7 @@ namespace Syncfusion.UI.Xaml.Charts
     ///     series.ItemsSource = viewModel.Data;
     ///     series.XBindingPath = "XValue";
     ///     series.YBindingPath = "YValue";
-    ///     series.ShowTrackballInfo= true;
+    ///     series.ShowTrackballLabel= true;
     ///     chart.Series.Add(series);
     ///
     /// ]]>
@@ -290,11 +290,11 @@ namespace Syncfusion.UI.Xaml.Charts
                 new PropertyMetadata(ChartAlignment.Center));
 
         /// <summary>
-        /// The DependencyProperty for <see cref="LabelDisplayMode"/> property.
+        /// The DependencyProperty for <see cref="DisplayMode"/> property.
         /// </summary>
-        public static readonly DependencyProperty LabelDisplayModeProperty =
+        public static readonly DependencyProperty DisplayModeProperty =
             DependencyProperty.Register(
-             nameof(LabelDisplayMode),
+             nameof(DisplayMode),
              typeof(TrackballLabelDisplayMode),
              typeof(ChartTrackballBehavior),
              new PropertyMetadata(TrackballLabelDisplayMode.FloatAllPoints));
@@ -617,7 +617,7 @@ namespace Syncfusion.UI.Xaml.Charts
         ///           <!--omitted for brevity-->
         ///
         ///           <chart:SfCartesianChart.TrackballBehavior>
-        ///               <chart:ChartTrackballBehavior LabelDisplayMode="GroupAllPoints"/>
+        ///               <chart:ChartTrackballBehavior DisplayMode="GroupAllPoints"/>
         ///           </chart:SfCartesianChart.TrackballBehavior>
         ///
         ///           <chart:LineSeries ItemsSource="{Binding Data}"
@@ -635,7 +635,7 @@ namespace Syncfusion.UI.Xaml.Charts
         ///    // omitted for brevity
         ///    chart.TrackballBehavior = new ChartTrackballBehavior()
         ///    {
-        ///       LabelDisplayMode = TrackballLabelDisplayMode.GroupAllPoints,
+        ///       DisplayMode = TrackballLabelDisplayMode.GroupAllPoints,
         ///    };
         ///
         ///     LineSeries series = new LineSeries();
@@ -648,10 +648,10 @@ namespace Syncfusion.UI.Xaml.Charts
         /// </code>
         /// ***
         /// </example>
-        public TrackballLabelDisplayMode LabelDisplayMode
+        public TrackballLabelDisplayMode DisplayMode
         {
-            get { return (TrackballLabelDisplayMode)GetValue(LabelDisplayModeProperty); }
-            set { SetValue(LabelDisplayModeProperty, value); }
+            get { return (TrackballLabelDisplayMode)GetValue(DisplayModeProperty); }
+            set { SetValue(DisplayModeProperty, value); }
         }
 
         /// <summary>
@@ -1012,7 +1012,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
                 foreach (ChartSeries series in group)
                 {
-                    if (series is CartesianSeries && (!(series as CartesianSeries).ShowTrackballInfo))
+                    if (series is CartesianSeries && (!(series as CartesianSeries).ShowTrackballLabel))
                         continue;
 
                     bool isGrouping = series.ActualXAxis is CategoryAxis && !(series.ActualXAxis as CategoryAxis).IsIndexed;
@@ -1300,7 +1300,7 @@ namespace Syncfusion.UI.Xaml.Charts
                             ptInfo.ValueX = axis.GetLabelContent(leastXVal).ToString();
                         }
 
-                        if (LabelDisplayMode == TrackballLabelDisplayMode.NearestPoint)
+                        if (DisplayMode == TrackballLabelDisplayMode.NearestPoint)
                         {
                             foreach (ChartPointInfo pointInfo in PointInfos)
                             {
@@ -1334,7 +1334,7 @@ namespace Syncfusion.UI.Xaml.Charts
                             ptInfo.ValueX = axis.GetLabelContent(leastXVal).ToString();
                         }
 
-                        if (LabelDisplayMode == TrackballLabelDisplayMode.NearestPoint)
+                        if (DisplayMode == TrackballLabelDisplayMode.NearestPoint)
                         {
                             foreach (ChartPointInfo pointInfo in PointInfos)
                             {
@@ -1377,7 +1377,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
             if (previousXLabel == currentXLabel && tempXPos == leastX)
             {
-                if ((LabelDisplayMode == TrackballLabelDisplayMode.NearestPoint && previousYLabel != currentYLabel && this.Chart.VisibleSeries.Count > 1))
+                if ((DisplayMode == TrackballLabelDisplayMode.NearestPoint && previousYLabel != currentYLabel && this.Chart.VisibleSeries.Count > 1))
                     previousYLabel = currentYLabel;
                 else
                     return;
@@ -1697,7 +1697,7 @@ namespace Syncfusion.UI.Xaml.Charts
             if (PointInfos.Count == 0)
                 return;
 
-            if (LabelDisplayMode == TrackballLabelDisplayMode.GroupAllPoints)
+            if (DisplayMode == TrackballLabelDisplayMode.GroupAllPoints)
             {
                 ////XAMARIN-35059_Reverse the pointInfo for grouped label
                 RearrangeStackingSeriesInfo();
@@ -1710,7 +1710,7 @@ namespace Syncfusion.UI.Xaml.Charts
                 bool canAddLabel = pointInfo.Series.IsActualTransposed ? Chart.SeriesClipRect.Contains(new Point(pointInfo.Y, pointInfo.X)) : Chart.SeriesClipRect.Contains(new Point(pointInfo.X, pointInfo.Y));
                 if (canAddLabel)
                 {
-                    if (LabelDisplayMode == TrackballLabelDisplayMode.FloatAllPoints)
+                    if (DisplayMode == TrackballLabelDisplayMode.FloatAllPoints)
                     {
                         if (seriesCount > 1 && PointInfos.Any(info => info.Series.IsSideBySide))
                         {
@@ -1724,7 +1724,7 @@ namespace Syncfusion.UI.Xaml.Charts
                                 pointInfo.HorizontalAlignment,
                                 GetLabelTemplate(pointInfo));
                     }
-                    else if (LabelDisplayMode == TrackballLabelDisplayMode.NearestPoint)
+                    else if (DisplayMode == TrackballLabelDisplayMode.NearestPoint)
                     {
                         if (pointInfo.Y == GetNearestYValue())
                         {
@@ -1927,11 +1927,11 @@ namespace Syncfusion.UI.Xaml.Charts
                 bool canAddTrackball = pointInfo.Series.IsActualTransposed ? Chart.SeriesClipRect.Contains(new Point(pointInfo.Y, pointInfo.X)) : Chart.SeriesClipRect.Contains(new Point(pointInfo.X, pointInfo.Y));
                 if (canAddTrackball)
                 {
-                    if (LabelDisplayMode == TrackballLabelDisplayMode.FloatAllPoints || LabelDisplayMode == TrackballLabelDisplayMode.GroupAllPoints)
+                    if (DisplayMode == TrackballLabelDisplayMode.FloatAllPoints || DisplayMode == TrackballLabelDisplayMode.GroupAllPoints)
                     {
                         CallTrackball(pointInfo);
                     }
-                    else if (LabelDisplayMode == TrackballLabelDisplayMode.NearestPoint)
+                    else if (DisplayMode == TrackballLabelDisplayMode.NearestPoint)
                     {
                         if (pointInfo.Y == GetNearestYValue())
                         {
@@ -2458,7 +2458,7 @@ namespace Syncfusion.UI.Xaml.Charts
                     yPos = this.Chart.SeriesClipRect.Top + (this.Chart.SeriesClipRect.Height / 2 - border.DesiredSize.Height / 2);
                 xPos = CalculateHorizontalAlignment(pointInfos[0]);
             }
-            if (LabelDisplayMode == TrackballLabelDisplayMode.GroupAllPoints)
+            if (DisplayMode == TrackballLabelDisplayMode.GroupAllPoints)
             {
                 if (IsReversed)
                 {
@@ -2482,7 +2482,7 @@ namespace Syncfusion.UI.Xaml.Charts
                 yPos = pointInfos[0].BaseY - border.DesiredSize.Height - 5;
             else
                 yPos = pointInfos[0].BaseY + 5;
-            if (LabelDisplayMode == TrackballLabelDisplayMode.GroupAllPoints)
+            if (DisplayMode == TrackballLabelDisplayMode.GroupAllPoints)
             {
                 yPos = pointInfos[0].BaseY - border.DesiredSize.Height / 2;
             }
@@ -2498,7 +2498,7 @@ namespace Syncfusion.UI.Xaml.Charts
                 xPos = pointInfos[0].BaseX - border.DesiredSize.Width - 5;
             else
                 xPos = pointInfos[0].BaseX + 5;
-            if (LabelDisplayMode == TrackballLabelDisplayMode.GroupAllPoints)
+            if (DisplayMode == TrackballLabelDisplayMode.GroupAllPoints)
             {
                 xPos = pointInfos[0].BaseX - border.DesiredSize.Width / 2;
             }
@@ -2519,7 +2519,7 @@ namespace Syncfusion.UI.Xaml.Charts
                     xPos += border.DesiredSize.Width + 10;
                 if (!IsReversed)
                 {
-                    if (LabelDisplayMode == TrackballLabelDisplayMode.GroupAllPoints)
+                    if (DisplayMode == TrackballLabelDisplayMode.GroupAllPoints)
                     {
                         xPos = pointInfos[0].BaseX;
                     }
@@ -2556,7 +2556,7 @@ namespace Syncfusion.UI.Xaml.Charts
                     xPos = xPos - border.DesiredSize.Width - 10;
                 if (!IsReversed)
                 {
-                    if (LabelDisplayMode == TrackballLabelDisplayMode.GroupAllPoints)
+                    if (DisplayMode == TrackballLabelDisplayMode.GroupAllPoints)
                     {
                         xPos = pointInfos[0].BaseX - border.DesiredSize.Width;
                     }

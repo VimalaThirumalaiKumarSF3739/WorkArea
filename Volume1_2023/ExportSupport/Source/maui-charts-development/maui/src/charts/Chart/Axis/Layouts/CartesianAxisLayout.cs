@@ -391,6 +391,11 @@ namespace Syncfusion.Maui.Charts
                     }
 
                     series.UpdateAssociatedAxes();
+
+                    if (series.ActualXAxis is CategoryAxis categoryAxis && !categoryAxis.ArrangeByIndex)
+                    {
+                        categoryAxis.GroupData();
+                    }
                 }
             }
         }
@@ -399,6 +404,8 @@ namespace Syncfusion.Maui.Charts
         {
             foreach (CartesianSeries series in visibleSeries)
             {
+                series.SegmentsCreated = false;
+
                 if (!series.SegmentsCreated) //creates segment if segmentscreted is false. 
                 {
                     series.XRange = DoubleRange.Empty;

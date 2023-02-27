@@ -261,6 +261,7 @@ namespace Syncfusion.Maui.Charts
         /// </summary>
         public SfPyramidChart()
         {
+            this.ValidateLicense();
             DataLabelSettings = new PyramidDataLabelSettings();
             PaletteBrushes = ChartColorModel.DefaultBrushes;
             chartArea = (PyramidChartArea)LegendLayout.AreaBase;

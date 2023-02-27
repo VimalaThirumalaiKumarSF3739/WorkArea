@@ -27,11 +27,11 @@ namespace Syncfusion.UI.Xaml.Charts
         #region Dependency Property Registration
 
         /// <summary>
-        ///  The DependencyProperty for ShowDuration property.
+        ///  The DependencyProperty for Duration property.
         /// </summary>
-        public static readonly DependencyProperty ShowDurationProperty =
+        public static readonly DependencyProperty DurationProperty =
             DependencyProperty.RegisterAttached(
-                "ShowDuration",
+                "Duration",
                 typeof(int),
                 typeof(ChartTooltip),
                 new PropertyMetadata(1000));
@@ -301,9 +301,9 @@ namespace Syncfusion.UI.Xaml.Charts
         /// </summary>
         /// <param name="obj">The Dependency Object</param>
         /// <returns>Returns the show duration.</returns>
-        public static int GetShowDuration(DependencyObject obj)
+        public static int GetDuration(DependencyObject obj)
         {
-            return (int)obj.GetValue(ShowDurationProperty);
+            return (int)obj.GetValue(DurationProperty);
         }
 
         /// <summary>
@@ -311,9 +311,9 @@ namespace Syncfusion.UI.Xaml.Charts
         /// </summary>
         /// <param name="obj">The Dependency Object</param>
         /// <param name="value">The Value</param>
-        public static void SetShowDuration(DependencyObject obj, int value)
+        public static void SetDuration(DependencyObject obj, int value)
         {
-            obj.SetValue(ShowDurationProperty, value);
+            obj.SetValue(DurationProperty, value);
         }
 
         /// <summary>
@@ -416,14 +416,14 @@ namespace Syncfusion.UI.Xaml.Charts
             return verticalOffset != 0 ? verticalOffset : tooltipBehavior.VerticalOffset;
         }
 
-        internal static int GetActualShowDuration(ChartTooltipBehavior tooltipBehavior, int showDuration)
+        internal static int GetActualDuration(ChartTooltipBehavior tooltipBehavior, int duration)
         {
             if (tooltipBehavior == null)
             {
-                return showDuration;
+                return duration;
             }
 
-            return showDuration != 1000 ? showDuration : tooltipBehavior.ShowDuration;
+            return duration != 1000 ? duration : tooltipBehavior.Duration;
         }
 
         internal static int GetActualInitialShowDelay(ChartTooltipBehavior tooltipBehavior, int initialShowDelay)

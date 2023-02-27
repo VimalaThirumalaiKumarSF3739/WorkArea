@@ -338,7 +338,7 @@ namespace Syncfusion.UI.Xaml.Charts
         internal override void GenerateSegments()
         {
             List<double> xValues = null;
-            bool isGrouping = this.ActualXAxis is CategoryAxis && !(this.ActualXAxis as CategoryAxis).IsIndexed;
+            bool isGrouping = this.ActualXAxis is CategoryAxis && !(this.ActualXAxis as CategoryAxis).ArrangeByIndex;
             if (isGrouping)
                 xValues = GroupedXValuesIndexes;
             else

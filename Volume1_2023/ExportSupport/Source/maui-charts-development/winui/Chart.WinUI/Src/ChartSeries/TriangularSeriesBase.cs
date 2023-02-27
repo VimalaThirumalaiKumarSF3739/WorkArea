@@ -12,7 +12,7 @@ namespace Syncfusion.UI.Xaml.Charts
     /// <summary>
     /// 
     /// </summary>
-    internal abstract class TriangularSeriesBase : DataMarkerSeries
+    internal abstract class TriangularSeriesBase : ChartSeries
     {
 
         #region Dependency Property Registration
@@ -226,6 +226,37 @@ namespace Syncfusion.UI.Xaml.Charts
             base.Dispose();
         }
 
+        /// <inheritdoc/>
+        protected override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            AdornmentPresenter = new ChartDataMarkerPresenter();
+            AdornmentPresenter.Series = this;
+
+            if (Chart != null && AdornmentsInfo != null && ShowDataLabels)
+            {
+                Chart.DataLabelPresenter.Children.Add(AdornmentPresenter);
+                AdornmentsInfo.PanelChanged(AdornmentPresenter);
+            }
+        }
+
+        internal override void UpdateOnSeriesBoundChanged(Size size)
+        {
+            if (AdornmentPresenter != null && AdornmentsInfo != null)
+            {
+                AdornmentsInfo.UpdateElements();
+            }
+
+            base.UpdateOnSeriesBoundChanged(size);
+
+            if (AdornmentPresenter != null && AdornmentsInfo != null)
+            {
+                AdornmentPresenter.Update(size);
+                AdornmentPresenter.Arrange(size);
+            }
+        }
+
         /// <summary>
         /// Called when ItemsSource property changed.
         /// </summary>
@@ -234,6 +265,14 @@ namespace Syncfusion.UI.Xaml.Charts
         internal override void OnDataSourceChanged(object oldValue, object newValue)
         {
             base.OnDataSourceChanged(oldValue, newValue);
+
+            if (AdornmentsInfo != null)
+            {
+                VisibleAdornments.Clear();
+                Adornments.Clear();
+                AdornmentsInfo.UpdateElements();
+            }
+
             if (YValues != null)
                 YValues.Clear();
             if (Segments != null)

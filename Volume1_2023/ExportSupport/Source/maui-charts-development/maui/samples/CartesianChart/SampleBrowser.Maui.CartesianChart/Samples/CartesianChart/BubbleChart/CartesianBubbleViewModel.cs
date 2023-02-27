@@ -36,12 +36,12 @@ namespace SampleBrowser.Maui.CartesianChart.SfCartesianChart
 
             ActionData = new ObservableCollection<ChartDataModel>()
         {
-                new ChartDataModel("Transformers: Revenge of the Fallen",150,836,369,6),
+                new ChartDataModel("Transformers I",150,836,369,6),
                 new ChartDataModel("Skyfall",200,1109,599,7.7),
                 new ChartDataModel("The Avengers",220,1520,1205,8),
                 new ChartDataModel("Spider-Man 3",258,891,471,6.2),
-                new ChartDataModel("Teenage Mutant Ninja Turtles",250,1085,80,6.8),
-                new ChartDataModel("Transformers: Dark of the Moon",195,1124,371,6.2),
+                new ChartDataModel("Ninja Turtles",250,1085,80,6.8),
+                new ChartDataModel("Transformers II",195,1124,371,6.2),
                 new ChartDataModel("The Dark Knight Rises",250,1215,1418,8.4),
                 new ChartDataModel("The Dark Knight",185,1005,2127,9),
                 new ChartDataModel("Inception",16,826,1888,8.8),
@@ -65,13 +65,13 @@ namespace SampleBrowser.Maui.CartesianChart.SfCartesianChart
             ScienceFictionData = new ObservableCollection<ChartDataModel>()
         {
                 new ChartDataModel("Armageddon",140,554,377,6.7),
-                new ChartDataModel("Star Wars: Episode I - The Phantom Menace",115,924,667,6.5),
-                new ChartDataModel("Star Wars: Episode II - Attack of the Clones",120,649,587,6.6),
+                new ChartDataModel("Star Wars: Episode I",115,924,667,6.5),
+                new ChartDataModel("Star Wars: Episode II",120,649,587,6.6),
                 new ChartDataModel("The Matrix Reloaded", 150,739,487,7.2),
-                new ChartDataModel("Star Wars: Episode III - Revenge of the Sith", 113,850,654,7.5),
+                new ChartDataModel("Star Wars: Episode III", 113,850,654,7.5),
                 new ChartDataModel("War of the Worlds", 132,592,394,6.5),
                 new ChartDataModel("World War Z", 200,532, 7,7),
-                new ChartDataModel("Dawn of the Planet of the Apes", 170,711,395425,7.6),
+                new ChartDataModel("Planet of the Apes", 170,711,395,7.6),
         };
 
             ThrillerData = new ObservableCollection<ChartDataModel>()
@@ -80,12 +80,12 @@ namespace SampleBrowser.Maui.CartesianChart.SfCartesianChart
                 new ChartDataModel("Godzilla",130,379,175,6.4),
                 new ChartDataModel("The Sixth Sense",40,673,860,8.1),
                 new ChartDataModel("Ocean's Eleven",85,451,50,7.8),
-                new ChartDataModel("Terminator 3: Rise of the Machines",200,435,357,6.3),
+                new ChartDataModel("Terminator 3",200,435,357,6.3),
                 new ChartDataModel("Casino Royale",150,599,547,8),
                 new ChartDataModel("Live Free or Die Hard",110,384,375,7.1),
                 new ChartDataModel("Clash of the Titans",125,493,260,5.8),
-                new ChartDataModel("Mission: Impossible - Ghost Protocol",145,695,435,7.4),
-                new ChartDataModel("Godzilla",160,529,359438,6.4),
+                new ChartDataModel("Mission: Impossible",145,695,435,7.4),
+                new ChartDataModel("Godzilla",160,529,359,6.4),
         };
         }
 

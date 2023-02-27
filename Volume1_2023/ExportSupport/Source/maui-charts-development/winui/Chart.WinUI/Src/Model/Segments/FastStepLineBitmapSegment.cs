@@ -60,7 +60,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="series"></param>
         public FastStepLineBitmapSegment(ChartSeries series)
         {
-            base.Series = series as ChartSeries;
+            base.Series = series;
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="xVals"></param>
         /// <param name="yVals"></param>
         /// <param name="series"></param>
-        public FastStepLineBitmapSegment(IList<double> xVals, IList<double> yVals, DataMarkerSeries series)
+        public FastStepLineBitmapSegment(IList<double> xVals, IList<double> yVals, ChartSeries series)
             : this(series)
         {
             xValues = new List<double>();
@@ -136,8 +136,8 @@ namespace Syncfusion.UI.Xaml.Charts
 
         internal void SetRange()
         {
-            var fastSeries = Series as ChartSeries;
-            var isGrouping = (fastSeries.ActualXAxis is CategoryAxis) ? (fastSeries.ActualXAxis as CategoryAxis).IsIndexed : true;
+            var fastSeries = Series;
+            var isGrouping = (fastSeries.ActualXAxis is CategoryAxis) ? (fastSeries.ActualXAxis as CategoryAxis).ArrangeByIndex : true;
             if (fastSeries.PointsCount > 0)
             {
                 double _Min = yChartVals.Min();
@@ -174,7 +174,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         internal void UpdateVisual()
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             double xStart, yStart;
             bool isMultiColor = Series.PaletteBrushes != null && fastSeries.Fill == null;
             NativeColor color = GetColor(this.Fill);
@@ -301,7 +301,7 @@ namespace Syncfusion.UI.Xaml.Charts
         }
         private void CalculatePoints(ChartTransform.ChartCartesianTransformer cartesianTransformer)
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             ChartAxis xAxis = cartesianTransformer.XAxis;
             int cnt = xChartVals.Count - 1;
             if (fastSeries.IsIndexed)
@@ -369,7 +369,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private void UpdateVisualVertical(double xStart, double yStart, int width, int height, NativeColor color, bool isMultiColor, int leftThickness, int rightThickness)
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             double xEnd, yEnd;
 
             if (((FastStepLineBitmapSeries)fastSeries).EnableAntiAliasing)
@@ -447,7 +447,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private void UpdateVisualHorizontal(double xStart, double yStart, int width, int height, NativeColor color, bool isMultiColor, int leftThickness, int rightThickness)
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             double xEnd, yEnd;
             if (((FastStepLineBitmapSeries)fastSeries).EnableAntiAliasing)
             {

@@ -68,7 +68,7 @@ namespace Syncfusion.Maui.Charts
             }
         }
 
-        public Rect PlotAreaBounds { get => Bounds; }
+        public Rect PlotAreaBounds { get; set; }
 
         public bool ShouldPopulateLegendItems 
         {

@@ -89,7 +89,7 @@ namespace Syncfusion.Maui.Charts
         }
         public ReadOnlyObservableCollection<ILegendItem> LegendItems => new ReadOnlyObservableCollection<ILegendItem>(legendItems);
 
-        public Rect PlotAreaBounds { get => Bounds; }
+        public Rect PlotAreaBounds { get; set; }
 
         public bool ShouldPopulateLegendItems
         {

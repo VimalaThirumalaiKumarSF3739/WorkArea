@@ -11,7 +11,7 @@ namespace Syncfusion.UI.Xaml.Charts
     /// <summary>
     /// 
     /// </summary>
-    public abstract class CartesianSeries : DataMarkerSeries, ISupportAxes
+    public abstract class CartesianSeries : ChartSeries
     {
         #region Dependency Property Registration
         /// <summary>
@@ -22,10 +22,10 @@ namespace Syncfusion.UI.Xaml.Charts
           new PropertyMetadata(null, OnAdornmentsInfoChanged));
 
         /// <summary>
-        /// The DependencyProperty for <see cref="ShowTrackballInfo"/> property.
+        /// The DependencyProperty for <see cref="ShowTrackballLabel"/> property.
         /// </summary>
-        public static readonly DependencyProperty ShowTrackballInfoProperty =
-            DependencyProperty.Register(nameof(ShowTrackballInfo), typeof(bool), typeof(CartesianSeries), new PropertyMetadata(true));
+        public static readonly DependencyProperty ShowTrackballLabelProperty =
+            DependencyProperty.Register(nameof(ShowTrackballLabel), typeof(bool), typeof(CartesianSeries), new PropertyMetadata(true));
 
         /// <summary>
         /// The DependencyProperty for <see cref="XAxisName"/> property.
@@ -283,7 +283,7 @@ namespace Syncfusion.UI.Xaml.Charts
         ///          <chart:SplineSeries ItemsSource="{Binding Data}"
         ///                              XBindingPath="XValue"
         ///                              YBindingPath="YValue"
-        ///                              ShowTrackballInfo = "True"/>
+        ///                              ShowTrackballLabel = "True"/>
         ///
         ///     </chart:SfCartesianChart>
         /// ]]>
@@ -300,7 +300,7 @@ namespace Syncfusion.UI.Xaml.Charts
         ///           ItemsSource = viewModel.Data,
         ///           XBindingPath = "XValue",
         ///           YBindingPath = "YValue",
-        ///           ShowTrackballInfo = true,
+        ///           ShowTrackballLabel = true,
         ///     };
         ///     
         ///     chart.Series.Add(splineSeries);
@@ -309,39 +309,13 @@ namespace Syncfusion.UI.Xaml.Charts
         /// </code>
         /// ***
         /// </example>
-        public bool ShowTrackballInfo
+        public bool ShowTrackballLabel
         {
-            get { return (bool)GetValue(ShowTrackballInfoProperty); }
-            set { SetValue(ShowTrackballInfoProperty, value); }
+            get { return (bool)GetValue(ShowTrackballLabelProperty); }
+            set { SetValue(ShowTrackballLabelProperty, value); }
         }
 
 #endregion
-
-        ChartAxis ISupportAxes.ActualXAxis
-        {
-            get { return ActualXAxis; }
-        }
-
-        ChartAxis ISupportAxes.ActualYAxis
-        {
-            get { return ActualYAxis; }
-        }
-
-        DoubleRange ISupportAxes.VisibleXRange
-        {
-            get
-            {
-                return VisibleXRange;
-            }
-        }
-
-        DoubleRange ISupportAxes.VisibleYRange
-        {
-            get
-            {
-                return VisibleYRange;
-            }
-        }
 
         #endregion
 
@@ -400,7 +374,18 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="size"></param>
         internal override void UpdateOnSeriesBoundChanged(Size size)
         {
+            if (AdornmentPresenter != null && AdornmentsInfo != null)
+            {
+                AdornmentsInfo.UpdateElements();
+            }
+
             base.UpdateOnSeriesBoundChanged(size);
+
+            if (AdornmentPresenter != null && AdornmentsInfo != null)
+            {
+                AdornmentPresenter.Update(size);
+                AdornmentPresenter.Arrange(size);
+            }
 
             if (Segments == null)
             {
@@ -415,6 +400,24 @@ namespace Syncfusion.UI.Xaml.Charts
         internal override void CalculateSegments()
         {
             base.CalculateSegments();
+
+
+            // VisibleAdornments need to be cleared when segments are newly build while Zooming 
+            if (VisibleAdornments.Count > 0)
+            {
+                VisibleAdornments.Clear();
+            }
+            if (PointsCount == 0)
+            {
+                if (AdornmentsInfo != null)
+                {
+                    BarLabelAlignment markerPosition = this.adornmentInfo.GetAdornmentPosition();
+                    if (markerPosition == BarLabelAlignment.Middle)
+                        ClearUnUsedAdornments(this.PointsCount * 4);
+                    else
+                        ClearUnUsedAdornments(this.PointsCount * 2);
+                }
+            }
         }
 
         internal override int GetDataPointIndex(Point point)
@@ -430,9 +433,22 @@ namespace Syncfusion.UI.Xaml.Charts
             return GetXValues().IndexOf(x);
         }
 
-#endregion
+        /// <inheritdoc/>
+        internal override void OnDataSourceChanged(object oldValue, object newValue)
+        {
+            if (AdornmentsInfo != null)
+            {
+                VisibleAdornments.Clear();
+                Adornments.Clear();
+                AdornmentsInfo.UpdateElements();
+            }
 
-#region Internal Methods
+            base.OnDataSourceChanged(oldValue, newValue);
+        }
+
+        #endregion
+
+        #region Internal Methods
 
         internal override void Dispose()
         {
@@ -444,9 +460,72 @@ namespace Syncfusion.UI.Xaml.Charts
             OnVisibleRangeChanged(e);
         }
 
-#endregion
+        #endregion
 
-#region Protected Virtual Methods
+        #region Protected Virtual Methods
+
+
+        /// <summary>
+        /// Method implementation for add Adornments at XY.
+        /// </summary>
+        /// <param name="x">xvalue</param>
+        /// <param name="y">yvalue</param>
+        /// <param name="pointindex">index</param>
+        internal virtual void AddAdornmentAtXY(double x, double y, int pointindex)
+        {
+            double adornposX = x, adornposY = y;
+
+            if (pointindex < Adornments.Count)
+            {
+                Adornments[pointindex].SetData(x, y, adornposX, adornposY);
+            }
+            else
+            {
+                Adornments.Add(CreateAdornment(this, x, y, adornposX, adornposY));
+            }
+
+            if (pointindex < ActualData.Count)
+                Adornments[pointindex].Item = ActualData[pointindex];
+        }
+
+        /// <summary>
+        /// Method implementation for add AreaAdornments in Chart.
+        /// </summary>
+        /// <param name="values">values</param>
+        internal virtual void AddAreaAdornments(params IList<double>[] values)
+        {
+            IList<double> yValues = values[0];
+            List<double> xValues = new List<double>();
+            if (ActualXAxis is CategoryAxis && !(ActualXAxis as CategoryAxis).IsIndexed)
+                xValues = GroupedXValuesIndexes;
+            else
+                xValues = GetXValues();
+
+            if (values.Length == 1)
+            {
+                int i;
+                for (i = 0; i < PointsCount; i++)
+                {
+                    if (i < xValues.Count && i < yValues.Count)
+                    {
+                        double adornX = xValues[i];
+                        double adornY = yValues[i];
+
+                        if (i < Adornments.Count)
+                        {
+                            Adornments[i].SetData(xValues[i], yValues[i], adornX, adornY);
+                        }
+                        else
+                        {
+                            Adornments.Add(CreateAdornment(this, xValues[i], yValues[i], adornX, adornY));
+                        }
+
+                        Adornments[i].Item = ActualData[i];
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// Called when VisibleRange property changed.
@@ -455,6 +534,38 @@ namespace Syncfusion.UI.Xaml.Charts
         {
         }
 
+        /// <summary>
+        /// Method implementation for add ColumnAdornments in Chart.
+        /// </summary>
+        /// <param name="values">values</param>
+        internal virtual void AddColumnAdornments(params double[] values)
+        {
+            ////values[0] -->   xData
+            ////values[1] -->   yData
+            ////values[2] -->   xPos
+            ////values[3] -->   yPos
+            ////values[4] -->   data point index
+            ////values[5] -->   Median value.
+
+            double adornposX = values[2] + values[5], adornposY = values[3];
+            int pointIndex = (int)values[4];
+            if (pointIndex < Adornments.Count)
+            {
+                Adornments[pointIndex].SetData(values[0], values[1], adornposX, adornposY);
+            }
+            else
+            {
+                Adornments.Add(CreateAdornment(this, values[0], values[1], adornposX, adornposY));
+            }
+
+            {
+                if (ActualXAxis is CategoryAxis && !(ActualXAxis as CategoryAxis).IsIndexed
+                    && this.GroupedActualData.Count > 0)
+                    Adornments[pointIndex].Item = this.GroupedActualData[pointIndex];
+                else
+                    Adornments[pointIndex].Item = ActualData[pointIndex];
+            }
+        }
 
         #endregion
 
@@ -464,6 +575,15 @@ namespace Syncfusion.UI.Xaml.Charts
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+
+            AdornmentPresenter = new ChartDataMarkerPresenter();
+            AdornmentPresenter.Series = this;
+
+            if (Chart != null && AdornmentsInfo != null && ShowDataLabels)
+            {
+                Chart.DataLabelPresenter.Children.Add(AdornmentPresenter);
+                AdornmentsInfo.PanelChanged(AdornmentPresenter);
+            }
         }
 
 #endregion

@@ -22,7 +22,7 @@
                     </chart:NumericalAxis>
                 </chart:SfCartesianChart.YAxes>
 
-                <chart:BubbleSeries MinimumRadius="20" MaximumRadius="40" SizeValuePath="Size"   EnableTooltip="False" Fill="#314A6E" EnableAnimation="True"                  
+                <chart:BubbleSeries MinimumRadius="{OnPlatform Default=15,Android=8,iOS=8}" MaximumRadius="{OnPlatform Default=30,Android=15,iOS=15}"  SizeValuePath="Size"   EnableTooltip="False" Fill="#314A6E" EnableAnimation="True"                  
                                         ItemsSource="{Binding DynamicBubbleMotionAnimation}" ShowDataLabels="False"
                                         XBindingPath="Value1"  YBindingPath="Value"/>
             </chart:SfCartesianChart>

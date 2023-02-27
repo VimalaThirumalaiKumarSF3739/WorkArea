@@ -221,7 +221,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// </summary>
         internal override void GenerateSegments()
         {
-            var isGrouped = (ActualXAxis is CategoryAxis && !(ActualXAxis as CategoryAxis).IsIndexed);
+            var isGrouped = (ActualXAxis is CategoryAxis && !(ActualXAxis as CategoryAxis).ArrangeByIndex);
             if (isGrouped)
                 xValues = GroupedXValuesIndexes;
             else
@@ -259,7 +259,8 @@ namespace Syncfusion.UI.Xaml.Charts
                         {
                             var yValue = list[j][0];
                             GroupedActualData.Add(ActualData[(int)list[j][1]]);
-                            if (i < xValues.Count)
+                            
+                            if (i < DistinctValuesIndexes.Count)
                             {
                                 x1Values.Add(i + sbsInfo.Start);
                                 x2Values.Add(i + sbsInfo.End);

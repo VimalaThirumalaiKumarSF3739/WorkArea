@@ -61,6 +61,6 @@
 	<None Include="syncfusion_logo.png" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\maui-core\maui\src\core\Syncfusion.Maui.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\maui-core-development\maui\src\core\Syncfusion.Maui.Core.csproj" />
   </ItemGroup>
 </Project>

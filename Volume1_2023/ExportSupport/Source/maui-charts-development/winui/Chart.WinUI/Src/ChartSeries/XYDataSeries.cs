@@ -105,6 +105,18 @@ namespace Syncfusion.UI.Xaml.Charts
 
         #region Methods
 
+        #region Internal Virutal Methods
+
+        internal virtual void UpdatePreivewSeriesDragging(Point mousePos)
+        {
+        }
+
+        internal virtual void UpdatePreviewSegmentDragging(Point mousePos)
+        {
+        }
+
+        #endregion
+
         #region Internal Methods
 
         /// <summary>

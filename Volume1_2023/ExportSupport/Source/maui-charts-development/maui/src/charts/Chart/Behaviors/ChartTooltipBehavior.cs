@@ -397,7 +397,7 @@ namespace Syncfusion.Maui.Charts
 
             if (chart != null)
             {
-                Show(chart, pointX, pointY, false);
+                Show(chart, pointX, pointY, true);
             }
         }
 
@@ -405,7 +405,7 @@ namespace Syncfusion.Maui.Charts
         {
             if (pointerDeviceType == PointerDeviceType.Mouse)
             {
-                Show(chart, pointX, pointY, false);
+                Show(chart, pointX, pointY, true);
             }
         }
 
@@ -438,13 +438,8 @@ namespace Syncfusion.Maui.Charts
         /// </summary>
         internal void Hide(IChart chart)
         {
-            if (chart.TooltipView != null && chart.BehaviorLayout.Children.Contains(chart.TooltipView))
-            {
-                chart.BehaviorLayout.Children.Remove(chart.TooltipView);
-                chart.TooltipView = null;
-            }
-
             previousTooltipInfo = null;
+            chart.TooltipView?.Hide(false);
         }
 
         private void GenerateTooltip(IChart chart, float x, float y, bool canAnimate)
@@ -455,20 +450,33 @@ namespace Syncfusion.Maui.Charts
             {
                 TooltipInfo? tooltipInfo = chart.GetTooltipInfo(this, x, y);
 
-                if (tooltipInfo != null && tooltipInfo.Source is ITooltipDependent source && (previousTooltipInfo == null || previousTooltipInfo.Index != tooltipInfo.Index || previousTooltipInfo.Source != tooltipInfo.Source))
+                if(tooltipInfo != null && tooltipInfo.Source is ITooltipDependent source)
                 {
-                    Hide(chart);
+                    if (chart.TooltipView is not SfTooltip tooltip)
+                    {
+                        tooltip = new SfTooltip();
+                        chart.TooltipView = tooltip;
+                        tooltip.TooltipClosed += Tooltip_TooltipClosed;
+                        chart.BehaviorLayout.Add(chart.TooltipView);
+                    }
+
                     source.SetTooltipTargetRect(tooltipInfo, seriesBounds);
-                    SfTooltip tooltip = new SfTooltip();
-                    tooltip.BindingContext = tooltipInfo;
-                    tooltip.Duration = Duration;
-                    tooltip.Position = tooltipInfo.Position;
-                    tooltip.SetBinding(SfTooltip.BackgroundProperty, nameof(TooltipInfo.Background));
-                    tooltip.Content = GetTooltipTemplate(tooltipInfo);
-                    chart.TooltipView = tooltip;
-                    tooltip.TooltipClosed += Tooltip_TooltipClosed;
-                    chart.BehaviorLayout.Add(chart.TooltipView);
-                    chart.TooltipView.Show(seriesBounds, tooltipInfo.TargetRect, canAnimate);
+                    
+                    if (previousTooltipInfo != null && previousTooltipInfo.Source == tooltipInfo.Source && previousTooltipInfo.Index == tooltipInfo.Index )
+                    {
+                        tooltip.Show(seriesBounds, tooltipInfo.TargetRect, false);
+                    }
+                    else
+                    {
+                        tooltip.BindingContext = tooltipInfo;
+                        tooltip.Duration = Duration;
+                        tooltip.Position = tooltipInfo.Position;
+                        tooltip.SetBinding(SfTooltip.BackgroundProperty, nameof(TooltipInfo.Background));
+                        tooltip.Content = GetTooltipTemplate(tooltipInfo);
+
+                        tooltip.Show(seriesBounds, tooltipInfo.TargetRect, canAnimate);
+                    }
+                    
                     previousTooltipInfo = tooltipInfo;
                 }
             }
@@ -482,9 +490,9 @@ namespace Syncfusion.Maui.Charts
         /// <summary>
         /// Method used to get the default tooltip template.
         /// </summary>
-        private View? GetTooltipTemplate(TooltipInfo tooltipInfo)
+        private static View? GetTooltipTemplate(TooltipInfo tooltipInfo)
         {
-            View? view = null;
+            View? view;
 
             if (tooltipInfo.Source is ITooltipDependent tooltip && tooltip.TooltipTemplate != null)
             {
@@ -493,7 +501,7 @@ namespace Syncfusion.Maui.Charts
             }
             else
             {
-                var layout = GetDefaultTooltipTemplate().CreateContent();
+                var layout = tooltipInfo.Source is ITooltipDependent source ? source.GetDefaultTooltipTemplate(tooltipInfo)?.CreateContent() : null;
                 view = layout is ViewCell ? (layout as ViewCell)?.View : layout as View;
             }
 
@@ -502,29 +510,8 @@ namespace Syncfusion.Maui.Charts
                 var size = view.Measure(double.PositiveInfinity, double.PositiveInfinity).Request;
                 view.Layout(new Rect(0, 0, size.Width, size.Height));
             }
+            
             return view;
-        }
-
-        private DataTemplate GetDefaultTooltipTemplate()
-        {
-            var template = new DataTemplate(() =>
-            {
-                Label label = new Label();
-                label.VerticalOptions = LayoutOptions.Fill;
-                label.HorizontalOptions = LayoutOptions.Fill;
-                label.VerticalTextAlignment = TextAlignment.Center;
-                label.HorizontalTextAlignment = TextAlignment.Center;
-                label.SetBinding(Label.TextProperty, nameof(TooltipInfo.Text));
-                label.SetBinding(Label.TextColorProperty, nameof(TooltipInfo.TextColor));
-                label.SetBinding(Label.MarginProperty, nameof(TooltipInfo.Margin));
-                label.SetBinding(Label.FontSizeProperty, nameof(TooltipInfo.FontSize));
-                label.SetBinding(Label.FontFamilyProperty, nameof(TooltipInfo.FontFamily));
-                label.SetBinding(Label.FontAttributesProperty, nameof(TooltipInfo.FontAttributes));
-
-                return new ViewCell { View = label };
-            });
-
-            return template;
         }
 
         #endregion

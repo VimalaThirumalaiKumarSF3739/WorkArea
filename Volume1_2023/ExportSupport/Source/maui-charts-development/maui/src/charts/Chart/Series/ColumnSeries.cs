@@ -347,32 +347,36 @@ namespace Syncfusion.Maui.Charts
                 bottomValue = double.IsNaN(ActualXAxis.ActualCrossingValue) ? 0 : ActualXAxis.ActualCrossingValue;
             }
 
-            if (IsIndexed || xValues == null)
+            if (IsGrouped && (IsIndexed || xValues == null))
             {
-                    for (var i = 0; i < PointsCount; i++)
+                for (var i = 0; i < PointsCount; i++)
+                {
+                    if (i < Segments.Count && Segments[i] is ColumnSegment)
                     {
-                        if (i < Segments.Count && Segments[i] is ColumnSegment)
-                        {
-                            ((ColumnSegment)Segments[i]).SetData(new[] { i + SbsInfo.Start, i + SbsInfo.End, YValues[i], bottomValue, i });
-                        }
-                        else
-                        {
-                            CreateSegment(seriesView, new[] { i + SbsInfo.Start, i + SbsInfo.End, YValues[i], bottomValue, i }, i);
-                        }
+                        ((ColumnSegment)Segments[i]).SetData(new[] { i + SbsInfo.Start, i + SbsInfo.End, YValues[i], bottomValue, i });
                     }
+                    else
+                    {
+                        CreateSegment(seriesView, new[] { i + SbsInfo.Start, i + SbsInfo.End, YValues[i], bottomValue, i }, i);
+                    }
+                }
             }
             else
             {
                 for (var i = 0; i < PointsCount; i++)
                 {
-                    var x = xValues[i];
-                    if (i < Segments.Count && Segments[i] is ColumnSegment)
+                    if (xValues != null)
                     {
-                        ((ColumnSegment)Segments[i]).SetData(new[] { x + SbsInfo.Start, x + SbsInfo.End, YValues[i], bottomValue, x });
-                    }
-                    else
-                    {
-                        CreateSegment(seriesView, new[] { x + SbsInfo.Start, x + SbsInfo.End, YValues[i], bottomValue, x }, i);
+                        var x = xValues[i];
+
+                        if (i < Segments.Count && Segments[i] is ColumnSegment)
+                        {
+                            ((ColumnSegment)Segments[i]).SetData(new[] { x + SbsInfo.Start, x + SbsInfo.End, YValues[i], bottomValue, x });
+                        }
+                        else
+                        {
+                            CreateSegment(seriesView, new[] { x + SbsInfo.Start, x + SbsInfo.End, YValues[i], bottomValue, x }, i);
+                        }
                     }
                 }
             }

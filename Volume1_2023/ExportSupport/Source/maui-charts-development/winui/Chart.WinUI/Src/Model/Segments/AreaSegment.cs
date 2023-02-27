@@ -98,7 +98,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="series"></param>
         /// <param name="item"></param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1801: Review unused parameters")]
-        public AreaSegment(List<double> xValues, List<double> yValues, DataMarkerSeries series, object item)
+        public AreaSegment(List<double> xValues, List<double> yValues, ChartSeries series, object item)
         {
             base.Series = series;
             base.Item = item;
@@ -214,7 +214,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
                 ResetStrokeShapes();
 
-                if (Series is PolarRadarSeriesBase && !double.IsNaN(YValues[0]))
+                if (Series is PolarSeries && !double.IsNaN(YValues[0]))
                 {
                     figure.StartPoint = transformer.TransformToVisible(XValues[0], YValues[0]);
                 }
@@ -314,7 +314,7 @@ namespace Syncfusion.UI.Xaml.Charts
                     }
                     lastIndex = index;
                 }
-                if (!(Series is PolarRadarSeriesBase))
+                if (!(Series is PolarSeries))
                 {
 
                     lineSegment = new WindowsLinesegment();

@@ -7,6 +7,7 @@ using Syncfusion.Maui.Core.Internals;
 using Microsoft.Maui.Graphics;
 using System.Collections.Specialized;
 using Syncfusion.Maui.Core;
+using Microsoft.Maui;
 
 namespace Syncfusion.Maui.Charts
 {
@@ -23,6 +24,11 @@ namespace Syncfusion.Maui.Charts
         #region Methods
 
         void SetTooltipTargetRect(TooltipInfo tooltipInfo, Rect chartBounds);
+
+        DataTemplate? GetDefaultTooltipTemplate(TooltipInfo info)
+        {
+            return ChartUtils.GetDefaultTooltipTemplate(info);
+        }
 
         #endregion
     }

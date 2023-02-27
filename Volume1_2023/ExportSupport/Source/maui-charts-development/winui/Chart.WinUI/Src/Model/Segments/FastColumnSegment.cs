@@ -230,7 +230,7 @@ namespace Syncfusion.UI.Xaml.Charts
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1801: Review unused parameters")]
         internal void UpdateVisual(bool updateHiLoLine)
         {
-            var fastColumnSeries = Series as ChartSeries;
+            var fastColumnSeries = Series;
             float x1 = 0;
             float x2 = 0;
             float y1 = 0;

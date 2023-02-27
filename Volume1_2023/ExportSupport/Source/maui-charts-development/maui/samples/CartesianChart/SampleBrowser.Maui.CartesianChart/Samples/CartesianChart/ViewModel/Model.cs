@@ -29,6 +29,8 @@ namespace SampleBrowser.Maui.CartesianChart.SfCartesianChart
 
         public List<double>? EmployeeAges { get; set; }
 
+        public ChartDataModel() { }
+
         public ChartDataModel(string department, List<double> employeeAges)
         {
             Department = department;

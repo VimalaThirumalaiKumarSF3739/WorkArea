@@ -474,6 +474,17 @@ namespace Syncfusion.Maui.Charts
             return new PointF(x, y);
         }
 
+        //Get the label position for range column series.
+        internal PointF CalculateDataLabelPoint(RangeColumnSeries series, RangeColumnSegment dataLabel, PointF labelPoint, ChartDataLabelStyle labelStyle, string valueType)
+        {
+            if (series.ChartArea == null) return labelPoint;
+
+            SizeF labelSize = labelStyle.MeasureLabel(dataLabel.DataLabels[0] != null ? dataLabel.DataLabels[0] : string.Empty);
+            float padding = (float)labelStyle.LabelPadding;
+
+            return GetLabelPositionForRangeColumnSeries(series, dataLabel.Index, labelSize, labelPoint, padding, valueType);
+        }
+
         #endregion
 
         #region Private Methods
@@ -553,6 +564,147 @@ namespace Syncfusion.Maui.Charts
             {
                 return false;
             }
+        }
+
+        private PointF GetLabelPositionForRangeColumnSeries(RangeColumnSeries rangeColumnSeries, int index, SizeF labelSize, PointF labelPoint, float padding, string valueType)
+        {
+            if (rangeColumnSeries == null) return labelPoint;
+
+            ChartDataLabelStyle labelstyle = LabelStyle;
+            float x = labelPoint.X, y = labelPoint.Y;
+            var borderWidth = (float)labelstyle.StrokeWidth / 2;
+            x = x + ((float)labelstyle.OffsetX);
+            y = y + ((float)labelstyle.OffsetY);
+            double highValue = rangeColumnSeries.IsMultipleYPathRequired ? rangeColumnSeries.HighValues[index] : rangeColumnSeries.HighValues.Count == 0 ? 0 : rangeColumnSeries.HighValues[index];
+            double lowValue = rangeColumnSeries.IsMultipleYPathRequired ? rangeColumnSeries.LowValues[index] : rangeColumnSeries.LowValues.Count == 0 ? 0 : rangeColumnSeries.LowValues[index];
+
+            switch (valueType)
+            {
+                case "HighType":
+                    if (rangeColumnSeries.ChartArea != null && rangeColumnSeries.ChartArea.IsTransposed)
+                    {
+                        if (LabelPlacement == DataLabelPlacement.Auto || LabelPlacement == DataLabelPlacement.Inner)
+                        {
+                            if (rangeColumnSeries.ActualYAxis != null && rangeColumnSeries.ActualYAxis.IsInversed)
+                            {
+                                x = highValue > lowValue ? x + (labelSize.Width / 2) + padding + borderWidth : x - (labelSize.Width / 2) - padding - borderWidth;
+                            }
+                            else
+                            {
+                                x = highValue > lowValue ? x - (labelSize.Width / 2) - padding - borderWidth : x + (labelSize.Width / 2) + padding + borderWidth;
+                            }
+                           
+                            PointF point = GetAutoLabelPosition(rangeColumnSeries, x, y, labelSize, padding, borderWidth);
+                            x = point.X;
+                            y = point.Y;
+                        }
+                        else if (LabelPlacement == DataLabelPlacement.Outer)
+                        {
+                            if (rangeColumnSeries.ActualYAxis != null && rangeColumnSeries.ActualYAxis.IsInversed)
+                            {
+                                x = highValue > lowValue ? x - (labelSize.Width / 2) - padding - borderWidth : x + (labelSize.Width / 2) + padding + borderWidth;
+                            }
+                            else
+                            {
+                                x = highValue > lowValue ? x + (labelSize.Width / 2) + padding + borderWidth : x - (labelSize.Width / 2) - padding - borderWidth;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (LabelPlacement == DataLabelPlacement.Auto || LabelPlacement == DataLabelPlacement.Inner)
+                        {
+                            if (rangeColumnSeries.ActualYAxis!=null && rangeColumnSeries.ActualYAxis.IsInversed)
+                            {
+                                y = highValue > lowValue ? y - (labelSize.Height / 2) - padding - borderWidth : y + (labelSize.Height / 2) + padding + borderWidth;
+                            }
+                            else
+                            {
+                                y = highValue > lowValue ? y + (labelSize.Height / 2) + padding + borderWidth : y - (labelSize.Height / 2) - padding - borderWidth;
+                            }
+                          
+                            PointF point = GetAutoLabelPosition(rangeColumnSeries, x, y, labelSize, padding, borderWidth);
+                            x = point.X;
+                            y = point.Y;
+                        }
+                        else if (LabelPlacement == DataLabelPlacement.Outer)
+                        {
+                            if (rangeColumnSeries.ActualYAxis != null && rangeColumnSeries.ActualYAxis.IsInversed)
+                            {
+                                y = highValue > lowValue ? y + (labelSize.Height / 2) + padding + borderWidth : y - (labelSize.Height / 2) - padding - borderWidth;
+                            }
+                            else
+                            {
+                                y = highValue > lowValue ? y - (labelSize.Height / 2) - padding - borderWidth : y + (labelSize.Height / 2) + padding + borderWidth;
+                            }
+                        }
+                    }
+
+                    break;
+                case "LowType":
+                    if (rangeColumnSeries.ChartArea != null && rangeColumnSeries.ChartArea.IsTransposed)
+                    {
+                        if (LabelPlacement == DataLabelPlacement.Auto || LabelPlacement == DataLabelPlacement.Inner)
+                        {
+                            if (rangeColumnSeries.ActualYAxis != null && rangeColumnSeries.ActualYAxis.IsInversed)
+                            {
+                                x = highValue > lowValue ? x - (labelSize.Width / 2) - padding + borderWidth : x + (labelSize.Width / 2) + padding + borderWidth;
+                            }
+                            else
+                            {
+                                x = highValue > lowValue ? x + (labelSize.Width / 2) + padding + borderWidth : x - (labelSize.Width / 2) - padding - borderWidth;
+                            }
+                            
+                            PointF point = GetAutoLabelPosition(rangeColumnSeries, x, y, labelSize, padding, borderWidth);
+                            x = point.X;
+                            y = point.Y;
+                        }
+                        else if (LabelPlacement == DataLabelPlacement.Outer)
+                        {
+                            if (rangeColumnSeries.ActualYAxis != null && rangeColumnSeries.ActualYAxis.IsInversed)
+                            {
+                                x = highValue > lowValue ? x + (labelSize.Width / 2) + padding + borderWidth : x - (labelSize.Width / 2) - padding - borderWidth;
+                            }
+                            else
+                            {
+                                x = highValue > lowValue ? x - (labelSize.Width / 2) - padding - borderWidth : x + (labelSize.Width / 2) + padding + borderWidth;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (LabelPlacement == DataLabelPlacement.Auto || LabelPlacement == DataLabelPlacement.Inner)
+                        {
+                            if (rangeColumnSeries.ActualYAxis != null && rangeColumnSeries.ActualYAxis.IsInversed)
+                            {
+                                y = highValue > lowValue ? y + (labelSize.Height / 2) + padding - borderWidth : y - (labelSize.Height / 2) - padding - borderWidth;
+                            }
+                            else
+                            {
+                                y = highValue > lowValue ? y - (labelSize.Height / 2) - padding - borderWidth : y + (labelSize.Height / 2) + padding + borderWidth;
+                            }
+                           
+                            PointF point = GetAutoLabelPosition(rangeColumnSeries, x, y, labelSize, padding, borderWidth);
+                            x = point.X;
+                            y = point.Y;
+                        }
+                        else if (LabelPlacement == DataLabelPlacement.Outer)
+                        {
+                            if (rangeColumnSeries.ActualYAxis != null && rangeColumnSeries.ActualYAxis.IsInversed)
+                            {
+                                y = highValue > lowValue ? y - (labelSize.Height / 2) - padding - borderWidth : y + (labelSize.Height / 2) + padding + borderWidth;
+                            }
+                            else
+                            {
+                                y = highValue > lowValue ? y + (labelSize.Height / 2) + padding + borderWidth : y - (labelSize.Height / 2) - padding - borderWidth;
+                            }
+                        }
+                    }
+
+                    break;
+            }
+
+            return new PointF(x, y);
         }
 
         #endregion

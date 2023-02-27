@@ -242,7 +242,7 @@ namespace Syncfusion.UI.Xaml.Charts
                 new PropertyMetadata(false, OnShowConnectingLine));
 
         /// <summary>
-        /// Identifies the <see cref="ChartSymbol"/> dependency property.
+        /// Identifies the <see cref="ShapeType"/> dependency property.
         /// </summary>        
         /// <value>
         /// The identifier for <c>ChartSymbol</c> dependency property.
@@ -250,9 +250,9 @@ namespace Syncfusion.UI.Xaml.Charts
         internal static readonly DependencyProperty MarkerTypeProperty =
             DependencyProperty.Register(
                 nameof(MarkerType),
-                typeof(ChartSymbol),
+                typeof(ShapeType),
                 typeof(ChartDataLabelSettings),
-                new PropertyMetadata(ChartSymbol.Custom, OnSymbolTypeChanged));
+                new PropertyMetadata(ShapeType.Custom, OnSymbolTypeChanged));
 
         /// <summary>
         /// Identifies the <see cref="MarkerWidth"/> dependency property.
@@ -1181,11 +1181,11 @@ namespace Syncfusion.UI.Xaml.Charts
         /// By default, marker will not be displayed. We need to define the required shape.
         /// </remarks>
         /// <value>
-        /// The value can be Circle, Rectangle, etc. See <see cref="ChartSymbol"/>.
+        /// The value can be Circle, Rectangle, etc. See <see cref="ShapeType"/>.
         /// </value>
-        internal ChartSymbol MarkerType
+        internal ShapeType MarkerType
         {
-            get { return (ChartSymbol)GetValue(MarkerTypeProperty); }
+            get { return (ShapeType)GetValue(MarkerTypeProperty); }
             set { SetValue(MarkerTypeProperty, value); }
         }
 
@@ -1327,7 +1327,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
                 if (series != null)
                 {
-                    Visible = (series as DataMarkerSeries).ShowDataLabels;
+                    Visible = (series as ChartSeries).ShowDataLabels;
 
                     if (adormentContainers != null)
                     {
@@ -1513,8 +1513,8 @@ namespace Syncfusion.UI.Xaml.Charts
         {
             get
             {
-                return (ShowMarker && ((MarkerType == ChartSymbol.Custom && MarkerTemplate != null)
-                                      || (MarkerType != ChartSymbol.Custom)));
+                return (ShowMarker && ((MarkerType == ShapeType.Custom && MarkerTemplate != null)
+                                      || (MarkerType != ShapeType.Custom)));
             }
         }
 
@@ -2569,7 +2569,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// </summary>
         internal void GetActualLabelPosition(ChartDataLabel adornment)
         {
-            if (this.Series is TriangularSeriesBase || this.series is CircularSeries || this.Series is PolarRadarSeriesBase)
+            if (this.Series is TriangularSeriesBase || this.series is CircularSeries || this.Series is PolarSeries)
             {
                 //The label positioning has been already algned for the above series.
                 return;
@@ -2945,8 +2945,8 @@ namespace Syncfusion.UI.Xaml.Charts
         }
 
         private Point CalculateConnectorLinePoint(ref double x, ref double y, ChartDataLabel adornment, double angle, int index)
-        {
-            var actualLabelPos = (Series as DataMarkerSeries).Adornments[index].ActualLabelPosition;
+        {   
+            var actualLabelPos = (Series as ChartSeries).Adornments[index].ActualLabelPosition;
             switch (actualLabelPos)
             {
                 case ActualLabelPosition.Top:
@@ -2976,7 +2976,7 @@ namespace Syncfusion.UI.Xaml.Charts
                 && (!(Series.ActualYAxis.ZoomFactor < 1
                 || Series.ActualXAxis.ZoomFactor < 1)))
             {
-                if (Series is PolarRadarSeriesBase)
+                if (Series is PolarSeries)
                 {
                     x = (x < 0) ? 0 : (x > Series.ActualArea.SeriesClipRect.Width) ? Series.ActualArea.SeriesClipRect.Width : x;
                     y = (y < 0) ? 0 : (y > Series.ActualArea.SeriesClipRect.Height) ? Series.ActualArea.SeriesClipRect.Height : y;
@@ -3456,7 +3456,7 @@ namespace Syncfusion.UI.Xaml.Charts
                             }
                         }
                     }
-                    else if (Series is CircularSeries || Series is PolarRadarSeriesBase)
+                    else if (Series is CircularSeries || Series is PolarSeries)
                     {
                         point.X -= control.DesiredSize.Width / 2;
                         point.Y -= control.DesiredSize.Height / 2;
@@ -3475,7 +3475,7 @@ namespace Syncfusion.UI.Xaml.Charts
                         double seriesHeight = 0.0;
                         double seriesWidth = 0.0;
 
-                        if (Series is PolarRadarSeriesBase && Series.Segments.Count > 0)
+                        if (Series is PolarSeries && Series.Segments.Count > 0)
                         {
                             seriesHeight = Series.ActualArea.SeriesClipRect.Height;
                             seriesWidth = Series.ActualArea.SeriesClipRect.Width;
@@ -3986,11 +3986,11 @@ namespace Syncfusion.UI.Xaml.Charts
                     y = y - padding + (ConnectorHeight <= 0 ? segment.height : 0) - height;
                 }
             }
-            else if (Series is PolarRadarSeriesBase)
+            else if (Series is PolarSeries)
             {
                 if (!ShowConnectorLine)
                 {
-                    Point vectorPoint = ChartTransform.ValueToVector(Series.ActualXAxis, (Series as DataMarkerSeries).Adornments[index].XData);
+                    Point vectorPoint = ChartTransform.ValueToVector(Series.ActualXAxis, (Series as ChartSeries).Adornments[index].XData);
                     x = (width / 2 * vectorPoint.X + x) - width / 2 + padding;
                     y = (height / 2 * vectorPoint.Y + y) - height / 2 + padding;
                 }
@@ -3999,9 +3999,9 @@ namespace Syncfusion.UI.Xaml.Charts
                     x = x - width / 2;
                     y = y - height / 2;
 
-                    var polarRadarSeries = Series as PolarRadarSeriesBase;
-                    var centerX = polarRadarSeries.Chart.SeriesClipRect.Width / 2;
-                    var centerY = polarRadarSeries.Chart.SeriesClipRect.Height / 2;
+                    var polarSeries = Series as PolarSeries;
+                    var centerX = polarSeries.Chart.SeriesClipRect.Width / 2;
+                    var centerY = polarSeries.Chart.SeriesClipRect.Height / 2;
                     centerX = centerX - width / 2;
                     centerY = centerY - height / 2;
                     bool isLeft = x < centerX, isBottom = y > centerY;
@@ -4028,7 +4028,7 @@ namespace Syncfusion.UI.Xaml.Charts
             }
             else
             {
-                switch ((Series as DataMarkerSeries).Adornments[index].ActualLabelPosition)
+                switch ((Series as ChartSeries).Adornments[index].ActualLabelPosition)
                 {
                     case ActualLabelPosition.Top:
                         y = y - height - padding;
@@ -4129,11 +4129,11 @@ namespace Syncfusion.UI.Xaml.Charts
                     y = y - padding + (ConnectorHeight <= 0 ? segment.height : 0) - height;
                 }
             }
-            else if (Series is PolarRadarSeriesBase)
+            else if (Series is PolarSeries)
             {
                 if (!ShowConnectorLine)
                 {
-                    Point vectorPoint = ChartTransform.ValueToVector(Series.ActualXAxis, (Series as DataMarkerSeries).Adornments[index].XData);
+                    Point vectorPoint = ChartTransform.ValueToVector(Series.ActualXAxis, (Series as ChartSeries).Adornments[index].XData);
                     x = (-width / 2 * vectorPoint.X + x) - width / 2 + padding;
                     y = (-height / 2 * vectorPoint.Y + y) - height / 2 + padding;
                 }
@@ -4142,9 +4142,9 @@ namespace Syncfusion.UI.Xaml.Charts
                     x = x - width / 2;
                     y = y - height / 2;
 
-                    var polarRadarSeries = Series as PolarRadarSeriesBase;
-                    var centerX = polarRadarSeries.Chart.SeriesClipRect.Width / 2;
-                    var centerY = polarRadarSeries.Chart.SeriesClipRect.Height / 2;
+                    var polarSeries = Series as PolarSeries;
+                    var centerX = polarSeries.Chart.SeriesClipRect.Width / 2;
+                    var centerY = polarSeries.Chart.SeriesClipRect.Height / 2;
                     centerX = centerX - width / 2;
                     centerY = centerY - height / 2;
                     bool isLeft = x < centerX, isBottom = y > centerY;
@@ -4171,7 +4171,7 @@ namespace Syncfusion.UI.Xaml.Charts
             }
             else
             {
-                switch ((Series as DataMarkerSeries).Adornments[index].ActualLabelPosition)
+                switch ((Series as ChartSeries).Adornments[index].ActualLabelPosition)
                 {
                     case ActualLabelPosition.Top:
                         y = y + padding;

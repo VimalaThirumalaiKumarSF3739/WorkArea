@@ -258,12 +258,12 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="height">Used to specify the height.</param>
         /// <param name="currY">Used to specify the yposition.</param>
         /// <returns>returns <see cref="ChartDataLabel"/></returns>
-        internal override ChartDataLabel CreateDataMarker(DataMarkerSeries series, double xVal, double yVal, double height, double currY)
+        internal override ChartDataLabel CreateDataMarker(ChartSeries series, double xVal, double yVal, double height, double currY)
         {
             return new TriangularAdornment(xVal, yVal, currY, height, series);
         }
 
-        internal override ChartDataLabel CreateAdornment(DataMarkerSeries series, double xVal, double yVal, double height, double currY)
+        internal override ChartDataLabel CreateAdornment(ChartSeries series, double xVal, double yVal, double height, double currY)
         {
             return CreateDataMarker(series, xVal, yVal, height, currY);
         }

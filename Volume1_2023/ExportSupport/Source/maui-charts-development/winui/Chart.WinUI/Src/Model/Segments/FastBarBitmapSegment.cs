@@ -75,7 +75,7 @@ namespace Syncfusion.UI.Xaml.Charts
             x2Values = new List<float>();
             y1Values = new List<float>();
             y2Values = new List<float>();
-            Series = series as ChartSeries;
+            Series = series;
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         internal void UpdateVisual()
         {
-            var fastBarSeries = Series as ChartSeries;
+            var fastBarSeries = Series;
             bool isMultiColor = fastBarSeries.PaletteBrushes != null && fastBarSeries.Fill == null;
             float x1 = 0, x2, y1, y2, diff = 0;
             NativeColor color;

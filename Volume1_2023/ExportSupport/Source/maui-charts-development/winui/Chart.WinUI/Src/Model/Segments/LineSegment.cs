@@ -53,7 +53,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="y2"></param>
         /// <param name="lineSeries"></param>
         /// <param name="item"></param>
-        public LineSegment(double x1, double y1, double x2, double y2, DataMarkerSeries lineSeries, object item)
+        public LineSegment(double x1, double y1, double x2, double y2, ChartSeries lineSeries, object item)
         {
             base.Series = lineSeries;
             base.Item = item;
@@ -384,7 +384,7 @@ namespace Syncfusion.UI.Xaml.Charts
                 BindingOperations.SetBinding(this, LineSegment.StrokeDashArrayProperty, binding);
             }
 
-            var polarSeries = Series as PolarRadarSeriesBase;
+            var polarSeries = Series as PolarSeries;
             if (polarSeries != null)
             {
                 DoubleCollection seriesStrokeDashArray = polarSeries.StrokeDashArray;

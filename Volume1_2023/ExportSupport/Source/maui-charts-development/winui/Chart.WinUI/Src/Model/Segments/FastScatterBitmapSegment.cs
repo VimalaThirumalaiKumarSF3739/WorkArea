@@ -140,7 +140,7 @@ namespace Syncfusion.UI.Xaml.Charts
                 }
                 if (fastSeries.IsIndexed)
                 {
-                    var isGrouping = (fastSeries.ActualXAxis is CategoryAxis) ? (fastSeries.ActualXAxis as CategoryAxis).IsIndexed : true;
+                    var isGrouping = (fastSeries.ActualXAxis is CategoryAxis) ? (fastSeries.ActualXAxis as CategoryAxis).ArrangeByIndex : true;
                     double X_MAX = 0;
                     if (!isGrouping)
                         X_MAX = xChartVals.Max();
@@ -192,7 +192,7 @@ namespace Syncfusion.UI.Xaml.Charts
                         }
                     }
 
-                    DrawScatterType(fastSeries.ShapeType, width, height, color, isMultiColor, xr, yr);
+                    DrawScatterType(fastSeries.Type, width, height, color, isMultiColor, xr, yr);
                 }
 
             }
@@ -256,7 +256,7 @@ namespace Syncfusion.UI.Xaml.Charts
             return color;
         }
 
-        private void DrawScatterType(ChartSymbol shapeType, int width, int height, NativeColor color, bool isMultiColor, double xr, double yr)
+        private void DrawScatterType(ShapeType type, int width, int height, NativeColor color, bool isMultiColor, double xr, double yr)
         {
             double xValue = 0, yValue = 0;
 
@@ -269,33 +269,33 @@ namespace Syncfusion.UI.Xaml.Charts
 
                 if (yValue > -1)
                 {
-                    switch (shapeType)
+                    switch (type)
                     {
-                        case ChartSymbol.Ellipse:
+                        case ShapeType.Circle:
                             DrawEllipse(width, height, segmentColor, xValue, yValue, xr, yr);
                             break;
-                        case ChartSymbol.Square:
+                        case ShapeType.Rectangle:
                             DrawRectangle(width, height, segmentColor, xValue, yValue, xr, yr);
                             break;
-                        case ChartSymbol.Cross:
+                        case ShapeType.Cross:
                             DrawCross(width, height, segmentColor, xValue, yValue, xr, yr);
                             break;
-                        case ChartSymbol.Diamond:
+                        case ShapeType.Diamond:
                             DrawDiamond(width, height, segmentColor, xValue, yValue, xr, yr);
                             break;
-                        case ChartSymbol.Hexagon:
+                        case ShapeType.Hexagon:
                             DrawHexagon(width, height, segmentColor, xValue, yValue, xr, yr);
                             break;
-                        case ChartSymbol.InvertedTriangle:
+                        case ShapeType.InvertedTriangle:
                             DrawInvertedTriangle(width, height, segmentColor, xValue, yValue, xr, yr);
                             break;
-                        case ChartSymbol.Pentagon:
+                        case ShapeType.Pentagon:
                             DrawPentagon(width, height, segmentColor, xValue, yValue, xr, yr);
                             break;
-                        case ChartSymbol.Plus:
+                        case ShapeType.Plus:
                             DrawPlus(width, height, segmentColor, xValue, yValue, xr, yr);
                             break;
-                        case ChartSymbol.Triangle:
+                        case ShapeType.Triangle:
                             DrawTriangle(width, height, segmentColor, xValue, yValue, xr, yr);
                             break;
                     }

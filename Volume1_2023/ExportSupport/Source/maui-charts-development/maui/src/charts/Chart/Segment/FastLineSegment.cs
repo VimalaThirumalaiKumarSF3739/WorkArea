@@ -257,9 +257,9 @@ namespace Syncfusion.Maui.Charts
             }
             else
             {
-                if (dataCount > 0)
+                if (dataCount > 0 && XValues != null)
                 {
-                    preXValue = 0;
+                    preXValue = XValues[0];
                     preYValue = YValues[0];
                     preXPos = fastlineSeries.TransformToVisibleX(preXValue, preYValue);
                     preYPos = fastlineSeries.TransformToVisibleY(preXValue, preYValue);
@@ -290,12 +290,12 @@ namespace Syncfusion.Maui.Charts
                                 x = ValueToPoint(yValue, yStart, yDelta, yAxisIsInversed, yAxisIsVertical,
                                        yAxisWidth, yAxisHeight, yAxisLeftOffset, yAxisTopOffset);
 
-                                y = ValueToPoint(i, xStart, xDelta, xAxisIsInversed, xAxisIsVertical,
+                                y = ValueToPoint(XValues[i], xStart, xDelta, xAxisIsInversed, xAxisIsVertical,
                                    xAxisWidth, xAxisHeight, xAxisLeftOffset, xAxisTopOffset);
                             }
                             else
                             {
-                                x = ValueToPoint(i, xStart, xDelta, xAxisIsInversed, xAxisIsVertical,
+                                x = ValueToPoint(XValues[i], xStart, xDelta, xAxisIsInversed, xAxisIsVertical,
                                    xAxisWidth, xAxisHeight, xAxisLeftOffset, xAxisTopOffset);
 
                                 y = ValueToPoint(yValue, yStart, yDelta, yAxisIsInversed, yAxisIsVertical,
@@ -306,7 +306,7 @@ namespace Syncfusion.Maui.Charts
 
                             preXPos = x;
                             preYPos = y;
-                            preXValue = i;
+                            preXValue = XValues[i];
                             preYValue = yValue;
                         }
                     }
@@ -341,8 +341,8 @@ namespace Syncfusion.Maui.Charts
 
                 if (series.IsIndexed)
                 {
-                    xMin = 0;
-                    xMax = dataCount - 1;
+                    xMin = XValues[0];
+                    xMax = XValues[dataCount - 1];
                     for (int i = 0; i < dataCount; i++)
                     {
                         if (i >= YValues.Count)

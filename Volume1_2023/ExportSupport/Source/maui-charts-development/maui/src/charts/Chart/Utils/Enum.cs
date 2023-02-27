@@ -91,7 +91,7 @@ namespace Syncfusion.Maui.Charts
     /// <summary>
     /// Represents auto scrolling delta mode of axis. The axis can be scrolled from the start position or end position.
     /// </summary>
-    internal enum ChartAutoScrollingMode
+    public enum ChartAutoScrollingMode
     {
         /// <summary>
         /// Indicates AutoScrollingDelta calculated in axis start position. 
@@ -423,42 +423,6 @@ namespace Syncfusion.Maui.Charts
         XY,
     }
 
-#if !WinUI
-
-    /// <summary>
-    /// Represents a label's alignment on an axis.
-    /// </summary>
-    public enum ChartAxisLabelAlignment
-    {
-        /// <summary>
-        /// The label is positioned before the axis tick.
-        /// </summary>
-        Start,
-
-        /// <summary>
-        /// The label is positioned center of the axis tick.
-        /// </summary>
-        Center,
-
-        /// <summary>
-        /// The label is positioned after the axis tick.
-        /// </summary>
-        End,
-    }
-
-    internal enum ChartTextWrapMode
-    {
-        /// <summary>
-        /// Labels are wrapped by word.
-        /// </summary>
-        WordWrap,
-
-        /// <summary>
-        /// Labels are wrapped by character.
-        /// </summary>
-        CharacterWrap
-    }
-
     #region ScatterChartShapes
     /// <summary>
     /// Represents scatter shape types.
@@ -527,7 +491,44 @@ namespace Syncfusion.Maui.Charts
     }
     #endregion
 
-#region DataLabel
+#if !WinUI
+
+    /// <summary>
+    /// Represents a label's alignment on an axis.
+    /// </summary>
+    public enum ChartAxisLabelAlignment
+    {
+        /// <summary>
+        /// The label is positioned before the axis tick.
+        /// </summary>
+        Start,
+
+        /// <summary>
+        /// The label is positioned center of the axis tick.
+        /// </summary>
+        Center,
+
+        /// <summary>
+        /// The label is positioned after the axis tick.
+        /// </summary>
+        End,
+    }
+
+    internal enum ChartTextWrapMode
+    {
+        /// <summary>
+        /// Labels are wrapped by word.
+        /// </summary>
+        WordWrap,
+
+        /// <summary>
+        /// Labels are wrapped by character.
+        /// </summary>
+        CharacterWrap
+    }
+   
+
+    #region DataLabel
 
     /// <summary>
     /// Represents different ways to position the chart data labels.
@@ -615,7 +616,7 @@ namespace Syncfusion.Maui.Charts
         Hide
     }
 
-#endregion
+    #endregion
 
 
     /// <summary>
@@ -685,6 +686,16 @@ namespace Syncfusion.Maui.Charts
         NearestPoint,
 
        // GroupAllPoints,
+    }
+
+    /// <summary>
+    /// Specifies which type of segment to consider for rendering.
+    /// </summary>
+    internal enum WaterfallSegmentType
+    {
+        Positive,
+        Negative,
+        Sum
     }
 
     #region Mode For Pyramid chart

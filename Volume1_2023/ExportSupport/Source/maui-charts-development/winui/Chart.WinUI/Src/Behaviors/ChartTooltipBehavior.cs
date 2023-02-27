@@ -11,7 +11,7 @@
     /// <para>It provides the following options to customize the appearance of the tooltip:</para>
     /// <para><b>LabelStyle - </b> To customize the appearance of the tooltip label, refer to the <see cref="LabelStyle"/> property.</para>
     /// <para><b>Style - </b> To customize the appearance of tooltips, refer to the <see cref="Style"/> property.</para>
-    /// <para><b>Duration - </b> To show the tooltip with delay and indicate how long the tooltip will be visible, refer to the <see cref="InitialShowDelay"/>, and <see cref="ShowDuration"/> properties.</para>
+    /// <para><b>Duration - </b> To show the tooltip with delay and indicate how long the tooltip will be visible, refer to the <see cref="InitialShowDelay"/>, and <see cref="Duration"/> properties.</para>
     /// <para><b>EnableAnimation - </b> To indicate the animation for the tooltip, refer to the <see cref="EnableAnimation"/> property.</para>
     /// </remarks>
     /// <example>
@@ -104,13 +104,13 @@
             DependencyProperty.Register(nameof(InitialShowDelay), typeof(int), typeof(ChartTooltipBehavior), new PropertyMetadata(0));
 
         /// <summary>
-        /// Identifies the <see cref="ShowDuration"/> dependency property.
+        /// Identifies the <see cref="Duration"/> dependency property.
         /// </summary>
         /// <value>
-        /// The identifier for the <see cref="ShowDuration"/> dependency property.
+        /// The identifier for the <see cref="Duration"/> dependency property.
         /// </value>
-        public static readonly DependencyProperty ShowDurationProperty =
-            DependencyProperty.Register(nameof(ShowDuration), typeof(int), typeof(ChartTooltipBehavior), new PropertyMetadata(1000));
+        public static readonly DependencyProperty DurationProperty =
+            DependencyProperty.Register(nameof(Duration), typeof(int), typeof(ChartTooltipBehavior), new PropertyMetadata(1000));
 
         /// <summary>
         /// Identifies the <see cref="EnableAnimation"/> dependency property.
@@ -469,7 +469,7 @@
         ///     <!--omitted for brevity-->
         ///
         ///     <chart:SfCartesianChart.TooltipBehavior>
-        ///         <chart:ChartTooltipBehavior ShowDuration ="1500"/>
+        ///         <chart:ChartTooltipBehavior Duration ="1500"/>
         ///     </chart:SfCartesianChart.TooltipBehavior>
         ///
         ///     <chart:LineSeries ItemsSource="{Binding Data}"
@@ -488,7 +488,7 @@
         /// // omitted for brevity
         /// chart.TooltipBehavior = new ChartTooltipBehavior()
         /// {
-        ///    ShowDuration = 1500,
+        ///    Duration = 1500,
         /// };
         /// 
         /// LineSeries series = new LineSeries()
@@ -504,10 +504,10 @@
         /// </code>
         /// ***
         /// </example> 
-        public int ShowDuration
+        public int Duration
         {
-            get { return (int)GetValue(ShowDurationProperty); }
-            set { SetValue(ShowDurationProperty, value); }
+            get { return (int)GetValue(DurationProperty); }
+            set { SetValue(DurationProperty, value); }
         }
 
         /// <summary>

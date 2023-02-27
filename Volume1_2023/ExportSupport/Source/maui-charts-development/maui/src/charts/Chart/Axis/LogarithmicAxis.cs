@@ -95,13 +95,11 @@ namespace Syncfusion.Maui.Charts
 
             if (ZoomFactor < 1)
             {
-                DoubleRange baseRange = VisibleRange;
+                //Modified the visible range calculation for fixing the data labels hiding issue while zooming interactions. 
+
+                DoubleRange baseRange = VisibleLogRange;
                 double start = baseRange.Start + (ZoomPosition * baseRange.Delta);
                 double end = start + (ZoomFactor * baseRange.Delta);
-
-                DoubleRange logBaseRange = VisibleLogRange;
-                double logStart = logBaseRange.Start + (ZoomPosition * logBaseRange.Delta);
-                double logEnd = logStart + (ZoomFactor * logBaseRange.Delta);
 
                 if (start < baseRange.Start)
                 {
@@ -115,13 +113,19 @@ namespace Syncfusion.Maui.Charts
                     end = baseRange.End;
                 }
 
-                VisibleLogRange = new DoubleRange(logStart, logEnd);
-                VisibleRange = new DoubleRange(start, end);
-
-                return VisibleRange;
+                VisibleLogRange = new DoubleRange(start, end);
+                VisibleRange = new DoubleRange(GetPowValue(start), GetPowValue(end));
             }
 
             return VisibleRange;
+        }
+
+        internal override void UpdateAxisScale()
+        {
+            var actualLogRange = new DoubleRange(GetLogValue(ActualRange.Start), GetLogValue(ActualRange.End));
+
+            ZoomPosition = (VisibleLogRange.Start - actualLogRange.Start) / actualLogRange.Delta;
+            ZoomFactor = (VisibleLogRange.End - VisibleLogRange.Start) / actualLogRange.Delta;
         }
 
         internal override DoubleRange AddDefaultRange(double start)
@@ -281,6 +285,28 @@ namespace Syncfusion.Maui.Charts
                 logSmallTick = GetLogValue(logTickPos);
             }
         }
+
+        internal override void UpdateAutoScrollingDelta(DoubleRange actualRange, double scrollingDelta)
+        {
+            if (double.IsNaN(scrollingDelta)) return;
+
+            switch (AutoScrollingMode)
+            {
+                case ChartAutoScrollingMode.Start:
+                    VisibleRange = new DoubleRange(ActualRange.Start,GetPowValue(scrollingDelta));
+                    VisibleLogRange = new DoubleRange(GetLogValue(VisibleRange.Start), GetLogValue(VisibleRange.End));
+                    ZoomFactor = VisibleRange.Delta / ActualRange.Delta;
+                    ZoomPosition = 0;
+                    break;
+                case ChartAutoScrollingMode.End:
+                    VisibleRange = new DoubleRange(ActualRange.End / GetPowValue(scrollingDelta), ActualRange.End);
+                    VisibleLogRange = new DoubleRange(GetLogValue(VisibleRange.Start), GetLogValue(VisibleRange.End));
+                    ZoomFactor = VisibleRange.Delta / ActualRange.Delta;
+                    ZoomPosition = 1 - ZoomFactor;
+                    break;
+            }
+        }
+
         #endregion
 
         #region Private Methods

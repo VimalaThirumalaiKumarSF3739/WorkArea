@@ -507,7 +507,7 @@ namespace Syncfusion.UI.Xaml.Charts
             return new PieSegment();
         }
 
-        internal override ChartDataLabel CreateAdornment(DataMarkerSeries series, double xVal, double yVal, double angle, double radius)
+        internal override ChartDataLabel CreateAdornment(ChartSeries series, double xVal, double yVal, double angle, double radius)
         {
             return CreateDataMarker(series, xVal, yVal, angle, radius);
         }
@@ -521,7 +521,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="angle">angle</param>
         /// <param name="radius">radius</param>
         /// <returns>ChartAdornment</returns>
-        internal override ChartDataLabel CreateDataMarker(DataMarkerSeries series, double xVal, double yVal, double angle, double radius)
+        internal override ChartDataLabel CreateDataMarker(ChartSeries series, double xVal, double yVal, double angle, double radius)
         {
             var segment = new ChartPieDataLabel(xVal, yVal, angle, radius, series);
             segment.SetValues(xVal, yVal, angle, radius, series);

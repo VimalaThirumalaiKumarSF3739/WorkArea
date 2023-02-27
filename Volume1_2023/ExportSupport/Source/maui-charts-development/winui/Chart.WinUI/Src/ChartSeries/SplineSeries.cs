@@ -83,7 +83,7 @@ namespace Syncfusion.UI.Xaml.Charts
     /// ***
     /// </example>
     /// <seealso cref="SplineSegment"/>
-    public class SplineSeries : XySeriesDraggingBase, ISegmentSelectable
+    public class SplineSeries : XyDataSeries, ISegmentSelectable
     {
         #region Dependency Property Registration
 
@@ -329,7 +329,7 @@ namespace Syncfusion.UI.Xaml.Charts
             int index = -1;
             double[] yCoef = null;
             List<double> xValues = null;
-            bool isGrouping = this.ActualXAxis is CategoryAxis && !(this.ActualXAxis as CategoryAxis).IsIndexed;
+            bool isGrouping = this.ActualXAxis is CategoryAxis && !(this.ActualXAxis as CategoryAxis).ArrangeByIndex;
             if (isGrouping)
                 xValues = GroupedXValuesIndexes;
             else

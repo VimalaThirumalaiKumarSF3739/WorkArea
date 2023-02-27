@@ -15,39 +15,6 @@ namespace Syncfusion.UI.Xaml.Charts
     }
 
     /// <summary>
-    /// Interface implementation for ISupportAxes
-    /// </summary>
-    public interface ISupportAxes
-    {
-        /// <summary>
-        /// Gets XRange property
-        /// </summary>
-        DoubleRange VisibleXRange
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets YRange property
-        /// </summary>
-        DoubleRange VisibleYRange
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets ActualXAxis property.
-        /// </summary>
-        /// <value>It takes the <c>ChartAxis</c> value.</value>
-        ChartAxis ActualXAxis { get; }
-        /// <summary>
-        /// Gets ActualYAxis property.
-        /// </summary>
-        /// <value>It takes the <c>ChartAxis</c> value.</value>
-        ChartAxis ActualYAxis { get; }
-    }
-
-    /// <summary>
     /// 
     /// </summary>
     public interface ISegmentSelectable

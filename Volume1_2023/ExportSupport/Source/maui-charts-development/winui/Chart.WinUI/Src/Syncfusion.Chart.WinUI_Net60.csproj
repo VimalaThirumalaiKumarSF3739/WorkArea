@@ -65,14 +65,12 @@
     <Compile Include="ChartAxis\ChartAxisPartial\RangeAxisBase.cs" />
     <Compile Include="ChartAxis\LabelBarStyle.cs" />
     <Compile Include="ChartLegend\ChartLegendItem.cs" />
-    <Compile Include="ChartSeries\AdornmentSeries.cs" />
     <Compile Include="ChartSeries\CartesianSeries.cs" />
     <Compile Include="ChartSeries\ChartSeriesPartial\ChartSeries.cs" />
     <Compile Include="ChartSeries\CircularSeries.cs" />
     <Compile Include="ChartSeries\FastColumnSeries.cs" />
     <Compile Include="ChartSeries\FastScatterBitmapSeries.cs" />
     <Compile Include="ChartSeries\FastStepLineBitmapSeries.cs" />
-    <Compile Include="ChartSeries\PolarRadarSeriesBase.cs" />
     <Compile Include="ChartSeries\StackingArea100Series.cs" />
     <Compile Include="ChartSeries\StackingColumn100Series.cs" />
     <Compile Include="ChartSeries\StackingLine100Series.cs" />
@@ -80,7 +78,6 @@
     <Compile Include="ChartSeries\StackingSeriesBase.cs" />
     <Compile Include="ChartSeries\TriangularSeriesBase.cs" />
     <Compile Include="ChartSeries\XyDataSeries.cs" />
-    <Compile Include="ChartSeries\XySeriesDraggingBase.cs" />
     <Compile Include="Core\Legend\Interface.cs" />
     <Compile Include="Core\Legend\LegendItem.cs" />
     <Compile Include="Core\Legend\LegendPanel.cs" />
@@ -117,7 +114,6 @@
     <Compile Include="ChartSeries\LineSeries.cs" />
     <Compile Include="ChartSeries\PieSeries.cs" />
     <Compile Include="ChartSeries\PolarSeries.cs" />
-    <Compile Include="ChartSeries\RadarSeries.cs" />
     <Compile Include="ChartSeries\ScatterSeries.cs" />
     <Compile Include="ChartSeries\SplineAreaSeries.cs" />
     <Compile Include="ChartSeries\SplineSeries.cs" />

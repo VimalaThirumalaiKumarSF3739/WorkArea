@@ -1,0 +1,63 @@
+<localCore:SampleView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                      x:Class="SampleBrowser.Maui.CartesianChart.SfCartesianChart.ErrorBarDefault"
+                      xmlns:local="clr-namespace:SampleBrowser.Maui.CartesianChart.SfCartesianChart"
+                      xmlns:localCore="clr-namespace:SampleBrowser.Maui.Base;assembly=SampleBrowser.Maui.Base"
+                      xmlns:chart="http://schemas.syncfusion.com/maui">
+    <localCore:SampleView.Content>
+        <StackLayout Padding="20" HorizontalOptions="Fill" >
+            <StackLayout.BindingContext>
+                <local:ErrorBarViewModel/>
+            </StackLayout.BindingContext>
+            <chart:SfCartesianChart  PaletteBrushes="{Binding PaletteBrushes}" HorizontalOptions="Fill" VerticalOptions="CenterAndExpand" x:Name="errorBarChart" >
+                <chart:SfCartesianChart.Title>
+                    <Label Text="Thermal Expansion of Metals" Margin="0" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+                </chart:SfCartesianChart.Title>
+                <chart:SfCartesianChart.XAxes  >
+                    <chart:CategoryAxis   ShowMajorGridLines="False" EdgeLabelsDrawingMode="Shift" AutoScrollingDelta="{OnPlatform Android=5,iOS=5}" >
+                        <chart:CategoryAxis.MajorTickStyle>
+                            <chart:ChartAxisTickStyle TickSize="10"></chart:ChartAxisTickStyle>
+                        </chart:CategoryAxis.MajorTickStyle>
+                        <chart:CategoryAxis.Title >
+                            <chart:ChartAxisTitle x:Name="xAxisTitle"  Margin="5,10,5,2" Text="Metals" FontSize="{OnPlatform Android=10,Default=14}" >
+                            </chart:ChartAxisTitle>
+                        </chart:CategoryAxis.Title>
+                    </chart:CategoryAxis>
+                </chart:SfCartesianChart.XAxes>
+                <chart:SfCartesianChart.YAxes>
+                    <chart:NumericalAxis  ShowMajorGridLines="False" Minimum="0" Maximum="27" >
+                        <chart:NumericalAxis.Title  >
+                            <chart:ChartAxisTitle  x:Name="yAxisTitle"  Text="Thermal Coefficient" FontSize="{OnPlatform Android=10,Default=14}"   >
+                            </chart:ChartAxisTitle>
+                        </chart:NumericalAxis.Title>
+                    </chart:NumericalAxis>
+                </chart:SfCartesianChart.YAxes>
+                <chart:SfCartesianChart.Series>
+                    <chart:ColumnSeries  ItemsSource="{Binding ThermalExpansion}"    XBindingPath="Name"   YBindingPath="Value" Fill="#95DB9C"/>
+                    <chart:ErrorBarSeries ItemsSource="{Binding ThermalExpansion}"   XBindingPath="Name"   YBindingPath="Value"     HorizontalErrorValue="0.25"  VerticalErrorValue="5"   Type="Custom"   Mode="Both"   HorizontalDirection="Both"    VerticalDirection="Both"  HorizontalErrorPath="Low" VerticalErrorPath="High">
+                        <chart:ErrorBarSeries.HorizontalLineStyle>
+                            <chart:ErrorBarLineStyle  Stroke="Black"></chart:ErrorBarLineStyle>
+                        </chart:ErrorBarSeries.HorizontalLineStyle>
+                        <chart:ErrorBarSeries.VerticalLineStyle>
+                            <chart:ErrorBarLineStyle Stroke="Black" ></chart:ErrorBarLineStyle>
+                        </chart:ErrorBarSeries.VerticalLineStyle>
+                        <chart:ErrorBarSeries.HorizontalCapLineStyle>
+                            <chart:ErrorBarCapLineStyle Stroke="Black"></chart:ErrorBarCapLineStyle>
+                        </chart:ErrorBarSeries.HorizontalCapLineStyle>
+                        <chart:ErrorBarSeries.VerticalCapLineStyle >
+                            <chart:ErrorBarCapLineStyle Stroke="Black" CapLineSize="20" ></chart:ErrorBarCapLineStyle>
+                        </chart:ErrorBarSeries.VerticalCapLineStyle>
+                    </chart:ErrorBarSeries>
+                </chart:SfCartesianChart.Series>
+            </chart:SfCartesianChart>
+            <HorizontalStackLayout x:Name="hyperLinkLayout" Margin="5,5,0,0" >
+                <Label Text="Source: " FontSize="12" VerticalOptions="Center"></Label>
+                <Label TextColor="#3E8EED" FontSize="12" FontAttributes="Italic" Text=" Thermal Expansion of Metals" VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TapCommand}" CommandParameter="https://www.owlnet.rice.edu/~msci301/ThermalExpansion.pdf"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+        </StackLayout>
+    </localCore:SampleView.Content>
+</localCore:SampleView>

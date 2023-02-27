@@ -102,17 +102,17 @@ namespace Syncfusion.UI.Xaml.Charts
             new PropertyMetadata(3d, OnScatterHeightChanged));
 
         /// <summary>
-        /// Identifies the ShapeType dependency property.
+        /// Identifies the Type dependency property.
         /// </summary>        
         /// <value>
-        /// The identifier for ShapeType dependency property.
+        /// The identifier for Type dependency property.
         /// </value> 
-        public static readonly DependencyProperty ShapeTypeProperty =
+        public static readonly DependencyProperty TypeProperty =
             DependencyProperty.Register(
-                nameof(ShapeType),
-                typeof(ChartSymbol),
+                nameof(Type),
+                typeof(ShapeType),
                 typeof(FastScatterBitmapSeries),
-                new PropertyMetadata(ChartSymbol.Ellipse, OnShapeTypePropertyChanged));
+                new PropertyMetadata(ShapeType.Circle, OnTypePropertyChanged));
 
         #endregion
 
@@ -237,7 +237,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <summary>
         /// Gets or sets different types of shapes in a fast scatter bitmap series.
         /// </summary>
-        /// <value>This property accepts <see cref="ChartSymbol"/> values, and the default shape type is ellipse.
+        /// <value>This property accepts <see cref="ShapeType"/> values, and the default shape type is ellipse.
         /// </value>
         /// <remarks>
         /// Fast scatter bitmap series does not support Custom, HorizontalLine and VerticalLine shapes. By using the above shapes for the fast scatter bitmap series, you can render only the default type, which is an ellipse.
@@ -252,7 +252,7 @@ namespace Syncfusion.UI.Xaml.Charts
         ///          <chart:FastScatterBitmapSeries ItemsSource="{Binding Data}"
         ///                                         XBindingPath="XValue"
         ///                                         YBindingPath="YValue"
-        ///                                         ShapeType = "Diamond"/>
+        ///                                         Type = "Diamond"/>
         ///
         ///     </chart:SfCartesianChart>
         /// ]]>
@@ -269,7 +269,7 @@ namespace Syncfusion.UI.Xaml.Charts
         ///           ItemsSource = viewModel.Data,
         ///           XBindingPath = "XValue",
         ///           YBindingPath = "YValue",
-        ///           ShapeType = ChartSymbol.Diamond,
+        ///           Type = ChartSymbol.Diamond,
         ///     };
         ///     
         ///     chart.Series.Add(series);
@@ -278,10 +278,10 @@ namespace Syncfusion.UI.Xaml.Charts
         /// </code>
         /// ***
         /// </example>
-        public ChartSymbol ShapeType
+        public ShapeType Type
         {
-            get { return (ChartSymbol)GetValue(ShapeTypeProperty); }
-            set { SetValue(ShapeTypeProperty, value); }
+            get { return (ShapeType)GetValue(TypeProperty); }
+            set { SetValue(TypeProperty, value); }
         }
 
         #endregion
@@ -316,7 +316,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// </summary>
         internal override void GenerateSegments()
         {
-            bool isGrouping = this.ActualXAxis is CategoryAxis && !(this.ActualXAxis as CategoryAxis).IsIndexed;
+            bool isGrouping = this.ActualXAxis is CategoryAxis && !(this.ActualXAxis as CategoryAxis).ArrangeByIndex;
             if (isGrouping)
                 xValues = GroupedXValuesIndexes;
             else
@@ -641,7 +641,7 @@ namespace Syncfusion.UI.Xaml.Charts
                 series.ScheduleUpdateChart();
         }
 
-        private static void OnShapeTypePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnTypePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             FastScatterBitmapSeries series = d as FastScatterBitmapSeries;
 
@@ -650,9 +650,9 @@ namespace Syncfusion.UI.Xaml.Charts
                 return;
             }
 
-            if (series.ShapeType == ChartSymbol.Custom || series.ShapeType == ChartSymbol.HorizontalLine || series.ShapeType == ChartSymbol.VerticalLine)
+            if (series.Type == ShapeType.Custom || series.Type == ShapeType.HorizontalLine || series.Type == ShapeType.VerticalLine)
             {
-                series.ShapeType = ChartSymbol.Ellipse;
+                series.Type = ShapeType.Circle;
             }
 
             if (series.LegendIcon == ChartLegendIcon.SeriesType)

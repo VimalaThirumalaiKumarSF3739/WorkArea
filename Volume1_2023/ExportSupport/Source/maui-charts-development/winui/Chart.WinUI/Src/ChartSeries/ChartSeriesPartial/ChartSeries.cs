@@ -197,6 +197,16 @@ namespace Syncfusion.UI.Xaml.Charts
             new PropertyMetadata(2d, OnStrokeChanged));
 
         /// <summary>
+        /// Identifies the <see cref="ShowDataLabels"/> dependency property.
+        /// </summary>        
+        /// <value>
+        /// The identifier for <c>ShowDataLabels</c> dependency property and its default value is false.
+        /// </value>   
+        public static readonly DependencyProperty ShowDataLabelsProperty =
+            DependencyProperty.Register(nameof(ShowDataLabels), typeof(bool), typeof(ChartSeries),
+                new PropertyMetadata(false, new PropertyChangedCallback(OnShowDataLabelsChanged)));
+
+        /// <summary>
         /// Identifies the <see cref="ActualTrackballLabelTemplate"/> dependency property.
         /// </summary>        
         /// <value>
@@ -1130,6 +1140,59 @@ namespace Syncfusion.UI.Xaml.Charts
             set { SetValue(StrokeProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets a value that indicates to enable the data labels for the series.
+        /// </summary>
+        /// <value>It accepts bool values and the default value is <c>False</c>.</value>
+        /// <example>
+        /// # [Xaml](#tab/tabid-1)
+        /// <code><![CDATA[
+        ///     <chart:SfCartesianChart>
+        ///
+        ///     <!-- ... Eliminated for simplicity-->
+        ///
+        ///          <chart:LineSeries ItemsSource="{Binding Data}"
+        ///                            XBindingPath="XValue"
+        ///                            YBindingPath="YValue"
+        ///                            ShowDataLabels="True"/>
+        ///
+        ///     </chart:SfCartesianChart>
+        /// ]]>
+        /// </code>
+        /// # [C#](#tab/tabid-2)
+        /// <code><![CDATA[
+        ///     SfCartesianChart chart = new SfCartesianChart();
+        ///     ViewModel viewModel = new ViewModel();
+        ///
+        ///     // Eliminated for simplicity
+        ///     
+        ///     LineSeries series = new LineSeries()
+        ///     {
+        ///           ItemsSource = viewModel.Data,
+        ///           XBindingPath = "XValue",
+        ///           YBindingPath = "YValue",
+        ///           ShowDataLabels = true,
+        ///     };
+        ///     
+        ///     chart.Series.Add(series);
+        ///
+        /// ]]>
+        /// </code>
+        /// ***
+        /// </example>
+        public bool ShowDataLabels
+        {
+            get
+            {
+                return (bool)GetValue(ShowDataLabelsProperty);
+            }
+
+            set
+            {
+                SetValue(ShowDataLabelsProperty, value);
+            }
+        }
+       
         #endregion
 
         #region Internal Properties
@@ -1353,6 +1416,14 @@ namespace Syncfusion.UI.Xaml.Charts
         internal virtual bool IsSingleAccumulationSeries
         {
             get { return false; }
+        }
+
+        internal virtual ChartDataLabelSettings AdornmentsInfo
+        {
+            get
+            {
+                return null;
+            }
         }
 
         #endregion
@@ -1733,6 +1804,23 @@ namespace Syncfusion.UI.Xaml.Charts
         }
 
         /// <summary>
+        /// Method implementation for clear unused adornments.
+        /// </summary>
+        /// <param name="startIndex"></param>
+        internal void ClearUnUsedAdornments(int startIndex)
+        {
+            if (Adornments.Count > startIndex)
+            {
+                int count = Adornments.Count;
+
+                for (int i = startIndex; i < count; i++)
+                {
+                    Adornments.RemoveAt(startIndex);
+                }
+            }
+        }
+
+        /// <summary>
         /// Method is used to raise SelectionChanging event
         /// </summary>
         /// <param name="newIndex">Used to indicate current selected index</param>
@@ -1853,7 +1941,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
                     if (fastScatterBitmapSeries != null)
                     {
-                        legendIcon = fastScatterBitmapSeries.ShapeType == ChartSymbol.Ellipse ? "Circle" : fastScatterBitmapSeries.ShapeType.ToString();
+                        legendIcon = fastScatterBitmapSeries.Type == ShapeType.Circle ? "Circle" : fastScatterBitmapSeries.Type.ToString();
                     }
                     else if (this is FastStepLineBitmapSeries)
                     {
@@ -2443,6 +2531,32 @@ namespace Syncfusion.UI.Xaml.Charts
 
         #region Internal Virtual Methods
 
+        internal virtual ChartDataLabel CreateAdornment(ChartSeries series, double xVal, double yVal, double xPos, double yPos)
+        {
+            return CreateDataMarker(series, xVal, yVal, xPos, yPos);
+        }
+
+        /// <summary>
+        /// Method implementation for create DataMarkers.
+        /// </summary>
+        /// <param name="series">series</param>
+        /// <param name="xVal">xvalue</param>
+        /// <param name="yVal">yvalue</param>
+        /// <param name="xPos">xposition</param>
+        /// <param name="yPos">yposition</param>
+        /// <returns>ChartAdornment</returns>
+        internal virtual ChartDataLabel CreateDataMarker(ChartSeries series, double xVal, double yVal, double xPos, double yPos)
+        {
+            ChartDataLabel adornment = new ChartDataLabel(xVal, yVal, xPos, yPos, series);
+            adornment.XData = xVal;
+            adornment.YData = yVal;
+            adornment.XPos = xPos;
+            adornment.YPos = yPos;
+            adornment.Series = series;
+            return adornment;
+        }
+
+
         /// <summary>
         /// Finds the nearest point in ChartSeries relative to the mouse point/touch position.
         /// </summary>
@@ -2581,7 +2695,7 @@ namespace Syncfusion.UI.Xaml.Charts
         internal virtual void SetTooltipDuration()
         {
             int initialShowDelay = ChartTooltip.GetActualInitialShowDelay(ActualArea.TooltipBehavior, ChartTooltip.GetInitialShowDelay(this));
-            int showDuration = ChartTooltip.GetActualShowDuration(ActualArea.TooltipBehavior, ChartTooltip.GetShowDuration(this));
+            int duration = ChartTooltip.GetActualDuration(ActualArea.TooltipBehavior, ChartTooltip.GetDuration(this));
 
             if (initialShowDelay > 0)
             {
@@ -2594,7 +2708,7 @@ namespace Syncfusion.UI.Xaml.Charts
             }
             else
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, showDuration);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, duration);
                 Timer.Start();
             }
         }
@@ -3517,10 +3631,10 @@ namespace Syncfusion.UI.Xaml.Charts
         internal virtual void InitialDelayTimer_Tick(object sender, object e)
         {
             var canvas = ActualArea.GetAdorningCanvas();
-            var chartTooltip = ActualArea.Tooltip as ChartTooltip;
+            var chartTooltip = ActualArea.Tooltip;
             chartTooltip.PolygonPath = " ";
 
-            int showDuration = ChartTooltip.GetActualShowDuration(ActualArea.TooltipBehavior, ChartTooltip.GetShowDuration(this));
+            int duration = ChartTooltip.GetActualDuration(ActualArea.TooltipBehavior, ChartTooltip.GetDuration(this));
 
             if (!canvas.Children.Contains(chartTooltip))
             {
@@ -3545,7 +3659,7 @@ namespace Syncfusion.UI.Xaml.Charts
             Canvas.SetTop(chartTooltip, chartTooltip.TopOffset);
 
             InitialDelayTimer.Stop();
-            Timer.Interval = new TimeSpan(0, 0, 0, 0, showDuration);
+            Timer.Interval = new TimeSpan(0, 0, 0, 0, duration);
             Timer.Start();
         }
 
@@ -3577,7 +3691,7 @@ namespace Syncfusion.UI.Xaml.Charts
                 ActualTooltipPosition = TooltipPosition.Auto;
 
                 tooltipPosition = GetDataPointPosition(chartTooltip);
-                if (!(this is CircularSeries || this is TriangularSeriesBase || this is PolarRadarSeriesBase))
+                if (!(this is CircularSeries || this is TriangularSeriesBase || this is PolarSeries))
                 {
                     Rect clipRect = this.ActualArea.SeriesClipRect;
                     if (!(IsActualTransposed && (this is ColumnSeries || this is StackedColumnSeries)))
@@ -4191,6 +4305,41 @@ namespace Syncfusion.UI.Xaml.Charts
             }
         }
 
+        internal static void OnAdornmentsInfoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ChartSeries series)
+            {
+                if(e.OldValue != null)
+                {
+                    var adornmentInfo = e.OldValue as ChartDataLabelSettings;
+                    series.Adornments.Clear();
+                    series.VisibleAdornments.Clear();
+
+                    if (adornmentInfo != null)
+                    {
+                        adornmentInfo.ClearChildren();
+                        adornmentInfo.Series = null;
+                    }
+                }
+
+                if (e.NewValue != null)
+                {
+                    series.adornmentInfo = e.NewValue as ChartDataLabelSettings;
+                    series.AdornmentsInfo.Series = series;
+                    if (series.Chart != null && series.AdornmentsInfo != null)
+                    {
+                        ////Panel panel = series.Area.GetMarkerPresenter();
+                        Panel panel = series.AdornmentPresenter;
+                        if (panel != null)
+                        {
+                            series.AdornmentsInfo.PanelChanged(panel);
+                            series.Chart.ScheduleUpdate();
+                        }
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region Protected Override Methods
@@ -4228,6 +4377,7 @@ namespace Syncfusion.UI.Xaml.Charts
             }
             isTap = false;
         }
+        
 
         /// <inheritdoc />
         protected override void OnPointerReleased(PointerRoutedEventArgs e)
@@ -4279,9 +4429,11 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private static void OnTooltipTemplateChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
-            var series = (ChartSeries)d;
-            if (series != null && series.ActualArea != null && series.ActualArea.Tooltip != null)
-                (series.ActualArea.Tooltip).ContentTemplate = args.NewValue as DataTemplate;
+            if(d is ChartSeries series)
+            {
+                if (series.ActualArea != null && series.ActualArea.Tooltip != null)
+                    (series.ActualArea.Tooltip).ContentTemplate = args.NewValue as DataTemplate;
+            }
         }
 
         private static void OnListenPropertyChangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
@@ -4291,22 +4443,24 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private static void OnEnableTooltipChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
-            var instance = (ChartSeries)d;
-            if (instance != null && instance.ActualArea != null && (bool)args.NewValue == true)
+            if(d is ChartSeries instance)
             {
-                instance.ActualArea.Tooltip = new ChartTooltip();
-            }
-            else if (instance != null && instance.ActualArea != null && instance.ActualArea.Tooltip != null)
-            {
-                Canvas canvas = (instance.ActualArea).GetAdorningCanvas();
+                if (instance.ActualArea != null && (bool)args.NewValue == true)
+                {
+                    instance.ActualArea.Tooltip = new ChartTooltip();
+                }
+                else if (instance.ActualArea != null && instance.ActualArea.Tooltip != null)
+                {
+                    Canvas canvas = (instance.ActualArea).GetAdorningCanvas();
 
-                if (canvas != null && canvas.Children.Contains((instance.ActualArea.Tooltip as ChartTooltip)))
-                    canvas.Children.Remove(instance.ActualArea.Tooltip as ChartTooltip);
-            }
+                    if (canvas != null && canvas.Children.Contains((instance.ActualArea.Tooltip as ChartTooltip)))
+                        canvas.Children.Remove(instance.ActualArea.Tooltip as ChartTooltip);
+                }
 
-            if (instance != null && instance.ActualArea != null && instance.ActualArea is ChartBase && (bool)args.NewValue == true)
-            {
-                AddTooltipBehavior(instance.ActualArea);
+                if (instance.ActualArea != null && instance.ActualArea is ChartBase && (bool)args.NewValue == true)
+                {
+                    AddTooltipBehavior(instance.ActualArea);
+                }
             }
         }
 
@@ -4317,10 +4471,11 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private static void OnSegmentSpacingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var series = (d as ChartSeries);
-
-            if (series.ActualArea != null)
-                series.ActualArea.ScheduleUpdate();
+            if(d is ChartSeries series)
+            {
+                if (series.ActualArea != null)
+                    series.ActualArea.ScheduleUpdate();
+            }
         }
 
         private static void OnLabelPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -4330,12 +4485,13 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private static void OnVisibilityOnLegendChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var series = d as ChartSeries;
-
-            if (series.ActualArea != null && series.ActualArea.PlotArea != null)
+            if (d is ChartSeries series)
             {
-                series.ActualArea.PlotArea.ShouldPopulateLegendItems = true;
-                series.ActualArea.ScheduleUpdate();
+                if (series.ActualArea != null && series.ActualArea.PlotArea != null)
+                {
+                    series.ActualArea.PlotArea.ShouldPopulateLegendItems = true;
+                    series.ActualArea.ScheduleUpdate();
+                }
             }
         }
 
@@ -4377,9 +4533,10 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private static void OnStrokeChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            var chartSeries = obj as ChartSeries;
-            if (chartSeries != null)
+            if(obj is ChartSeries chartSeries)
+            {
                 OnStrokeChanged(chartSeries);
+            }
         }
 
         /// <summary>
@@ -4411,6 +4568,46 @@ namespace Syncfusion.UI.Xaml.Charts
 
         #region Private Methods
 
+        private static void OnShowDataLabelsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ChartSeries series = d as ChartSeries;
+            series.SetDataLabelsVisibility(series.ShowDataLabels);
+            if (series.Chart == null)
+                return;
+
+            Panel panel = series.AdornmentPresenter;
+            Canvas chartLabelPresenter = series.Chart.DataLabelPresenter;
+            if (panel == null || chartLabelPresenter == null)
+                return;
+
+            if ((bool)e.NewValue)
+            {
+                if (!chartLabelPresenter.Children.Contains(panel))
+                    chartLabelPresenter.Children.Add(panel);
+
+                if (series.AdornmentPresenter != null && series.AdornmentsInfo != null && series.Adornments.Count > 0)
+                {
+                    series.AdornmentPresenter.Update(series.GetAvailableSize());
+                    series.AdornmentPresenter.Arrange(series.GetAvailableSize());
+                }
+                else if (series.Adornments != null && series.Adornments.Count == 0)
+                {
+                    series.Invalidate();
+
+                    if (panel != null)
+                    {
+                        series.AdornmentsInfo?.PanelChanged(panel);
+                    }
+                    series.AdornmentsInfo?.OnAdornmentPropertyChanged();
+                }
+            }
+            else
+            {
+                if (chartLabelPresenter.Children.Contains(panel))
+                    chartLabelPresenter.Children.Remove(panel);
+            }
+        }
+
         private void OnPaletteBrushesChanged(DependencyPropertyChangedEventArgs e)
         {
             if (this.ActualArea != null)
@@ -4426,7 +4623,7 @@ namespace Syncfusion.UI.Xaml.Charts
         {
             if (ActualArea != null)
             {
-                var isPolarRadarSeriesBase = this is PolarRadarSeriesBase;
+                var isPolarRadarSeriesBase = this is PolarSeries;
                 if ((bool)args.NewValue)
                 {
                     if (ActualArea.ActualSeries.Contains(this) && !ActualArea.VisibleSeries.Contains(this) && !isPolarRadarSeriesBase)
@@ -4451,8 +4648,8 @@ namespace Syncfusion.UI.Xaml.Charts
                 }
 
                 ActualArea.SBSInfoCalculated = false;
-                if (ActualArea is ChartBase)
-                    (ActualArea as ChartBase).AddOrRemoveBitmap();
+                if (ActualArea is ChartBase chartBase)
+                    chartBase.AddOrRemoveBitmap();
                 ScheduleUpdateChart();
             }
         }
@@ -4674,20 +4871,16 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private void ClearAdornments()
         {
-            var adornmentSeries = this as DataMarkerSeries;
-            if (adornmentSeries != null)
+            Adornments.Clear();
+            VisibleAdornments.Clear();
+            if (adornmentInfo != null)
             {
-                adornmentSeries.Adornments.Clear();
-                adornmentSeries.VisibleAdornments.Clear();
-                if (adornmentInfo != null)
-                {
-                    if (adornmentInfo.adormentContainers != null)
-                        adornmentInfo.adormentContainers.Clear();
-                    if (adornmentInfo.ConnectorLines != null)
-                        adornmentInfo.ConnectorLines.Clear();
-                    if (adornmentInfo.LabelPresenters != null)
-                        adornmentInfo.LabelPresenters.Clear();
-                }
+                if (adornmentInfo.adormentContainers != null)
+                    adornmentInfo.adormentContainers.Clear();
+                if (adornmentInfo.ConnectorLines != null)
+                    adornmentInfo.ConnectorLines.Clear();
+                if (adornmentInfo.LabelPresenters != null)
+                    adornmentInfo.LabelPresenters.Clear();
             }
         }
 
@@ -4725,7 +4918,7 @@ namespace Syncfusion.UI.Xaml.Charts
         {
             if (adornmentInfo != null && adornmentInfo.ShowMarker && (adornmentInfo.GetAdornmentPosition() == BarLabelAlignment.Top))
             {
-                if (adornmentInfo.MarkerType == ChartSymbol.Custom && adornmentInfo.MarkerTemplate != null)
+                if (adornmentInfo.MarkerType == ShapeType.Custom && adornmentInfo.MarkerTemplate != null)
                 {
                     FrameworkElement symbolElement = adornmentInfo.MarkerTemplate.LoadContent() as Shape;
 
@@ -4741,7 +4934,7 @@ namespace Syncfusion.UI.Xaml.Charts
                         }
                     }
                 }
-                else if (adornmentInfo.MarkerType != ChartSymbol.Custom)
+                else if (adornmentInfo.MarkerType != ShapeType.Custom)
                 {
                     tooltipPosition.Y = tooltipPosition.Y - adornmentInfo.MarkerHeight / 2;
                     if (tooltipPosition.Y - chartTooltip.ActualHeight < ActualArea.SeriesClipRect.Top)

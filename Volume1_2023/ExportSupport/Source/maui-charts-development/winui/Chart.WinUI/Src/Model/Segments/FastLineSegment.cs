@@ -82,7 +82,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="xVals"></param>
         /// <param name="yVals"></param>
         /// <param name="series"></param>
-        public FastLineSegment(IList<double> xVals, IList<double> yVals, DataMarkerSeries series)
+        public FastLineSegment(IList<double> xVals, IList<double> yVals, ChartSeries series)
             : this(series)
         {
             base.Series = series;
@@ -191,7 +191,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <inheritdoc/>
         internal override void Update(IChartTransformer transformer)
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             //if (transformer != null && chartPoints != null && chartPoints.Count > 1)
             if (transformer != null && fastSeries.PointsCount > 1)
             {
@@ -246,12 +246,12 @@ namespace Syncfusion.UI.Xaml.Charts
 
         internal void SetRange()
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             double X_MAX = 0;
             double Y_MAX = 0;
             double X_MIN = 0;
             double Y_MIN = 0;
-            var isGrouping = (fastSeries.ActualXAxis is CategoryAxis) ? (fastSeries.ActualXAxis as CategoryAxis).IsIndexed : true;
+            var isGrouping = (fastSeries.ActualXAxis is CategoryAxis) ? (fastSeries.ActualXAxis as CategoryAxis).ArrangeByIndex : true;
             if (fastSeries.PointsCount > 0)
             {
                 if (fastSeries.IsIndexed)
@@ -357,7 +357,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private void TransformToScreenCoHorizontal()
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             int i = 0;
             Points = new PointCollection();
             double prevXValue = 0;
@@ -442,7 +442,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
         private void TransformToScreenCoVertical()
         {
-            var fastSeries = Series as ChartSeries;
+            var fastSeries = Series;
             Points = new PointCollection();
             double prevXValue = 0;
             double prevYValue = 0;

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SyncfusionControls>
+	<ControlCategory Name="Miscellaneous">
+		<Control Title="Shimmer" ControlName="SfShimmer" Image="shimmer.png" Description="The SfShimmer control can be used to improve the responsiveness of an application by showing a modern shimmer effect when data is being">
+			<Sample Title="Getting started" SampleName="GettingStarted" SearchTags="shimmer, getting started" CodeViewerPath="Shimmer/GettingStarted/" />
+		</Control>
+	</ControlCategory>
+</SyncfusionControls>

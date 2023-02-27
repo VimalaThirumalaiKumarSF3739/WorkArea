@@ -71,6 +71,18 @@ namespace Syncfusion.Maui.Charts
             null,
             OnLabelPlacementPropertyChanged);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly BindableProperty ArrangeByIndexProperty = BindableProperty.Create(
+            nameof(ArrangeByIndex),
+            typeof(bool),
+            typeof(CategoryAxis),
+            true,
+            BindingMode.Default,
+            null,
+            OnArrangeByIndexPropertyChanged);
+
         #endregion
 
         #region Public Properties
@@ -146,6 +158,15 @@ namespace Syncfusion.Maui.Charts
             set { SetValue(IntervalProperty, value); }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool ArrangeByIndex
+        {
+            get { return (bool)GetValue(ArrangeByIndexProperty); }
+            set { SetValue(ArrangeByIndexProperty, value); }
+        }
+
         #endregion
 
         #region Private Methods
@@ -165,6 +186,21 @@ namespace Syncfusion.Maui.Charts
             if (axis != null)
             {
                 axis.UpdateLayout();
+            }
+        }
+
+        private static void OnArrangeByIndexPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var categoryAxis = (ChartAxis)bindable;
+
+            if (categoryAxis != null)
+            {
+                foreach (var series in categoryAxis.RegisteredSeries)
+                {
+                    series.SegmentsCreated = false;
+                }
+                
+                categoryAxis.UpdateLayout();
             }
         }
 

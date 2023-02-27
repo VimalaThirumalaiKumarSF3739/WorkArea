@@ -228,19 +228,6 @@
     </Style>
     <Style BasedOn="{StaticResource SyncfusionChartPyramidSeriesStyle}" TargetType="local:PyramidSeries"></Style>
 
-    <Style x:Key="SyncfusionChartRadarSeriesStyle" TargetType="local:RadarSeries">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="local:RadarSeries">
-                    <Grid>
-                        <local:ChartSeriesPanel x:Name="SyncfusionChartSeriesPanel"></local:ChartSeriesPanel>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style BasedOn="{StaticResource SyncfusionChartRadarSeriesStyle}" TargetType="local:RadarSeries"></Style>
-
     <Style x:Key="SyncfusionChartSplineAreaSeriesStyle" TargetType="local:SplineAreaSeries">
         <Setter Property="Template">
             <Setter.Value>

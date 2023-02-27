@@ -181,11 +181,11 @@ namespace Syncfusion.UI.Xaml.Charts
 				new PropertyMetadata(null, OnMajorTickStyleChanged));
 
 		/// <summary>
-		/// The DependencyProperty for <see cref="ShowTrackballInfo"/> property.
+		/// The DependencyProperty for <see cref="ShowTrackballLabel"/> property.
 		/// </summary>
-		public static readonly DependencyProperty ShowTrackballInfoProperty =
+		public static readonly DependencyProperty ShowTrackballLabelProperty =
 			DependencyProperty.Register(
-				nameof(ShowTrackballInfo),
+				nameof(ShowTrackballLabel),
 				typeof(bool),
 				typeof(ChartAxis),
 				new PropertyMetadata(false));
@@ -250,24 +250,24 @@ namespace Syncfusion.UI.Xaml.Charts
 				typeof(ChartAxis),
 				new PropertyMetadata(true));
 
-		/// <summary>
-		///Using a DependencyProperty as the backing store for AutoScrollingMode.  This enables animation, styling, binding, etc... 
-		/// </summary>
-		internal static readonly DependencyProperty AutoScrollingModeProperty =
+        /// <summary>
+        /// The DependencyProperty for <see cref="AutoScrollingMode"/> property.. 
+        /// </summary>
+        public static readonly DependencyProperty AutoScrollingModeProperty =
 			DependencyProperty.Register(
 				nameof(AutoScrollingMode),
 				typeof(ChartAutoScrollingMode),
 				typeof(ChartAxis),
-				new PropertyMetadata(ChartAutoScrollingMode.End, OnAutoScrollingPropertyChanged));
+				new PropertyMetadata(ChartAutoScrollingMode.End, OnAutoScrollingModeChanged));
 
-		/// <summary>
-		/// Using a DependencyProperty as the backing store for AutoScrollingDelta.  This enables animation, styling, binding, etc... 
-		/// </summary>
-		internal static readonly DependencyProperty AutoScrollingDeltaProperty =
+        /// <summary>
+        /// The DependencyProperty for <see cref="AutoScrollingDelta"/> property. 
+        /// </summary>
+        public static readonly DependencyProperty AutoScrollingDeltaProperty =
 			DependencyProperty.Register(
 				nameof(AutoScrollingDelta),
 				typeof(double),
-				typeof(ChartAxis), new PropertyMetadata(double.NaN, OnAutoScrollingPropertyChanged));
+				typeof(ChartAxis), new PropertyMetadata(double.NaN, OnAutoScrollingDeltaChanged));
 
 		/// <summary>
 		/// The DependencyProperty for <see cref="AxisVisibility"/> property.
@@ -1321,7 +1321,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <chart:SfCartesianChart>
         /// 
         ///     <chart:SfCartesianChart.XAxes>
-        ///         <chart:CategoryAxis ShowTrackballInfo = "True" />
+        ///         <chart:CategoryAxis ShowTrackballLabel = "True" />
         ///     </chart:SfCartesianChart.XAxes>
         /// 
         /// </chart:SfCartesianChart>
@@ -1333,7 +1333,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// 
         /// CategoryAxis xaxis = new CategoryAxis()
         /// {
-        ///    ShowTrackballInfo = true,
+        ///    ShowTrackballLabel = true,
         /// };
         /// chart.XAxes.Add(xaxis);
         /// 
@@ -1341,10 +1341,10 @@ namespace Syncfusion.UI.Xaml.Charts
         /// </code>
         /// *** 
         /// </example> 
-		public bool ShowTrackballInfo
+		public bool ShowTrackballLabel
 		{
-			get { return (bool)GetValue(ShowTrackballInfoProperty); }
-			set { SetValue(ShowTrackballInfoProperty, value); }
+			get { return (bool)GetValue(ShowTrackballLabelProperty); }
+			set { SetValue(ShowTrackballLabelProperty, value); }
 		}
 
         /// <summary>
@@ -1363,7 +1363,7 @@ namespace Syncfusion.UI.Xaml.Charts
         ///    </chart:SfCartesianChart.TrackballBehavior>
         ///    
         ///    <chart:SfCartesianChart.XAxes>
-        ///        <chart:CategoryAxis ShowTrackballInfo = "True" >
+        ///        <chart:CategoryAxis ShowTrackballLabel = "True" >
         ///            <chart:CategoryAxis.TrackballLabelTemplate>
         ///                <DataTemplate>
         ///                    <Border CornerRadius = "5" BorderThickness="1" 
@@ -1400,7 +1400,7 @@ namespace Syncfusion.UI.Xaml.Charts
         ///    </chart:SfCartesianChart.CrosshairBehavior>
         ///
         ///    <chart:SfCartesianChart.XAxes>
-        ///        <chart:CategoryAxis ShowTrackballInfo = "True" >
+        ///        <chart:CategoryAxis ShowTrackballLabel = "True" >
         ///           <chart:CategoryAxis.CrosshairLabelTemplate>
         ///                <DataTemplate>
         ///                    <Border CornerRadius = "5" BorderThickness="1" 
@@ -1433,7 +1433,7 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <chart:SfCartesianChart>
         /// 
         ///    <chart:SfCartesianChart.XAxes>
-        ///        <chart:CategoryAxis ShowTrackballInfo = "True" >
+        ///        <chart:CategoryAxis ShowTrackballLabel = "True" >
         ///            <chart:CategoryAxis.LabelTemplate>
         ///                <DataTemplate>
         ///                    <TextBlock Foreground = "Red" Text="{Binding Content}" />
@@ -1453,19 +1453,81 @@ namespace Syncfusion.UI.Xaml.Charts
 			set { SetValue(LabelTemplateProperty, value); }
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		internal ChartAutoScrollingMode AutoScrollingMode
+        /// <summary>
+        /// Gets or sets the enum <see cref="ChartAutoScrollingMode"/> to determine whether the axis should be auto scrolled at start or end position. 
+        /// </summary>
+        /// <example>
+        /// # [MainPage.xaml](#tab/tabid-7)
+        /// <code><![CDATA[
+        /// <chart:SfCartesianChart>
+        ///    <chart:SfCartesianChart.XAxes>
+        ///        <chart:CategoryAxis AutoScrollingMode="Start"/>
+        ///    </chart:SfCartesianChart.XAxes>
+        ///    <chart:SfCartesianChart.YAxes>
+        ///        <chart:NumericalAxis AutoScrollingMode="End"/>
+        ///    </chart:SfCartesianChart.YAxes>
+        /// </chart:SfCartesianChart>
+        /// ]]>
+        /// </code>
+        /// # [MainPage.xaml.cs](#tab/tabid-8)
+        /// <code><![CDATA[
+        /// SfCartesianChart chart = new SfCartesianChart();
+        /// 
+        /// CategoryAxis xAxis = new CategoryAxis();
+        /// xAxis.AutoScrollingMode = ChartAutoScrollingMode.Start;
+        /// 
+        /// NumericalAxis yAxis = new NumericalAxis();
+        /// yaxis.AutoScrollingMode = ChartAutoScrollingMode.End;
+        /// 
+        /// chart.XAxes.Add(xAxis);	
+        /// chart.YAxes.Add(yAxis);	
+        /// ]]>
+        /// </code>
+        /// ***
+        /// </example>
+        /// <value>This property takes the <see cref="ChartAutoScrollingMode"/> as its value.</value>
+        ///<value>Default value is <see cref="ChartAutoScrollingMode.End"/></value>
+        public ChartAutoScrollingMode AutoScrollingMode
 		{
 			get { return (ChartAutoScrollingMode)GetValue(AutoScrollingModeProperty); }
 			set { SetValue(AutoScrollingModeProperty, value); }
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		internal double? AutoScrollingDelta
+        /// <summary>
+        /// Gets or sets the value that determines the range of values to be visible during auto scrolling. 
+        /// </summary>
+        /// <example>
+        /// # [MainPage.xaml](#tab/tabid-7)
+        /// <code><![CDATA[
+        /// <chart:SfCartesianChart>
+        ///    <chart:SfCartesianChart.XAxes>
+        ///        <chart:CategoryAxis AutoScrollingDelta="3"/>
+        ///    </chart:SfCartesianChart.XAxes>
+        ///    <chart:SfCartesianChart.YAxes>
+        ///        <chart:NumericalAxis AutoScrollingDelta="2"/>
+        ///    </chart:SfCartesianChart.YAxes>
+        /// </chart:SfCartesianChart>
+        /// ]]>
+        /// </code>
+        /// # [MainPage.xaml.cs](#tab/tabid-8)
+        /// <code><![CDATA[
+        /// SfCartesianChart chart = new SfCartesianChart();
+        /// 
+        /// CategoryAxis xAxis = new CategoryAxis();
+        /// xAxis.AutoScrollingDelta = 3;
+        /// 
+        /// NumericalAxis yAxis = new NumericalAxis();
+        /// yaxis.AutoScrollingDelta = 2;
+        /// 
+        /// chart.XAxes.Add(xAxis);	
+        /// chart.YAxes.Add(yAxis);	
+        /// ]]>
+        /// </code>
+        /// ***
+        /// </example>
+        ///<value>This property takes the <see cref="double"/> as its value.</value>
+        ///<value>Default value is double.NaN</value>
+		public double AutoScrollingDelta
 		{
 			get { return (double)GetValue(AutoScrollingDeltaProperty); }
 			set { SetValue(AutoScrollingDeltaProperty, value); }
@@ -1488,7 +1550,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
 		#endregion
 
-		internal List<ISupportAxes> RegisteredSeries { get; set; }
+		internal List<ChartSeries> RegisteredSeries { get; set; }
 
 		internal bool IsZoomed
 		{
@@ -1663,7 +1725,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
 		internal bool GetTrackballInfo()
 		{
-			return this.ShowTrackballInfo;
+			return this.ShowTrackballLabel;
 		}
 
 		internal DataTemplate GetTrackBallTemplate()
@@ -1885,13 +1947,31 @@ namespace Syncfusion.UI.Xaml.Charts
                 axis.Area.ScheduleUpdate();
         }
 
-		private static void OnAutoScrollingPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		private static void OnAutoScrollingModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			if (d is ChartAxis axis)
-				axis.OnPropertyChanged();
+			{
+                axis.CanAutoScroll = true;
+                axis.OnPropertyChanged();
+            }
 		}
 
-		private static void OnZoomFactorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnAutoScrollingDeltaChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ChartAxis axis)
+            {
+                var delta = Convert.ToDouble(e.NewValue ?? double.NaN);
+                bool needAutoScroll = !double.IsNaN(delta) && delta > 0;
+                if(needAutoScroll)
+                {
+                    axis.ActualAutoScrollDelta = delta;
+                    axis.CanAutoScroll = true;
+                    axis.OnPropertyChanged();
+                }
+            }
+        }
+
+        private static void OnZoomFactorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
             if (d is ChartAxis axis)
                 axis.OnZoomDataChanged(e);
@@ -1910,7 +1990,7 @@ namespace Syncfusion.UI.Xaml.Charts
 		private void InitializeConstructor()
 		{
 			DefaultStyleKey = typeof(ChartAxis);
-			RegisteredSeries = new List<ISupportAxes>();
+			RegisteredSeries = new List<ChartSeries>();
 			Binding visibilityBinding = new Binding();
 			visibilityBinding.Source = this;
 			visibilityBinding.Path = new PropertyPath("Visibility");

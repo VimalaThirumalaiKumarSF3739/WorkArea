@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Controls;
+﻿using Microsoft.Maui;
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 using System;
 using System.Collections.Generic;
@@ -831,6 +832,12 @@ namespace Syncfusion.Maui.Charts
 
         internal int TooltipDataPointIndex { get; set; }
 
+        internal List<double> GroupedXValuesIndexes { get; set; } = new List<double>();
+
+        internal List<object> GroupedActualData { get; set; } = new List<object>();
+
+        internal List<string> GroupedXValues { get; set; }
+
         #endregion
 
         #region Methods
@@ -1454,9 +1461,14 @@ namespace Syncfusion.Maui.Charts
             var chartSeries = bindable as ChartSeries;
 
             //TODO:Need to move this code to CartesianSeries class.
-            if (chartSeries != null && chartSeries.IsSideBySide && chartSeries.chart?.Area is CartesianChartArea chartArea)
+            if (chartSeries != null)
             {
-                chartArea.ResetSBSSegments();
+                chartSeries.InvalidateGroupValues();
+
+                if (chartSeries.IsSideBySide && chartSeries.chart?.Area is CartesianChartArea chartArea)
+                {
+                    chartArea.ResetSBSSegments();
+                }
             }
 
             chartSeries?.ScheduleUpdateChart();
@@ -1656,6 +1668,16 @@ namespace Syncfusion.Maui.Charts
         void ITooltipDependent.SetTooltipTargetRect(TooltipInfo tooltipInfo, Rect seriesBounds)
         {
             SetTooltipTargetRect(tooltipInfo, seriesBounds);
+        }
+
+        DataTemplate? ITooltipDependent.GetDefaultTooltipTemplate(TooltipInfo info)
+        {
+            return GetDefaultTooltipTemplate(info);
+        }
+
+        internal virtual DataTemplate? GetDefaultTooltipTemplate(TooltipInfo info)
+        {
+            return ChartUtils.GetDefaultTooltipTemplate(info);
         }
 
         #endregion

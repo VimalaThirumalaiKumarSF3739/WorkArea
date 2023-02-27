@@ -141,11 +141,9 @@ namespace Syncfusion.Maui.Charts
                     series.ChartArea.ResetSBSSegments();
                 }
             }
-            else
-            {
-                SegmentsCreated = false;
-            }
 
+            InvalidateGroupValues();
+            SegmentsCreated = false;
             UpdateLegendItems();
 #endif
             ScheduleUpdateChart();
@@ -224,8 +222,31 @@ namespace Syncfusion.Maui.Charts
                 }
             }
 
+            InvalidateGroupValues();
 #if WinUI
             UnHookPropertyChanged(oldValue);
+#endif
+        }
+
+        internal void InvalidateGroupValues()
+        {
+#if !WinUI
+            if (this is CartesianSeries series && series.ChartArea is CartesianChartArea cartesianChartArea && series.ActualXAxis is CategoryAxis categoryAxis && !categoryAxis.ArrangeByIndex)
+            {
+                if (cartesianChartArea.VisibleSeries != null)
+                {
+                    categoryAxis.GroupData();
+
+                    if (categoryAxis.RegisteredSeries.Count > 0)
+                    {
+                        foreach (CartesianSeries chartSeries in categoryAxis.RegisteredSeries)
+                        {
+                            chartSeries.SegmentsCreated = false;
+                            chartSeries.ChartArea?.UpdateVisibleSeries();
+                        }
+                    }
+                }
+            }
 #endif
         }
 
@@ -680,7 +701,7 @@ namespace Syncfusion.Maui.Charts
             }
         }
 
-        internal void GeneratePoints(string[] yPaths, params IList<double>[] yValueLists)
+        internal virtual void GeneratePoints(string[] yPaths, params IList<double>[] yValueLists)
         {
             if (yPaths == null)
             {

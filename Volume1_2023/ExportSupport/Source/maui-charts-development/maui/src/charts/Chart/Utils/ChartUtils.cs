@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Shapes;
 using Syncfusion.Maui.Core;
+using Microsoft.Maui;
 
 namespace Syncfusion.Maui.Charts
 {
@@ -343,6 +344,28 @@ namespace Syncfusion.Maui.Charts
         {
             double angleRadian = ChartMath.DegreeToRadian((float)angle);
             return new Point(Math.Cos(angleRadian), Math.Sin(angleRadian));
+        }
+
+        internal static DataTemplate GetDefaultTooltipTemplate(TooltipInfo info)
+        {
+            var template = new DataTemplate(() =>
+            {
+                Label label = new Label();
+                label.VerticalOptions = LayoutOptions.Fill;
+                label.HorizontalOptions = LayoutOptions.Fill;
+                label.VerticalTextAlignment = TextAlignment.Center;
+                label.HorizontalTextAlignment = TextAlignment.Center;
+                label.SetBinding(Label.TextProperty, nameof(TooltipInfo.Text));
+                label.SetBinding(Label.TextColorProperty, nameof(TooltipInfo.TextColor));
+                label.SetBinding(Label.MarginProperty, nameof(TooltipInfo.Margin));
+                label.SetBinding(Label.FontSizeProperty, nameof(TooltipInfo.FontSize));
+                label.SetBinding(Label.FontFamilyProperty, nameof(TooltipInfo.FontFamily));
+                label.SetBinding(Label.FontAttributesProperty, nameof(TooltipInfo.FontAttributes));
+
+                return new ViewCell { View = label };
+            });
+
+            return template;
         }
     }
 }

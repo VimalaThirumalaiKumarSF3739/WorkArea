@@ -3,6 +3,12 @@
   <ControlCategory Name="Data Visualization">
 	  <Control Title="Circular Charts" ControlName="SfCircularChart" Image="circularchart.png" Description="Visualize the data using pie and doughnut charts.">
 		  <Category Title="Type">
+			  <SubCategory StatusTag="New" Title="RadialBar">
+				  <CardLayout>
+					  <Sample SearchTags="radialbar" Name="RadialBarChart" SampleName="RadialBarChart" Title="Default radial bar" CodeViewerPath="CircularChart/RadialBar/"/>
+					  <Sample SearchTags="radialbar" Name="CustomizedRadialBarChart" SampleName="CustomizedRadialBarChart" Title="Customized Legend Radial Bar" Description="This sample shows how to create a customized radial bar using start and end angles." CodeViewerPath="CircularChart/RadialBar/"/>
+				  </CardLayout>
+			  </SubCategory>
 			  <SubCategory Title="Pie">
 				  <CardLayout>
 					  <Sample SearchTags="pie" Name="PieChart" SampleName="PieChart" Title="Default pie" CodeViewerPath="CircularChart/Pie/"/>
@@ -16,6 +22,7 @@
 					  <Sample SearchTags="CenterElevation" Name="CenterElevation" SampleName="CenterElevation" Title="Center elevation" CodeViewerPath="CircularChart/Doughnut/"/>
 				  </CardLayout>
 			  </SubCategory>
+			   
 		  </Category>
 		  <Category Title="Interaction">
 			  <Sample SearchTags="tooltip" Name="Tooltip" SampleName="Tooltip" Title="Tooltip"  Description="This sample showcases the tooltip feature. On mobile, tap the data points, and on desktop, mouse over to the data points to raise the tooltip." CodeViewerPath="CircularChart/Interaction/"/>

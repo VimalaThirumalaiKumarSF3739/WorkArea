@@ -9,7 +9,7 @@ namespace Syncfusion.Maui.Charts
     /// </summary>
     /// <remarks>
     /// <para>It is similar to the DoughnutSeries. To render a series, create an instance of the radial bar series class, and add it to the <see cref="SfCircularChart.Series"/> collection.</para>
-    /// <para>It Provides options for <see cref="TrackFill"/>, <see cref="TrackStroke"/>, <see cref="TrackStrokeWidth"/>, <see cref="MaximumValue"/>, <see cref="GapRatio"/>, <see cref="CapStyle"/>, <see cref="CenterView"/>, <see cref="ChartSeries.PaletteBrushes"/>, <see cref="ChartSeries.Fill"/>, <see cref="CircularSeries.Stroke"/>, <see cref="CircularSeries.StrokeWidth"/>, and <see cref="InnerRadius"/> to customize the appearance.</para>
+    /// <para>It provides options for <see cref="TrackFill"/>, <see cref="TrackStroke"/>, <see cref="TrackStrokeWidth"/>, <see cref="MaximumValue"/>, <see cref="GapRatio"/>, <see cref="CapStyle"/>, <see cref="CenterView"/>, <see cref="ChartSeries.PaletteBrushes"/>, <see cref="ChartSeries.Fill"/>, <see cref="CircularSeries.Stroke"/>, <see cref="CircularSeries.StrokeWidth"/>, and <see cref="InnerRadius"/> to customize the appearance.</para>
     /// </remarks>
     /// <example>
     /// # [Xaml](#tab/tabid-1)
@@ -128,7 +128,7 @@ namespace Syncfusion.Maui.Charts
             OnSpacingPropertyChanged);
 
         /// <summary>
-        /// Gets or sets the center view used to add another view within it. This is a bindable property.
+        /// Gets or sets the center view used to add place view inside the radial bar. This is a bindable property.
         /// </summary>
         public static readonly BindableProperty CenterViewProperty =
             BindableProperty.Create(
@@ -172,7 +172,7 @@ namespace Syncfusion.Maui.Charts
         #region Constructor 
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="RadialBarSeries"/> class.
         /// </summary>
         public RadialBarSeries() : base()
         {
@@ -183,9 +183,9 @@ namespace Syncfusion.Maui.Charts
         #region Puplic properties
 
         /// <summary>
-        /// Gets or sets the brush value that represents the radial bar segment behind track fill color
+        /// Gets or sets the brush value that represents the radial bar's each segment track fill color.
         /// </summary>
-        /// <value>It accepts <see cref="Brush"/> values and its default value is <see cref="Brush.Gray"/></value>
+        /// <value>It accepts <see cref="Brush"/> values.</value>
         /// <example>
         /// # [Xaml](#tab/tabid-4)
         /// <code><![CDATA[
@@ -228,9 +228,9 @@ namespace Syncfusion.Maui.Charts
         }
 
         /// <summary>
-        /// Gets or sets the brush value that represents the radial bar track stroke color. 
+        /// Gets or sets the brush value that represents the radial bar's each segment track stroke color. 
         /// </summary>
-        /// <value>It accepts <see cref="Brush"/> values and its default value is <see cref="Brush.LightGray"/></value>
+        /// <value>It accepts <see cref="Brush"/> values.</value>
         /// <example>
         /// # [Xaml](#tab/tabid-6)
         /// <code><![CDATA[
@@ -244,7 +244,7 @@ namespace Syncfusion.Maui.Charts
         ///                            XBindingPath="XValue"
         ///                            YBindingPath="YValue"
         ///                            TrackStroke = "Red"
-        ///                            TrackStrokeWidth = 1   />                       
+        ///                            TrackStrokeWidth = "1"   />                       
         ///     </chart:SfCircularChart>
         /// ]]></code>
         /// # [C#](#tab/tabid-7)
@@ -291,7 +291,7 @@ namespace Syncfusion.Maui.Charts
         ///                            XBindingPath="XValue"
         ///                            YBindingPath="YValue"
         ///                            TrackStroke = "Red"
-        ///                            TrackStrokeWidth = 1   />                       
+        ///                            TrackStrokeWidth = "1"   />                       
         ///     </chart:SfCircularChart>
         /// ]]></code>
         /// # [C#](#tab/tabid-9)
@@ -322,20 +322,10 @@ namespace Syncfusion.Maui.Charts
         }
 
         /// <summary>
-        /// Gets or sets the entire span of an individual circle. 
+        /// Gets or sets the span of the each segment that represents the proportion of an individual data value relative to the maximum value. 
         /// </summary>
         /// <remarks>It is used to ensure that the data segments that exceed maximum value will be considered as the maximum value for the chart.</remarks>
         /// <value>It accepts double values and its default value is <see cref="double.NaN"/></value>
-        public double MaximumValue
-        {
-            get { return (double)GetValue(MaximumValueProperty); }
-            set { SetValue(MaximumValueProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the spacing between two individual segments
-        /// </summary>
-        /// <value>It accepts double values, and the default value is 0.2. Here, the value is between 0 and 1.</value>
         /// <example>
         /// # [Xaml](#tab/tabid-10)
         /// <code><![CDATA[
@@ -348,10 +338,55 @@ namespace Syncfusion.Maui.Charts
         ///         <chart:RadialBarSeries ItemsSource="{Binding Data}"
         ///                            XBindingPath="XValue"
         ///                            YBindingPath="YValue"
-        ///                            GapRatio = 0.3 />                       
+        ///                            MaximumValue = "100"   />                       
         ///     </chart:SfCircularChart>
         /// ]]></code>
         /// # [C#](#tab/tabid-11)
+        /// <code><![CDATA[
+        ///     SfCircularChart chart = new SfCircularChart();
+        ///     
+        ///     ViewModel viewModel = new ViewModel();
+        ///     chart.BindingContext = viewModel;
+        ///     
+        ///     RadialBarSeries series = new RadialBarSeries()
+        ///     {
+        ///           ItemsSource = viewModel.Data,
+        ///           XBindingPath = "XValue",
+        ///           YBindingPath = "YValue",
+        ///           MaximumValue = 100;
+        ///     };
+        ///     
+        ///     chart.Series.Add(series);
+        ///
+        /// ]]></code>
+        /// ***
+        /// </example>
+        public double MaximumValue
+        {
+            get { return (double)GetValue(MaximumValueProperty); }
+            set { SetValue(MaximumValueProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the gap ratio that is used to define the distance between the each circular bar. 
+        /// </summary>
+        /// <value>It accepts double values, and the default value is 0.2. Here, the value is between 0 and 1.</value>
+        /// <example>
+        /// # [Xaml](#tab/tabid-12)
+        /// <code><![CDATA[
+        ///     <chart:SfCircularChart>
+        ///     
+        ///         <chart:SfCircularChart.BindingContext>
+        ///             <local:ViewModel/>
+        ///         </chart:SfCircularChart.BindingContext>
+        ///         
+        ///         <chart:RadialBarSeries ItemsSource="{Binding Data}"
+        ///                            XBindingPath="XValue"
+        ///                            YBindingPath="YValue"
+        ///                            GapRatio = "0.3" />                       
+        ///     </chart:SfCircularChart>
+        /// ]]></code>
+        /// # [C#](#tab/tabid-13)
         /// <code><![CDATA[
         ///     SfCircularChart chart = new SfCircularChart();
         ///     
@@ -378,12 +413,12 @@ namespace Syncfusion.Maui.Charts
         }
 
         /// <summary>
-        /// Gets or sets the view to be added to the center of the radial bar.
+        /// Gets or sets the view that added to the center of the radial bar.
         /// </summary>
-        /// <value>Defaults to null.</value> 
+        /// <value>It accepts any view, and the default value is null.</value> 
         /// <para>Code example for the radial bar center view.</para>
-        /// 
-        /// # [MainPage.xaml](#tab/tabid-12)
+        /// <example>
+        /// # [MainPage.xaml](#tab/tabid-14)
         /// <code><![CDATA[
         /// <chart:SfCircularChart>
         /// 
@@ -392,7 +427,9 @@ namespace Syncfusion.Maui.Charts
         ///         </chart:SfCircularChart.BindingContext>  
         /// 
         ///         <chart:SfCircularChart.Series>
-        ///             <chart:RadialBarSeries ItemsSource="{Binding Data}" XBindingPath="XValue" YBindingPath="YValue"/>
+        ///             <chart:RadialBarSeries ItemsSource="{Binding Data}" 
+        ///                                    XBindingPath="XValue" 
+        ///                                    YBindingPath="YValue"/>
         ///                  <chart:DoughnutSeries.CenterView>
         ///                         <Label Text = "CenterView"/>
         ///                 </chart:RadialBarSeries.CenterView>
@@ -402,7 +439,7 @@ namespace Syncfusion.Maui.Charts
         /// ]]>
         /// </code>
         /// 
-        /// # [MainPage.xaml.cs](#tab/tabid-13)
+        /// # [MainPage.xaml.cs](#tab/tabid-15)
         /// <code><![CDATA[
         ///  SfCircularChart chart = new SfCircularChart();
         ///  
@@ -423,7 +460,7 @@ namespace Syncfusion.Maui.Charts
         /// ]]>
         /// </code>
         /// ***
-        /// 
+        /// </example>
         public View CenterView
         {
             get { return (View)GetValue(CenterViewProperty); }
@@ -433,7 +470,42 @@ namespace Syncfusion.Maui.Charts
         /// <summary>
         /// Gets or sets the enum <see cref="CapStyle"/> value, that represents the radial segment corner shape.
         /// </summary>
-        /// <value>The default value of the cap style property is <see cref="CapStyle.BothFlat"/></value>
+        /// <value>The default value of the cap style property is <see cref="CapStyle.BothFlat"/>.</value>
+        /// <example>
+        /// # [Xaml](#tab/tabid-16)
+        /// <code><![CDATA[
+        ///     <chart:SfCircularChart>
+        ///     
+        ///         <chart:SfCircularChart.BindingContext>
+        ///             <local:ViewModel/>
+        ///         </chart:SfCircularChart.BindingContext>
+        ///         
+        ///         <chart:RadialBarSeries ItemsSource="{Binding Data}"
+        ///                            XBindingPath="XValue"
+        ///                            YBindingPath="YValue"
+        ///                            CapStyle = "BothCurve"  />                       
+        ///     </chart:SfCircularChart>
+        /// ]]></code>
+        /// # [C#](#tab/tabid-17)
+        /// <code><![CDATA[
+        ///     SfCircularChart chart = new SfCircularChart();
+        ///     
+        ///     ViewModel viewModel = new ViewModel();
+        ///     chart.BindingContext = viewModel;
+        ///     
+        ///     RadialBarSeries series = new RadialBarSeries()
+        ///     {
+        ///           ItemsSource = viewModel.Data,
+        ///           XBindingPath = "XValue",
+        ///           YBindingPath = "YValue",
+        ///           CapStyle = CapStyle.BothCurve
+        ///     };
+        ///     
+        ///     chart.Series.Add(series);
+        ///
+        /// ]]></code>
+        /// ***
+        /// </example>
         public CapStyle CapStyle
         {
             get { return (CapStyle)GetValue(CapStyleProperty); }
@@ -441,9 +513,44 @@ namespace Syncfusion.Maui.Charts
         }
 
         /// <summary>
-        /// Gets or sets a value that can be used to define the inner circle.
+        /// Gets or sets a value that can be used to define the size of the inner circle.
         /// </summary>
         /// <value>It accepts double values, and the default value is 0.4. Here, the value is between 0 and 1.</value>
+        /// <example>
+        /// # [Xaml](#tab/tabid-18)
+        /// <code><![CDATA[
+        ///     <chart:SfCircularChart>
+        ///     
+        ///         <chart:SfCircularChart.BindingContext>
+        ///             <local:ViewModel/>
+        ///         </chart:SfCircularChart.BindingContext>
+        ///         
+        ///         <chart:RadialBarSeries ItemsSource="{Binding Data}"
+        ///                            XBindingPath="XValue"
+        ///                            YBindingPath="YValue"
+        ///                            InnerRadius = "0.2" />                       
+        ///     </chart:SfCircularChart>
+        /// ]]></code>
+        /// # [C#](#tab/tabid-19)
+        /// <code><![CDATA[
+        ///     SfCircularChart chart = new SfCircularChart();
+        ///     
+        ///     ViewModel viewModel = new ViewModel();
+        ///     chart.BindingContext = viewModel;
+        ///     
+        ///     RadialBarSeries series = new RadialBarSeries()
+        ///     {
+        ///           ItemsSource = viewModel.Data,
+        ///           XBindingPath = "XValue",
+        ///           YBindingPath = "YValue",
+        ///           InnerRadius = 0.2
+        ///     };
+        ///     
+        ///     chart.Series.Add(series);
+        ///
+        /// ]]></code>
+        /// ***
+        /// </example>
         public double InnerRadius
         {
             get { return (double)GetValue(InnerRadiusProperty); }

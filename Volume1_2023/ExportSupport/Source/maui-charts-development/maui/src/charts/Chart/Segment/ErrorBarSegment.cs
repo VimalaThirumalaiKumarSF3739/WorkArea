@@ -112,9 +112,6 @@ namespace Syncfusion.Maui.Charts
                 XRange = new DoubleRange(Math.Min(leftPointMin, rightPointMin), Math.Max(leftPointMax, rightPointMax));
                 YRange = new DoubleRange(Math.Min(bottomPointMin, topPointMin), Math.Max(bottomPointMax, topPointMax));
                 
-                if (errorBarSeries.Type == ErrorBarType.Percentage)
-                    YRange += YRange.End + YRange.Delta / 2;
-                
                 errorBarSeries.XRange += XRange;
                 errorBarSeries.YRange += YRange;
                 

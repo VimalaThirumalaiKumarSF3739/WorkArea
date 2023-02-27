@@ -73,19 +73,9 @@ namespace Syncfusion.UI.Xaml.Charts
     /// <seealso cref="PieSeries"/>
     /// <seealso cref="DoughnutSegment"/>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1805: Do not initialize unnecessarily")]
-    public class DoughnutSeries : CircularSeries, ISegmentSelectable, INotifyPropertyChanged
+    public class DoughnutSeries : PieSeries, ISegmentSelectable, INotifyPropertyChanged
     {
         #region Dependency Property Registration
-
-        /// <summary>
-        /// The DependencyProperty for <see cref="SelectionBehavior"/> property.       .
-        /// </summary>
-        public static readonly DependencyProperty SelectionBehaviorProperty =
-            DependencyProperty.Register(
-                nameof(SelectionBehavior),
-                typeof(DataPointSelectionBehavior),
-                typeof(DoughnutSeries),
-                new PropertyMetadata(null, OnBehaviorChanged));
 
         /// <summary>
         /// Using a DependencyProperty as the backing store for TrackBorderWidth.  This enables animation, styling, binding, etc...
@@ -227,59 +217,6 @@ namespace Syncfusion.UI.Xaml.Charts
         }
 
         /// <summary>
-        /// Gets or sets a selection behavior that enables you to select or highlight a segment in a series.
-        /// </summary>
-        /// <value>This property takes the <see cref="DataPointSelectionBehavior"/> instance as value and its default value is null.</value>
-        ///
-        /// <remarks>
-        /// <para>To highlight the selected data point, set the value for the <see cref="ChartSelectionBehavior.SelectionBrush"/> property in the <see cref="DataPointSelectionBehavior"/> class.</para>
-        ///</remarks>
-        /// <example>
-        /// # [Xaml](#tab/tabid-4)
-        /// <code><![CDATA[
-        ///     <chart:SfCircularChart>
-        ///     
-        ///          <chart:DoughnutSeries ItemsSource="{Binding Data}"
-        ///                                XBindingPath="XValue"
-        ///                                YBindingPath="YValue">
-        ///              <chart:DoughnutSeries.SelectionBehavior>
-        ///                  <chart:DataPointSelectionBehavior SelectionBrush = "Red" />
-        ///              </chart:DoughnutSeries.SelectionBehavior>
-        ///          </chart:DoughnutSeries>
-        ///
-        ///     </chart:SfCircularChart>
-        /// ]]>
-        /// </code>
-        /// # [C#](#tab/tabid-5)
-        /// <code><![CDATA[
-        ///     SfCircularChart chart = new SfCircularChart();
-        ///     ViewModel viewModel = new ViewModel();
-        ///
-        ///     DoughnutSeries series = new DoughnutSeries();
-        ///     series.ItemsSource = viewModel.Data;
-        ///     series.XBindingPath = "XValue";
-        ///     series.YBindingPath = "YValue";
-        ///     series.SelectionBehavior = new DataPointSelectionBehavior()
-        ///     {
-        ///        SelectionBrush = new SolidColorBrush(Colors.Red),
-        ///     };
-        ///     chart.Series.Add(series);
-        ///
-        /// ]]>
-        /// </code>
-        /// ***
-        /// </example>
-        /// <seealso cref="ChartSelectionBehavior.SelectedIndex"/>
-        /// <seealso cref="ChartSelectionBehavior.SelectionBrush"/>
-        /// <seealso cref="ChartSelectionBehavior.SelectionChanging"/>
-        /// <seealso cref="ChartSelectionBehavior.SelectionChanged"/>
-        public DataPointSelectionBehavior SelectionBehavior
-        {
-            get { return (DataPointSelectionBehavior)GetValue(SelectionBehaviorProperty); }
-            set { SetValue(SelectionBehaviorProperty, value); }
-        }
-
-        /// <summary>
         /// Gets or sets a value that specifies the track area border width for stacked doughnut. This is a bindable property.
         /// </summary>
         internal double TrackBorderWidth
@@ -354,8 +291,9 @@ namespace Syncfusion.UI.Xaml.Charts
             set { SetValue(CenterViewProperty, value); }
         }
 
+
 #if NETFX_CORE
-        
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Reviewed")]
         public DoughnutSegment Segment
         {
@@ -816,7 +754,6 @@ namespace Syncfusion.UI.Xaml.Charts
             return ChartTransformer;
         }
 
-
         #endregion
 
         #region Protected Override Methods
@@ -836,14 +773,14 @@ namespace Syncfusion.UI.Xaml.Charts
         /// <param name="angle">angle</param>
         /// <param name="radius">radius</param>
         /// <returns>ChartAdornment</returns>
-        internal override ChartDataLabel CreateDataMarker(DataMarkerSeries series, double xVal, double yVal, double angle, double radius)
+        internal override ChartDataLabel CreateDataMarker(ChartSeries series, double xVal, double yVal, double angle, double radius)
         {
             var segment = new ChartPieDataLabel(xVal, yVal, angle, radius, series);
             segment.SetValues(xVal, yVal, angle, radius, series);
             return segment;
         }
 
-        internal override ChartDataLabel CreateAdornment(DataMarkerSeries series, double xVal, double yVal, double angle, double radius)
+        internal override ChartDataLabel CreateAdornment(ChartSeries series, double xVal, double yVal, double angle, double radius)
         {
             return CreateDataMarker(series, xVal, yVal, angle, radius);
         }

@@ -600,7 +600,7 @@ namespace Syncfusion.UI.Xaml.Charts
                                 {
                                     lastValue = lastValPos[xPlotIndex];
                                     if (chartSeries.GetType().Name.Contains(seriesName) && chartSeries.GetType().Name.Contains("100Series"))
-                                        currentValue = Chart.GetPercentage((label.Series as IList<ISupportAxes>), currentValue, j, reCalculation);
+                                        currentValue = Chart.GetPercentage((label.Series as IList<ChartSeries>), currentValue, j, reCalculation);
                                     if (!double.IsNaN(lastValPos[xPlotIndex]))
                                         lastValPos[xPlotIndex] += currentValue;
                                     else
@@ -610,7 +610,7 @@ namespace Syncfusion.UI.Xaml.Charts
                                 {
                                     lastValue = lastValNeg[xPlotIndex];
                                     if (chartSeries.GetType().Name.Contains(seriesName) && chartSeries.GetType().Name.Contains("100Series"))
-                                        currentValue = Chart.GetPercentage((label.Series as IList<ISupportAxes>), currentValue, j, reCalculation);
+                                        currentValue = Chart.GetPercentage((label.Series as IList<ChartSeries>), currentValue, j, reCalculation);
                                     if (!double.IsNaN(lastValPos[xPlotIndex]))
                                     {
                                         if (!double.IsNaN(currentValue))
@@ -625,14 +625,14 @@ namespace Syncfusion.UI.Xaml.Charts
                                 if (currentValue >= 0)
                                 {
                                     if (chartSeries.GetType().Name.Contains(seriesName) && chartSeries.GetType().Name.Contains("100Series"))
-                                        currentValue = Chart.GetPercentage((label.Series as IList<ISupportAxes>), currentValue, j, reCalculation);
+                                        currentValue = Chart.GetPercentage((label.Series as IList<ChartSeries>), currentValue, j, reCalculation);
                                     lastValPos.Add(currentValue);
                                     lastValNeg.Add(0);
                                 }
                                 else
                                 {
                                     if (chartSeries.GetType().Name.Contains(seriesName) && chartSeries.GetType().Name.Contains("100Series"))
-                                        currentValue = Chart.GetPercentage((label.Series as IList<ISupportAxes>), currentValue, j, reCalculation);
+                                        currentValue = Chart.GetPercentage((label.Series as IList<ChartSeries>), currentValue, j, reCalculation);
                                     lastValPos.Add(double.IsNaN(currentValue) ? currentValue : 0);
                                     lastValNeg.Add(currentValue);
                                 }

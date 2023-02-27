@@ -73,12 +73,7 @@ using Windows.UI;
                 {
                     return ((Area as SfPolarChart).GridLineType == PolarChartGridLineType.Polygon);
                 }
-                else if (Area != null && Area.VisibleSeries != null
-                    && Area.VisibleSeries.Count > 0)
-                {
-                    return Area.VisibleSeries[0] is RadarSeries;
-                }
-
+                
                 return false;
             }
         }

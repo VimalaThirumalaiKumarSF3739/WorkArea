@@ -118,9 +118,9 @@ namespace Syncfusion.Maui.Charts
             OnRangePaddingPropertyChanged);
 
         /// <summary>
-        /// 
+        /// Gets or sets the enum <see cref="DateTimeIntervalType"/> to determine the unit of time used for the delta value for auto-scrolling on a DateTime axis.
         /// </summary>
-        internal static readonly BindableProperty AutoScrollingDeltaTypeProperty = BindableProperty.Create(
+        public static readonly BindableProperty AutoScrollingDeltaTypeProperty = BindableProperty.Create(
             nameof(AutoScrollingDeltaType),
             typeof(DateTimeIntervalType),
             typeof(DateTimeAxis),
@@ -457,10 +457,39 @@ namespace Syncfusion.Maui.Charts
         }
 
         /// <summary>
-        /// Gets or sets the date time unit of the value specified in the <c>AutoScrollingDelta</c> property. 
+        /// Gets or sets the enum <see cref="DateTimeIntervalType"/> to determine the unit of time used for the delta value for auto-scrolling on a DateTime axis. 
         /// </summary>
-        /// <value>This property takes the DateTimeDeltaType.</value>
-        internal DateTimeIntervalType AutoScrollingDeltaType
+        /// <example>
+        /// # [MainPage.xaml](#tab/tabid-7)
+        /// <code><![CDATA[
+        /// <chart:SfCartesianChart>
+        ///    <chart:SfCartesianChart.XAxes>
+        ///        <chart:DateTimeAxis AutoScrollingDeltaType="Years"/>
+        ///    </chart:SfCartesianChart.XAxes>
+        ///    <chart:SfCartesianChart.YAxes>
+        ///        <chart:LogarithmicAxis/>
+        ///    </chart:SfCartesianChart.YAxes>
+        /// </chart:SfCartesianChart>
+        /// ]]>
+        /// </code>
+        /// # [MainPage.xaml.cs](#tab/tabid-8)
+        /// <code><![CDATA[
+        /// SfCartesianChart chart = new SfCartesianChart();
+        /// 
+        /// DateTimeAxis xAxis = new DateTimeAxis();
+        /// xAxis.AutoScrollingDeltaType = DateTimeIntervalType.Years;
+        /// 
+        /// LogarithmicAxis yAxis = new LogarithmicAxis();
+        /// 
+        /// chart.XAxes.Add(xAxis);	
+        /// chart.YAxes.Add(yAxis);	
+        /// ]]>
+        /// </code>
+        /// ***
+        /// </example>
+        /// <value>This property takes the <see cref="DateTimeIntervalType"/> as its value.</value>
+        ///<value>Default value is <see cref="DateTimeIntervalType.Auto"/></value>
+        public DateTimeIntervalType AutoScrollingDeltaType
         {
             get { return (DateTimeIntervalType)GetValue(AutoScrollingDeltaTypeProperty); }
             set { SetValue(AutoScrollingDeltaTypeProperty, value); }
@@ -504,6 +533,7 @@ namespace Syncfusion.Maui.Charts
             var axis = bindable as DateTimeAxis;
             if (axis != null)
             {
+                axis.CanAutoScroll = true;
                 axis.UpdateLayout();
             }
         }

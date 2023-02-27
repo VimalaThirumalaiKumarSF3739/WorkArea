@@ -84,7 +84,7 @@ using Microsoft.UI.Xaml.Controls;
                     }
                 }
 
-                if ((Chart.InternalPrimaryAxis is CategoryAxis) && (!(Chart.InternalPrimaryAxis as CategoryAxis).IsIndexed))
+                if ((Chart.InternalPrimaryAxis is CategoryAxis) && (!(Chart.InternalPrimaryAxis as CategoryAxis).ArrangeByIndex))
                     (Chart.InternalPrimaryAxis as CategoryAxis).GroupData(Chart.VisibleSeries);
 
                 foreach (ChartSeries series in Chart.VisibleSeries)

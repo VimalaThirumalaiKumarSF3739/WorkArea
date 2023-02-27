@@ -19,30 +19,26 @@
                     <DataTemplate x:Key="tooltiptemplate">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Item.Name,StringFormat='{0}'}"  HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalTextAlignment="Center" FontFamily="Helvetica" FontAttributes="Bold" TextColor="White" Margin="0,2,0,2" FontSize="12"></Label>
+                            <Label Grid.Row="0" Grid.Column="0" LineBreakMode="WordWrap" MaximumWidthRequest="100"  Text="{Binding Item.Name,StringFormat='{0}'}"  HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalTextAlignment="Center" FontFamily="Helvetica" FontAttributes="Bold" TextColor="White" Margin="0,2,0,2" FontSize="10"></Label>
                             <BoxView Grid.Row="1" Grid.Column="0" VerticalOptions="Center" Color="Gray" HeightRequest="1" />
                             <StackLayout Grid.Row="2" Grid.Column="0" Orientation="Vertical"  VerticalOptions="Fill" Spacing="0" Padding="3" Margin="0">
-                                <Label Text="{Binding Item.High,StringFormat='Budget          : ${0}M'}" VerticalTextAlignment="Center" HorizontalOptions="Start" TextColor="White" FontFamily="Helvetica" Margin="0,0,3,0"  FontAttributes="Bold" FontSize="12"></Label>
-                                <Label Text="{Binding Item.Low,StringFormat='Revenue        : ${0}M'}" VerticalTextAlignment="Center" HorizontalOptions="Start" TextColor="White" FontFamily="Helvetica" Margin="0,0,3,0" FontAttributes="Bold" FontSize="12"></Label>
+                                <Label Text="{Binding Item.High,StringFormat='Budget : ${0}M'}" VerticalTextAlignment="Center" HorizontalOptions="Start" TextColor="White" FontFamily="Helvetica" Margin="0,0,3,0" FontSize="10"></Label>
+                                <Label Text="{Binding Item.Low,StringFormat='Revenue: ${0}M'}" VerticalTextAlignment="Center" HorizontalOptions="Start" TextColor="White" FontFamily="Helvetica" Margin="0,0,3,0" FontSize="10"></Label>
                                 <StackLayout Grid.Row="2" Grid.Column="0" Orientation="Horizontal"  VerticalOptions="Fill" Spacing="0" Margin="0">
-                                    <Label Text="{Binding Item.Size,StringFormat='Rating           : {0}/10'}" VerticalTextAlignment="Center" HorizontalOptions="Start" TextColor="White" FontFamily="Helvetica" Margin="0,0,3,0" FontAttributes="Bold" FontSize="12"></Label>
-                                    <Label Text="{Binding Item.Value,StringFormat=' ({0}K)'}" VerticalTextAlignment="Center" HorizontalOptions="Start" TextColor="White" FontFamily="Helvetica" Margin="0,0,3,0" FontAttributes="Bold" FontSize="12"></Label>
+                                    <Label Text="{Binding Item.Size,StringFormat='Rating : {0}/10'}" VerticalTextAlignment="Center" HorizontalOptions="Start" TextColor="White" FontFamily="Helvetica" Margin="0,0,3,0" FontSize="10"></Label>
+                                    <Label Text="{Binding Item.Value,StringFormat=' ({0}K)'}" VerticalTextAlignment="Center" HorizontalOptions="Start" TextColor="White" FontFamily="Helvetica" Margin="0,0,3,0" FontSize="10"></Label>
                                 </StackLayout>
                             </StackLayout>
                         </Grid>
                     </DataTemplate>
                 </chart:SfCartesianChart.Resources>
-                
-                <chart:SfCartesianChart.Title >
-                    <Label Text="Top Cross-Genre Movie Hits: A Performance Overview" HorizontalOptions="Center"/>
-                </chart:SfCartesianChart.Title>
                 
                 <chart:SfCartesianChart.Legend>
                     <chart:ChartLegend Placement="Top"/>
@@ -53,28 +49,22 @@
                 </chart:SfCartesianChart.TooltipBehavior>
                 
                 <chart:SfCartesianChart.XAxes>
-                    <chart:NumericalAxis Minimum="0" Maximum="275" Interval="25" >
-                        <chart:NumericalAxis.Title>
-                            <chart:ChartAxisTitle Text="Movie Budget"/>
-                        </chart:NumericalAxis.Title>
+                    <chart:NumericalAxis Minimum="0" Maximum="275" Interval="25" x:Name="xAxis">
                         <chart:NumericalAxis.LabelStyle>
-                            <chart:ChartAxisLabelStyle LabelFormat="$0'M" />
+                            <chart:ChartAxisLabelStyle LabelFormat="0'M" />
                         </chart:NumericalAxis.LabelStyle>
                     </chart:NumericalAxis>
                 </chart:SfCartesianChart.XAxes>
 
                 <chart:SfCartesianChart.YAxes>
-                    <chart:NumericalAxis Interval="200" Minimum="0" Maximum="1800">
-                        <chart:NumericalAxis.Title>
-                            <chart:ChartAxisTitle Text="Gross Amount in millions"/>
-                        </chart:NumericalAxis.Title>
+                    <chart:NumericalAxis Interval="200" Minimum="0" Maximum="1800"  x:Name="yAxis" >
                         <chart:NumericalAxis.LabelStyle>
-                            <chart:ChartAxisLabelStyle LabelFormat="$0'M" />
+                            <chart:ChartAxisLabelStyle LabelFormat="0'M" />
                         </chart:NumericalAxis.LabelStyle>
                     </chart:NumericalAxis>
                 </chart:SfCartesianChart.YAxes>
 
-                    <chart:BubbleSeries MinimumRadius="20" MaximumRadius="40"  TooltipTemplate="{StaticResource tooltiptemplate}" Label="Action" SizeValuePath="Value"  EnableTooltip="True"              
+                <chart:BubbleSeries MinimumRadius="{OnPlatform Default=15,Android=8,iOS=8}" MaximumRadius="{OnPlatform Default=30,Android=15,iOS=15}"   TooltipTemplate="{StaticResource tooltiptemplate}" Label="Action" SizeValuePath="Value"  EnableTooltip="True"              
                                         ItemsSource="{Binding ActionData}" ShowDataLabels="False"
                                         XBindingPath="High"  YBindingPath="Low">
                         <chart:BubbleSeries.Fill>
@@ -85,7 +75,7 @@
                         </chart:BubbleSeries.Fill>
                     </chart:BubbleSeries>
 
-                    <chart:BubbleSeries  MinimumRadius="20" MaximumRadius="40"  TooltipTemplate="{StaticResource tooltiptemplate}" Label="Horror" SizeValuePath="Value"  EnableTooltip="True"              
+                <chart:BubbleSeries  MinimumRadius="{OnPlatform Default=15,Android=8,iOS=8}" MaximumRadius="{OnPlatform Default=30,Android=15,iOS=15}"   TooltipTemplate="{StaticResource tooltiptemplate}" Label="Horror" SizeValuePath="Value"  EnableTooltip="True"              
                                         ItemsSource="{Binding HorrorData}" ShowDataLabels="False"
                                         XBindingPath="High"  YBindingPath="Low">
                             <chart:BubbleSeries.Fill>
@@ -96,7 +86,7 @@
                             </chart:BubbleSeries.Fill>
                         </chart:BubbleSeries>
 
-                    <chart:BubbleSeries MinimumRadius="20" MaximumRadius="40"  TooltipTemplate="{StaticResource tooltiptemplate}" Label="Science fiction" SizeValuePath="Value"  EnableTooltip="True"              
+                <chart:BubbleSeries MinimumRadius="{OnPlatform Default=15,Android=8,iOS=8}" MaximumRadius="{OnPlatform Default=30,Android=15,iOS=15}"   TooltipTemplate="{StaticResource tooltiptemplate}" Label="Science fiction" SizeValuePath="Value"  EnableTooltip="True"              
                                         ItemsSource="{Binding ScienceFictionData}" ShowDataLabels="False"
                                         XBindingPath="High"  YBindingPath="Low">
                         <chart:BubbleSeries.Fill>
@@ -107,7 +97,7 @@
                         </chart:BubbleSeries.Fill>
                     </chart:BubbleSeries>
 
-                    <chart:BubbleSeries MinimumRadius="20" MaximumRadius="40"  TooltipTemplate="{StaticResource tooltiptemplate}" Label="Thriller" SizeValuePath="Value"  EnableTooltip="True"              
+                <chart:BubbleSeries MinimumRadius="{OnPlatform Default=15,Android=8,iOS=8}" MaximumRadius="{OnPlatform Default=30,Android=15,iOS=15}"   TooltipTemplate="{StaticResource tooltiptemplate}" Label="Thriller" SizeValuePath="Value"  EnableTooltip="True"              
                                         ItemsSource="{Binding ThrillerData}" ShowDataLabels="False"
                                         XBindingPath="High"  YBindingPath="Low">
                         <chart:BubbleSeries.Fill>
@@ -122,7 +112,7 @@
             
             <HorizontalStackLayout x:Name="hyperLinkLayout" Margin="5,5,0,0">
                 <Label Text="Source: " FontSize="12" VerticalOptions="Center"></Label>
-                <Label TextColor="#3E8EED" FontSize="12" FontAttributes="Italic" Text="Movies Performance and Feature Statistics" VerticalOptions="Center">
+                <Label TextColor="#3E8EED" FontSize="12" FontAttributes="Italic" Text="kaggle.com" VerticalOptions="Center">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding TapCommand}" CommandParameter="https://www.kaggle.com/datasets/thedevastator/movies-performance-and-feature-statistics"/>
                     </Label.GestureRecognizers>

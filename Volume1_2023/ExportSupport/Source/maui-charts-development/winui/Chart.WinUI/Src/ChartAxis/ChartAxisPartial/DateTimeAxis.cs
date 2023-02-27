@@ -44,12 +44,12 @@ namespace Syncfusion.UI.Xaml.Charts
     /// </remarks>
 	public partial class DateTimeAxis
 	{
-		#region Dependency Property Registration
+        #region Dependency Property Registration
 
-		/// <summary>
-		/// Using a DependencyProperty as the backing store for AutoScrollingDeltaType.  This enables animation, styling, binding, etc... 
-		/// </summary>
-		internal static readonly DependencyProperty AutoScrollingDeltaTypeProperty =
+        /// <summary>
+        /// The DependencyProperty for <see cref="AutoScrollingDeltaType"/> property. 
+        /// </summary>
+        public static readonly DependencyProperty AutoScrollingDeltaTypeProperty =
 			DependencyProperty.Register(
 				nameof(AutoScrollingDeltaType),
 				typeof(DateTimeIntervalType),
@@ -462,9 +462,39 @@ namespace Syncfusion.UI.Xaml.Charts
         #region Internal Properties
 
         /// <summary>
-        /// 
+        /// Gets or sets the enum <see cref="DateTimeIntervalType"/> to determine the unit of time used for the delta value for auto-scrolling on a DateTime axis. 
         /// </summary>
-        internal DateTimeIntervalType AutoScrollingDeltaType
+        /// <example>
+        /// # [MainPage.xaml](#tab/tabid-7)
+        /// <code><![CDATA[
+        /// <chart:SfCartesianChart>
+        ///    <chart:SfCartesianChart.XAxes>
+        ///        <chart:DateTimeAxis AutoScrollingDeltaType="Years"/>
+        ///    </chart:SfCartesianChart.XAxes>
+        ///    <chart:SfCartesianChart.YAxes>
+        ///        <chart:NumericalAxis/>
+        ///    </chart:SfCartesianChart.YAxes>
+        /// </chart:SfCartesianChart>
+        /// ]]>
+        /// </code>
+        /// # [MainPage.xaml.cs](#tab/tabid-8)
+        /// <code><![CDATA[
+        /// SfCartesianChart chart = new SfCartesianChart();
+        /// 
+        /// DateTimeAxis xAxis = new DateTimeAxis();
+        /// xAxis.AutoScrollingDeltaType = DateTimeIntervalType.Years;
+        /// 
+        /// NumericalAxis yAxis = new NumericalAxis();
+        /// 
+        /// chart.XAxes.Add(xAxis);	
+        /// chart.YAxes.Add(yAxis);	
+        /// ]]>
+        /// </code>
+        /// ***
+        /// </example>
+        /// <value>This property takes the <see cref="DateTimeIntervalType"/> as its value.</value>
+        ///<value>Default value is <see cref="DateTimeIntervalType.Auto"/></value>
+        public DateTimeIntervalType AutoScrollingDeltaType
 		{
 			get { return (DateTimeIntervalType)GetValue(AutoScrollingDeltaTypeProperty); }
 			set { SetValue(AutoScrollingDeltaTypeProperty, value); }
@@ -500,6 +530,7 @@ namespace Syncfusion.UI.Xaml.Charts
 
 			if (dateTimeAxis != null && dateTimeAxis.Area != null)
 			{
+                dateTimeAxis.CanAutoScroll = true;
 				dateTimeAxis.OnPropertyChanged();
 			}
 		}

@@ -259,6 +259,7 @@ namespace Syncfusion.Maui.Charts
         /// </summary>
         public SfFunnelChart()
         {
+            this.ValidateLicense();
             DataLabelSettings = new FunnelDataLabelSettings();
             PaletteBrushes = ChartColorModel.DefaultBrushes;
             chartArea = (PyramidChartArea)LegendLayout.AreaBase;

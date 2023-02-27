@@ -949,6 +949,7 @@ namespace Syncfusion.Maui.Charts
         public SfCartesianChart()
         {
             this.ValidateLicense();
+            SfCartesianChartResources.InitializeDefaultResource("Chart.Resources.SfCartesianChart");
             ChartArea = (CartesianChartArea)LegendLayout.AreaBase;
             Series = new ChartSeriesCollection();
             this.AddTouchListener(this);

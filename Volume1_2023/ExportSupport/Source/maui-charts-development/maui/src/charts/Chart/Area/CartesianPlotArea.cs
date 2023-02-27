@@ -103,12 +103,16 @@ namespace Syncfusion.Maui.Charts
 
             chartArea.RequiredAxisReset = true;
 
-            var cartesian = series as CartesianSeries;
-            if (cartesian != null && cartesian.IsSideBySide)
+            if (series is CartesianSeries cartesian)
             {
-                cartesian.ActualXAxis = null;
-                cartesian.ActualYAxis = null;
-                chartArea.ResetSBSSegments();
+                cartesian.InvalidateGroupValues();
+
+                if (cartesian.IsSideBySide)
+                {
+                    cartesian.ActualXAxis = null;
+                    cartesian.ActualYAxis = null;
+                    chartArea.ResetSBSSegments();
+                }
             }
         }
         

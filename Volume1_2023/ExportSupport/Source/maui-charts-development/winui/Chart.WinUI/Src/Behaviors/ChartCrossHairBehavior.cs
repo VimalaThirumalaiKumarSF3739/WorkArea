@@ -110,20 +110,20 @@ namespace Syncfusion.UI.Xaml.Charts
     /// </code>
     /// ***
     ///
-    /// <b>ShowTrackballInfo</b>
+    /// <b>ShowTrackballLabel</b>
     ///
-    /// <para>The axis label will be viewed when the ShowTrackballInfo property is set to true. The default value of ShowTrackballInfo is false</para>
+    /// <para>The axis label will be viewed when the ShowTrackballLabel property is set to true. The default value of ShowTrackballLabel is false</para>
     ///
     /// # [Xaml](#tab/tabid-5)
     /// <code><![CDATA[
     ///     <chart:SfCartesianChart>
     ///
     ///           <chart:SfCartesianChart.XAxes>
-    ///               <chart:NumericalAxis ShowTrackballInfo="True"/>
+    ///               <chart:NumericalAxis ShowTrackballLabel="True"/>
     ///           </chart:SfCartesianChart.XAxes>
     ///
     ///           <chart:SfCartesianChart.YAxes>
-    ///               <chart:NumericalAxis ShowTrackballInfo="True"/>
+    ///               <chart:NumericalAxis ShowTrackballLabel="True"/>
     ///           </chart:SfCartesianChart.YAxes>
     ///
     ///           <chart:SfCartesianChart.CrosshairBehavior>
@@ -138,9 +138,9 @@ namespace Syncfusion.UI.Xaml.Charts
     ///     SfCartesianChart chart = new SfCartesianChart();
     ///
     ///     NumericalAxis xAxis = new NumericalAxis();
-    ///     xAxis.ShowTrackballInfo = true;
+    ///     xAxis.ShowTrackballLabel = true;
     ///     NumericalAxis yAxis = new NumericalAxis();
-    ///     yAxis.ShowTrackballInfo = true;
+    ///     yAxis.ShowTrackballLabel = true;
     ///
     ///     chart.XAxes.Add(xAxis);
     ///     chart.YAxes.Add(yAxis);
@@ -161,7 +161,7 @@ namespace Syncfusion.UI.Xaml.Charts
     ///     <chart:SfCartesianChart>
     ///
     ///           <chart:SfCartesianChart.XAxes>
-    ///               <chart:NumericalAxis ShowTrackballInfo="True">
+    ///               <chart:NumericalAxis ShowTrackballLabel="True">
     ///                <chart:NumericalAxis.CrosshairLabelTemplate>
     ///                    <DataTemplate>
     ///                        <Border Background = "Orange" CornerRadius="4"    
@@ -174,7 +174,7 @@ namespace Syncfusion.UI.Xaml.Charts
     ///           </chart:SfCartesianChart.XAxes>
     ///
     ///           <chart:SfCartesianChart.YAxes>
-    ///               <chart:NumericalAxis ShowTrackballInfo="True">
+    ///               <chart:NumericalAxis ShowTrackballLabel="True">
     ///                <chart:NumericalAxis.CrosshairLabelTemplate>
     ///                    <DataTemplate>
     ///                        <Border Background = "Orange" CornerRadius="4"    
